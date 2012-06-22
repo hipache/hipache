@@ -1,0 +1,25 @@
+{
+    "name" : "proxy2",
+    "version" : "0.1.1",
+    "description" : "Proxy solution built on top of http-proxy",
+    "main" : "./app.js",
+    "directories" : {
+        "lib" : "./lib"
+    },
+    "dependencies" : {
+        "http-proxy" : "0.8.1",
+        "redis" : "0.7.x"
+    },
+    "scripts" : {
+        "test" : "nodeunit test/test_*.js",
+        "jslint": "jslint --node --nomen --continue -- app.js lib/*.js ; true"
+    },
+    "engine" : {
+        "node" : ">=0.6.0"
+    },
+    "author" : {
+        "name" : "Samuel Alba",
+        "email" : "sam@dotcloud.com",
+        "url" : "http://www.dotcloud.com/"
+    }
+}

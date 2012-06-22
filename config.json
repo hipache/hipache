@@ -1,0 +1,18 @@
+{
+    "server": {
+        "accessLog": "/var/log/nginx/access.log",
+        "port": 80,
+        "workers": 10,
+        "maxSockets": 100,
+        "deadBackendTTL": 30,
+        "https": {
+            "port": 443,
+            "key": "/etc/ssl/ssl.key",
+            "cert": "/etc/ssl/ssl.crt"
+        }
+    },
+    "redis": {
+        "port": 6379,
+        "host": "127.0.0.1"
+    }
+}
