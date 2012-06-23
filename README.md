@@ -51,7 +51,7 @@ each backend (per worker)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
 * __redis__: Redis configuration (host & port)
 
-___Manage multiple configuration files:___
+__Managing multiple configuration files:__
 
 The default configuration file is `config.json'. It's possible to have
 different configuration files named `config_<suffix>.json'. The suffix is got
