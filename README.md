@@ -72,26 +72,26 @@ and they serve the HTTP traffic on the port 80.
 
 Here are the steps I will follow:
 
-1. Create the frontend and associate an identifier
+1. __Create__ the frontend and associate an identifier
 
-    $ redis-cli rpush frontend:www.dotcloud.com mywebsite
-    (integer) 1
+        $ redis-cli rpush frontend:www.dotcloud.com mywebsite
+        (integer) 1
 
-    The frontend identifer is `mywebsite', it could be anything.
+The frontend identifer is `mywebsite', it could be anything.
 
-2. Associate the 2 backends
+2. __Associate__ the 2 backends
 
-    $ redis-cli rpush frontend:www.dotcloud.com http://192.168.0.42:80
-    (integer) 2
-    $ redis-cli rpush frontend:www.dotcloud.com http://192.168.0.43:80
-    (integer) 3
+        $ redis-cli rpush frontend:www.dotcloud.com http://192.168.0.42:80
+        (integer) 2
+        $ redis-cli rpush frontend:www.dotcloud.com http://192.168.0.43:80
+        (integer) 3
 
-3. Review the configuration
+3. __Review__ the configuration
 
-    $ redis-cli lrange frontend:www.dotcloud.com 0 -1
-    1) "mywebsite"
-    2) "http://192.168.0.42:80"
-    2) "http://192.168.0.43:80"
+        $ redis-cli lrange frontend:www.dotcloud.com 0 -1
+        1) "mywebsite"
+        2) "http://192.168.0.42:80"
+        3) "http://192.168.0.43:80"
 
 While the server is running, any of these steps can be re-run without messing
 up with the traffic.
