@@ -4,7 +4,7 @@ Hipache: HTTP Proxy
 What is it?
 -----------
 
-Hipache (Apache for Hipsters) is a complete Proxy solution based on the
+Hipache is a complete Proxy solution based on the
 node-http-proxy library.
 
 It currently powers most of the traffic served by thousands of applications
