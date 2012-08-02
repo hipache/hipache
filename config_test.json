@@ -1,10 +1,12 @@
 {
     "server": {
-        "accessLog": "/tmp/proxy2_access.log",
+        "accessLog": "/tmp/proxy2_test_access.log",
         "port": 1080,
         "workers": 2,
         "maxSockets": 100,
         "deadBackendTTL": 30,
+        "tcpTimeout": 5,
+        "errorMaxRetries": 3,
         "debug": true
     },
     "redis": {

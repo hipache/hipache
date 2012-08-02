@@ -5,6 +5,8 @@
         "workers": 10,
         "maxSockets": 100,
         "deadBackendTTL": 30,
+        "tcpTimeout": 30,
+        "errorMaxRetries": 3,
         "https": {
             "port": 443,
             "key": "/etc/ssl/ssl.key",
