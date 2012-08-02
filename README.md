@@ -4,7 +4,7 @@ Hipache: HTTP Proxy
 What is it?
 -----------
 
-Hipache (Apache for Hipsters) is a complete Proxy solution based on the
+Hipache is a complete Proxy solution based on the
 node-http-proxy library.
 
 It currently powers most of the traffic served by thousands of applications
@@ -51,13 +51,13 @@ each backend (per worker)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
 * __redis__: Redis configuration (host & port)
 
-___Manage multiple configuration files:___
+__Managing multiple configuration files:__
 
-The default configuration file is `config.json'. It's possible to have
-different configuration files named `config_<suffix>.json'. The suffix is got
-from an environment variable called `SETTINGS_FLAVOR'.
+The default configuration file is `config.json`. It's possible to have
+different configuration files named `config_<suffix>.json`. The suffix is got
+from an environment variable called `SETTINGS_FLAVOR`.
 
-For instance, here is how to spawn the server with the config_test.json
+For instance, here is how to spawn the server with the `config_test.json`
 configuration file in order to run the tests.
 
     $ SETTINGS_FLAVOR=test node apps.json
@@ -79,7 +79,7 @@ Let's take an example, I want to proxify requests to 2 backends for the
 hostname www.dotcloud.com. The 2 backends IP are 192.168.0.42 and 192.168.0.43
 and they serve the HTTP traffic on the port 80.
 
-`redis-cli' is the standard client tool to talk to Redis from the terminal.
+`redis-cli` is the standard client tool to talk to Redis from the terminal.
 
 Here are the steps I will follow:
 
@@ -88,7 +88,7 @@ Here are the steps I will follow:
         $ redis-cli rpush frontend:www.dotcloud.com mywebsite
         (integer) 1
 
-The frontend identifer is `mywebsite', it could be anything.
+The frontend identifer is `mywebsite`, it could be anything.
 
 2. __Associate__ the 2 backends
 
