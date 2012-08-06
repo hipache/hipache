@@ -59,7 +59,7 @@ from an environment variable called `SETTINGS_FLAVOR`.
 For instance, here is how to spawn the server with the `config_test.json`
 configuration file in order to run the tests.
 
-    $ SETTINGS_FLAVOR=test node apps.json
+    $ SETTINGS_FLAVOR=test node app.js
 
 
 ### 2. Configuring a vhost (redis)

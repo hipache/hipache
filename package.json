@@ -11,6 +11,7 @@
         "redis" : "0.7.x"
     },
     "scripts" : {
+        "start" : "node app.js",
         "test" : "nodeunit test/test_*.js",
         "jslint": "jslint --node --nomen --continue -- app.js lib/*.js ; true"
     },
