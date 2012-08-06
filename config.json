@@ -1,6 +1,6 @@
 {
     "server": {
-        "accessLog": "access.log",
+        "accessLog": "/var/log/nginx/access.log",
         "port": 80,
         "workers": 10,
         "maxSockets": 100,
