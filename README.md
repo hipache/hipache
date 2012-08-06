@@ -147,12 +147,44 @@ a given threshold, the worker stops accepting new connections, it lets
 the current requests complete cleanly, and it stops itself; it is then
 replaced my a new copy by the master process.
 
-### And more...
+### Dynamic configuration
 
-* Dynamic configuration
-* Custom HTML error pages
-* Websocket
-* SSL
+You can alter the configuration stored in Redis at any time. There is no
+need to restart Hipache, or to signal it that the configuration has changed:
+Hipache will re-query Redis at each request. Worried about performance?
+We were, too! And we found out that accessing a local Redis is helluva fast.
+So fast, that it didn't increase measurably the HTTP request latency!
+
+### WebSocket
+
+Hipache supports the WebSocket protocol. It doesn't do any fancy handling
+for the WebSocket protocol; it relies entirely on the support in NodeJS
+and node-http-proxy.
+
+### SSL
+
+If provided with a SSL private key and certificate, Hipache will support SSL
+connections, for "regular" requests as well as WebSocket upgrades.
+
+### Custom HTML error pages
+
+When something wrong happens (e.g., a backend times out), or when a request
+for an undefined virtual host comes in, Hipache will display an error page.
+Those error pages can be customized.
+
+### Wildcard domains support
+
+When adding virtual hosts in Hipache configuration, you can specify wildcards.
+E.g., instead (or in addition to) www.example.tld, you can insert *.example.tld.
+Hipache will look for an exact match first, and then for a wildcard one.
+
+Note that the current implementation only tries to match wildcards against the
+last two labels of the requested virtual host. What does that mean? If you
+issue a request for some.thing.example.tld, Hipache will look for *.example.tld
+in the configuration, but not for *.thing.example.tld. If you want to serve
+requests for *.thing.example.tld, you will have to setup a wildcard for
+*.example.tld. It means that you cannot (yet) send requests for *.thing.example.tld
+and *.stuff.example.tld to different backends.
 
 
 Future improvements
