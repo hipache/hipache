@@ -110,36 +110,81 @@ up with the traffic.
 Features
 --------
 
-### Multi backend: load-balancing and health check
+### Load-balancing across multiple backends
 
 As seen in the example above, multiple backends can be attached to a frontend.
 
-All requests coming to the frontend are load-balanced across the multiple
-backend. If a backend stops responding, it will be flagged as dead for a
-configurable amount of time. The dead backend will be temporary removed from
+All requests coming to the frontend are load-balanced across all healthy backends.
+The backend to use for a specific request is determined at random. Subsequent
+requests coming from the same client won't necessarily be routed to the same backend
+(since backend selection is purely random).
+
+### Dead backend detection
+
+If a backend stops responding, it will be flagged as dead for a
+configurable amount of time. The dead backend will be temporarily removed from
 the load-balancing rotation.
+
+### Multi-process architecture
+
+To optimize response times and make use of all your available cores, Hipache
+uses the cluster module (included in NodeJS), and spreads the load across
+multiple NodeJS processes. A master process is in charge of spawning workers
+and monitoring them. When a worker dies, the master spawns a new one.
 
 ### Memory monitoring
 
-Hipache uses the cluster module (included in NodeJS). The master process is in
-charge of spawning workers and monitoring them. Once a worker dies, the master
-spawns a new one.
+The memory footprint of Hipache tends to grow slowly over time, indicating
+a probable memory leak. A close examination did not turn up any memory leak
+in Hipache's code itself; but it doesn't prove that there is none. Also,
+we did not investigate (yet) thoroughly the code of Hipache's external
+dependencies, so the leaks could be creeping there.
 
-The current version of Hipache suffers from memory leaks (mostly because of
-the external libraries it relies on). More profiling will be done in order to
-identify the cause and improve the memory consumption.
+While we profile Hipache's memory to further reduce its footprint, we
+implemented a memory monitoring system to make sure that memory use doesn't
+go out of bounds. Each worker monitors its memory usage. If it crosses
+a given threshold, the worker stops accepting new connections, it lets
+the current requests complete cleanly, and it stops itself; it is then
+replaced my a new copy by the master process.
 
-Meanwhile, in order to workaround these memory issues, each worker monitors its
-memory usage. If the memory reaches a certain amount of memory allocated, the
-worker stop accepting new connections and waits for the active one to be
-terminated. Then it stops and a new worker is spawned.
+### Dynamic configuration
 
-### And more...
+You can alter the configuration stored in Redis at any time. There is no
+need to restart Hipache, or to signal it that the configuration has changed:
+Hipache will re-query Redis at each request. Worried about performance?
+We were, too! And we found out that accessing a local Redis is helluva fast.
+So fast, that it didn't increase measurably the HTTP request latency!
 
-* Dynamic configuration
-* Custom HTML error pages
-* Websocket
-* SSL
+### WebSocket
+
+Hipache supports the WebSocket protocol. It doesn't do any fancy handling
+for the WebSocket protocol; it relies entirely on the support in NodeJS
+and node-http-proxy.
+
+### SSL
+
+If provided with a SSL private key and certificate, Hipache will support SSL
+connections, for "regular" requests as well as WebSocket upgrades.
+
+### Custom HTML error pages
+
+When something wrong happens (e.g., a backend times out), or when a request
+for an undefined virtual host comes in, Hipache will display an error page.
+Those error pages can be customized.
+
+### Wildcard domains support
+
+When adding virtual hosts in Hipache configuration, you can specify wildcards.
+E.g., instead (or in addition to) www.example.tld, you can insert *.example.tld.
+Hipache will look for an exact match first, and then for a wildcard one.
+
+Note that the current implementation only tries to match wildcards against the
+last two labels of the requested virtual host. What does that mean? If you
+issue a request for some.thing.example.tld, Hipache will look for *.example.tld
+in the configuration, but not for *.thing.example.tld. If you want to serve
+requests for *.thing.example.tld, you will have to setup a wildcard for
+*.example.tld. It means that you cannot (yet) send requests for *.thing.example.tld
+and *.stuff.example.tld to different backends.
 
 
 Future improvements
