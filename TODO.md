@@ -34,7 +34,7 @@ Code reorganization
 -------------------
 
 The code is compliant as much as possible with
-(JSLint)[http://www.jslint.com/lint.html]. The code can still be improved in
+[JSLint](http://www.jslint.com/lint.html). The code can still be improved in
 order to be better readable. For instance, declaring the vars at the beginning
 of each function can looks weird when there is a lot of variable declared.
 Some of the functions could be also ligthen and split in sub functions.
