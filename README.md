@@ -4,9 +4,17 @@ Hipache: a distributed HTTP and websocket proxy
 What is it?
 -----------
 
-Hipache is a distributed proxy designed to route high volumes of http and websocket traffic to unusually large numbers of virtual hosts, in a highly dynamic topology where backends are added and removed several times per second. It is particularly well-suited for PaaS (platform-as-a-service) and other environments that are both business-critical and multi-tenant.
+Hipache is a distributed proxy designed to route high volumes of http and
+websocket traffic to unusually large numbers of virtual hosts, in a highly
+dynamic topology where backends are added and removed several times per second.
+It is particularly well-suited for PaaS (platform-as-a-service) and other
+environments that are both business-critical and multi-tenant.
 
-Hipache was originally developed at [dotCloud](http://www.dotcloud.com), a popular platform-as-a-service, to replace its first-generation routing layer based on a heavily instrumented nginx deployment. It currently serves production traffic for tens of thousands of applications hosted on dotCloud. Hipache is based on the node-http-proxy library.
+Hipache was originally developed at [dotCloud](http://www.dotcloud.com), a
+popular platform-as-a-service, to replace its first-generation routing layer
+based on a heavily instrumented nginx deployment. It currently serves
+production traffic for tens of thousands of applications hosted on dotCloud.
+Hipache is based on the node-http-proxy library.
 
 
 Configuration
@@ -114,10 +122,12 @@ Features
 
 As seen in the example above, multiple backends can be attached to a frontend.
 
-All requests coming to the frontend are load-balanced across all healthy backends.
+All requests coming to the frontend are load-balanced across all healthy
+backends.
+
 The backend to use for a specific request is determined at random. Subsequent
-requests coming from the same client won't necessarily be routed to the same backend
-(since backend selection is purely random).
+requests coming from the same client won't necessarily be routed to the same
+backend (since backend selection is purely random).
 
 ### Dead backend detection
 
@@ -175,29 +185,20 @@ Those error pages can be customized.
 ### Wildcard domains support
 
 When adding virtual hosts in Hipache configuration, you can specify wildcards.
-E.g., instead (or in addition to) www.example.tld, you can insert *.example.tld.
-Hipache will look for an exact match first, and then for a wildcard one.
+E.g., instead (or in addition to) www.example.tld, you can insert
+*.example.tld. Hipache will look for an exact match first, and then for a
+wildcard one.
 
 Note that the current implementation only tries to match wildcards against the
 last two labels of the requested virtual host. What does that mean? If you
 issue a request for some.thing.example.tld, Hipache will look for *.example.tld
 in the configuration, but not for *.thing.example.tld. If you want to serve
 requests for *.thing.example.tld, you will have to setup a wildcard for
-*.example.tld. It means that you cannot (yet) send requests for *.thing.example.tld
-and *.stuff.example.tld to different backends.
+*.example.tld. It means that you cannot (yet) send requests for
+*.thing.example.tld and *.stuff.example.tld to different backends.
 
 
 Future improvements
 -------------------
 
-### Configuration adapters
-
-While the core of the configuration relies on Redis, it makes it possible to
-easily write configuration adapters.
-
-A plain text configuration file will be the first one to be implemented.
-
-### Caching the Redis lookups
-
-For the moment, Redis is accessed for each incoming request. Caching these
-lookups will reduce the time spent to route a request.
+[Read the TODO page](https://github.com/dotcloud/hipache/TODO.md)
