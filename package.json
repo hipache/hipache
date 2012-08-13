@@ -13,7 +13,7 @@
     "scripts" : {
         "start" : "node app.js",
         "test" : "nodeunit test/test_*.js",
-        "jslint": "jslint --node --nomen --continue -- app.js lib/*.js ; true"
+        "jshint": "jshint --config jshint.json -- app.js lib/*.js test/*.js"
     },
     "engine" : {
         "node" : ">=0.6.0"
