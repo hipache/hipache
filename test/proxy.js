@@ -1,4 +1,6 @@
 
+'use strict';
+
 /**
  * This module is a helper to setUp and tearDown the tests.
  * This is not a Test module.
@@ -14,7 +16,7 @@ var child_process = require('child_process'),
 
 exports.setUp = function () {
     redisClient = redis.createClient();
-    redisClient.on('error', function () {
+    redisClient.on('error', function (err) {
         util.log('RedisError ' + err + ' (is redis-server running?)');
     });
     count = 0;
@@ -29,8 +31,9 @@ exports.addFrontend = function (frontend, backends, callback) {
     exports.removeFrontend(frontend);
     backends.splice(0, 0, frontend);
     redisClient.rpush('frontend:' + frontend, backends, function () {
-        if (callback !== undefined)
+        if (callback !== undefined) {
             callback();
+        }
     });
 };
 
@@ -60,11 +63,12 @@ exports.requestFrontend = function (testObject, frontend, expectedStatusCode, ca
     var req = http.get(opts, function (res) {
         testObject.ok(res.statusCode === expectedStatusCode,
             '#' + count + ' Expected status code: ' + expectedStatusCode + ' (got: ' + res.statusCode + ' on "' + frontend + '")');
-        if (callback !== undefined)
+        if (callback !== undefined) {
             callback();
+        }
     });
     req.on('error', function (error) {
         testObject.ok(false, '#' + count + ' Failed to proxify (error: ' + error + ')');
     });
     count++;
-}
+};

@@ -1,4 +1,6 @@
 
+'use strict';
+
 var http = require('http'),
     proxy = require('./proxy');
 
