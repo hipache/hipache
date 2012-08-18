@@ -1,17 +1,27 @@
 {
-    "name" : "proxy2",
-    "version" : "0.1.1",
-    "description" : "Proxy solution built on top of http-proxy",
-    "main" : "./app.js",
+    "name" : "hipache",
+    "version" : "0.1.2",
+    "description" : "Complete high-scaled reverse-proxy solution",
+    "keywords": [
+        "reverse",
+        "proxy",
+        "http",
+        "http-proxy"
+    ],
+    "main" : "./bin/hipache",
+    "bin": {
+        "hipache": "./bin/hipache"
+    },
     "directories" : {
         "lib" : "./lib"
     },
     "dependencies" : {
         "http-proxy" : "0.8.1",
-        "redis" : "0.7.x"
+        "redis" : "0.7.x",
+        "optimist": "0.3.x"
     },
     "scripts" : {
-        "start" : "node app.js",
+        "start" : "node bin/hipache",
         "test" : "nodeunit test/test_*.js",
         "jshint": "jshint --config jshint.json -- app.js lib/*.js test/*.js"
     },
@@ -20,7 +30,14 @@
     },
     "author" : {
         "name" : "Samuel Alba",
-        "email" : "sam@dotcloud.com",
+        "email" : "sam.alba@gmail.com",
         "url" : "http://www.dotcloud.com/"
-    }
+    },
+    "maintainer" : [
+        "Sam Alba <sam.alba@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "http://github.com/dotcloud/hipache.git"
+    },
 }

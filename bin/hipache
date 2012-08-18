@@ -1,0 +1,51 @@
+#!/usr/bin/env node
+
+'use strict';
+
+var fs = require('fs'),
+    path = require('path'),
+    cluster = require('cluster'),
+    util = require('util'),
+    argv = require('optimist').argv,
+    master = require('../lib/master'),
+    worker = require('../lib/worker');
+
+var help = [
+    'usage: hipache [options]',
+    '',
+    'Starts a hipache server',
+    '',
+    'options:',
+    '   --config CONFIGFILE     Location of the configuration file',
+    '   -h, --help              Display help'
+].join('\n');
+
+var config;
+
+
+if (argv.h || argv.help) {
+    return util.puts(help);
+}
+
+if (argv.config) {
+    var data = fs.readFileSync(argv.config);
+    config = JSON.parse(data);
+} else {
+    config = (function (p) {
+        if (process.env.SETTINGS_FLAVOR !== undefined) {
+            path = p.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
+        }
+        util.log('Loading config from ' + p);
+        var data = fs.readFileSync(p);
+        return JSON.parse(data);
+    }(path.resolve(__dirname, '..', 'config', 'config.json')));
+}
+
+if (cluster.isMaster) {
+    // Run the master
+    master(config);
+    util.log('Server is running. ' + JSON.stringify(config.server));
+} else {
+    // Run the worker
+    worker(config);
+}
