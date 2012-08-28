@@ -16,8 +16,8 @@ var help = [
     'Starts a hipache server',
     '',
     'options:',
-    '   --config CONFIGFILE     Location of the configuration file',
-    '   -h, --help              Display help'
+    '   -c, --config CONFIGFILE     Location of the configuration file',
+    '   -h, --help                  Display help'
 ].join('\n');
 
 var config;
@@ -27,16 +27,18 @@ if (argv.h || argv.help) {
     return util.puts(help);
 }
 
-if (argv.config) {
-    var data = fs.readFileSync(argv.config);
+if (argv.c || argv.config) {
+    var configFile = argv.c ? argv.c : argv.config;
+    var data = fs.readFileSync(configFile);
+    util.log('Loading config from ' + configFile);
     config = JSON.parse(data);
 } else {
-    config = (function (p) {
+    config = (function (configFile) {
         if (process.env.SETTINGS_FLAVOR !== undefined) {
-            path = p.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
+            path = configFile.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
         }
-        util.log('Loading config from ' + p);
-        var data = fs.readFileSync(p);
+        util.log('Loading config from ' + configFile);
+        var data = fs.readFileSync(configFile);
         return JSON.parse(data);
     }(path.resolve(__dirname, '..', 'config', 'config.json')));
 }
