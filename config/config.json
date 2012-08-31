@@ -7,6 +7,10 @@
         "deadBackendTTL": 30,
         "tcpTimeout": 30,
         "errorMaxRetries": 3,
+        "lruCache": {
+            "size": 100,
+            "ttl": 15
+        },
         "https": {
             "port": 443,
             "key": "/etc/ssl/ssl.key",

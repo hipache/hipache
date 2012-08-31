@@ -1,5 +1,6 @@
 {
     "server": {
+        "debug": true,
         "accessLog": "/tmp/proxy2_test_access.log",
         "port": 1080,
         "workers": 2,
@@ -7,7 +8,10 @@
         "deadBackendTTL": 30,
         "tcpTimeout": 5,
         "errorMaxRetries": 3,
-        "debug": true
+        "lruCache": {
+            "size": 5,
+            "ttl": 5
+        }
     },
     "redis": {
         "port": 6379,
