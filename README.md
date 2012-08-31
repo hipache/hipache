@@ -17,10 +17,19 @@ production traffic for tens of thousands of applications hosted on dotCloud.
 Hipache is based on the node-http-proxy library.
 
 
-Configuration
--------------
+Run it!
+-------
 
-### 1. Configuring the server (config.json)
+### 1. Install it
+
+From the shell:
+
+    $ npm install hipache -g
+
+*The '-g' option will make the 'hipache' bin-script available system-wide (usually linked from '/usr/local/bin')*
+
+
+### 2. Configuring the server (config.json)
 
 dotCloud proxy2 uses a Redis server to manage its configuration (and to share
 its state across the multiple workers). You can use the Redis server to change
@@ -58,6 +67,21 @@ each backend (per worker)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
 * __redis__: Redis configuration (host & port)
 
+
+### 3. Spawn the server
+
+From the shell:
+
+    $ hipache
+
+Or if you use the port 80:
+
+    $ sudo hipache
+
+Or by specifying your configuration file:
+
+    $ hipache --config config.json
+
 __Managing multiple configuration files:__
 
 The default configuration file is `config.json`. It's possible to have
@@ -67,10 +91,10 @@ from an environment variable called `SETTINGS_FLAVOR`.
 For instance, here is how to spawn the server with the `config_test.json`
 configuration file in order to run the tests.
 
-    $ SETTINGS_FLAVOR=test node app.js
+    $ SETTINGS_FLAVOR=test hipache
+    
 
-
-### 2. Configuring a vhost (redis)
+### 4. Configuring a vhost (redis)
 
 All the configuration is managed through Redis. This makes it possible to
 update the configuration dynamically and gracefully while the server is
