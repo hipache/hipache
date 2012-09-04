@@ -45,13 +45,3 @@ The current architecture with Redis makes it possible to keep the active health
 checks system external from the Core of Hipache. This system can be easily
 run on another machine or a separate process, it will just need to access the
 Redis to flag a backend as dead.
-
-
-Cache the Redis lookup
-----------------------
-
-For the moment, Redis is accessed for each incoming request. Caching these
-lookups will reduce the time spent to route a request.
-
-The idea is to use a LRU cache to control the size of the memory cache and to
-keep in cache only the frontend the most accessed.
