@@ -1,6 +1,6 @@
 {
     "name" : "hipache",
-    "version" : "0.1.8",
+    "version" : "0.1.9",
     "description" : "Complete high-scaled reverse-proxy solution",
     "keywords": [
         "reverse",
