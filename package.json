@@ -26,9 +26,10 @@
         "test" : "nodeunit test/test_*.js",
         "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js test/*.js"
     },
-    "engine" : {
-        "node" : ">=0.8.0"
+    "engines" : {
+        "node" : "0.8.x"
     },
+    "engineStrict": true,
     "author" : {
         "name" : "Samuel Alba",
         "email" : "sam.alba@gmail.com",
