@@ -5,8 +5,8 @@
         "port": 80,
         "workers": 2,
         "maxSockets": 100,
-        "deadBackendTTL": 5,
-        "tcpTimeout": 5,
+        "deadBackendTTL": 10,
+        "tcpTimeout": 10,
         "errorMaxRetries": 3,
         "lruCache": {
             "size": 5,
