@@ -20,13 +20,12 @@ exports.simple = {
     },
 
     tearDown: function (callback) {
-        var self = this;
         proxy.removeMatchedFrontend('*isa.test');
         setTimeout(function () {
             proxy.tearDown();
-            self._server.close();
+            this._server.close();
             callback();
-        }, 500);
+        }.bind(this), 500);
     },
 
     testProxy: function (test) {
@@ -37,12 +36,9 @@ exports.simple = {
     },
 
     testProxyBackendCrashed: function (test) {
-        test.expect(2);
-        proxy.addFrontend('this.isa.test', ['http://localhost:60042']);
-        // first we get a 302 with a location do the request again
-        proxy.requestFrontend(test, 'this.isa.test', 302, function () {
-            // then we get a 400 because there is no alive backend available
-            proxy.requestFrontend(test, 'this.isa.test', 502, test.done);
+        test.expect(1);
+        proxy.addFrontend('crashed.isa.test', ['http://localhost:60042'], function () {
+            proxy.requestFrontend(test, 'crashed.isa.test', 502, test.done);
         });
     },
 
