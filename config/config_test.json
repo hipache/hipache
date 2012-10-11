@@ -7,7 +7,7 @@
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "tcpTimeout": 5,
-        "errorMaxRetries": 3,
+        "retryOnError": 3,
         "lruCache": {
             "size": 5,
             "ttl": 5
