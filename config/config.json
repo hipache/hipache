@@ -7,6 +7,7 @@
         "deadBackendTTL": 30,
         "tcpTimeout": 30,
         "retryOnError": 3,
+        "httpKeepAlive": false,
         "lruCache": {
             "size": 100,
             "ttl": 15
