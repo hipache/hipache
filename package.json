@@ -16,7 +16,7 @@
         "lib" : "./lib"
     },
     "dependencies" : {
-        "http-proxy" : "0.8.3",
+        "http-proxy" : "git://github.com/jpetazzo/node-http-proxy#patch-1",
         "redis" : "0.7.x",
         "lru-cache": "2.0.x",
         "optimist": "0.3.x"
