@@ -221,6 +221,12 @@ requests for *.thing.example.tld, you will have to setup a wildcard for
 *.example.tld. It means that you cannot (yet) send requests for
 *.thing.example.tld and *.stuff.example.tld to different backends.
 
+### Active Health-Check
+
+Even though Hipache support passive health checks, it's also possible to run
+active health checks. This mechanism requires to run an external program,
+you can find it on the [hipache-hchecker project page.](https://github.com/samalba/hipache-hchecker)
+
 
 Future improvements
 -------------------
