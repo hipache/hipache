@@ -28,20 +28,3 @@ Redis.
 
 A mechanism will allow to reload the configuration file gracefully while the
 server is running.
-
-
-Passive health checks
----------------------
-
-The current health checking system is active. The backend is checked when a
-request comes to it. This mechanism has some caveats such as a latency when
-a backend dies.
-
-The idea would be to implement an passive health checking mechanism to
-constantly test all backends (using the OPTIONS HTTP method like HA-proxy
-implements its "httpchk" option).
-
-The current architecture with Redis makes it possible to keep the active health
-checks system external from the Core of Hipache. This system can be easily
-run on another machine or a separate process, it will just need to access the
-Redis to flag a backend as dead.
