@@ -7,7 +7,7 @@
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "tcpTimeout": 5,
-        "retryOnError": 3,
+        "retryOnError": 0,
         "deadBackendOn500": true,
         "httpKeepAlive": false
     },
