@@ -2,6 +2,7 @@
 import os
 import time
 import signal
+import socket
 import logging
 import unittest
 import BaseHTTPServer
@@ -110,5 +111,5 @@ class TestCase(unittest.TestCase):
                     timeout=1.0)
             logger.debug('Frontend: {0}; Headers: {1}'.format(host, r.headers))
             return r.status_code
-        except (requests.ConnectionError, requests.Timeout):
+        except (requests.ConnectionError, requests.Timeout, socket.timeout):
             return -1
