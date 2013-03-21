@@ -2,6 +2,7 @@
 import os
 import time
 import signal
+import socket
 import logging
 import SocketServer
 import base
@@ -74,6 +75,7 @@ class ParseError(base.TestCase):
         os.wait()
 
     def test_parseerror_body_too_long(self):
+        """ Invalid backend: len(payload) > Content-Length """
         port = 2080
         self._spawn_server(port, TCPHandlerBodyTooLong)
         self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
@@ -82,9 +84,27 @@ class ParseError(base.TestCase):
         self.assertEqual(self.http_request('foobar'), 200)
 
     def test_parseerror_body_too_short(self):
+        """ Invalid backend: len(payload) < Content-Length """
         port = 2080
         self._spawn_server(port, TCPHandlerBodyTooShort)
         self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
         # The request will throw a TCP timeout (since all bytes announced in
         # the Content-Length cannot be read)
         self.assertEqual(self.http_request('foobar'), -1)
+
+    def test_parseerror_malformed_client(self):
+        """ Invalid request made on a valid backend. """
+        port = 2080
+        self.spawn_httpd(port)
+        self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
+        self.assertEqual(self.http_request('foobar'), 200)
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        # Connect on Hipache
+        sock.connect(('localhost', 1080))
+        data = 'GET /pipo&%$#(PIPO HTTP/1.1\n'
+        data += 'Host: foobar\n\n'
+        sock.sendall(data)
+        response_code = sock.recv(12).split(' ')[1]
+        self.assertEqual(response_code, '200')
+        sock.sendall(data)
+        sock.close()
