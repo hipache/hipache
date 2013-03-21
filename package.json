@@ -24,7 +24,7 @@
     "scripts" : {
         "start" : "node bin/hipache",
         "test" : "nodeunit test/test_*.js",
-        "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js test/*.js"
+        "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
     },
     "engines" : {
         "node" : "0.10.x"
