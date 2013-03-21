@@ -109,7 +109,8 @@ class TestCase(unittest.TestCase):
             r = requests.get('http://localhost:{0}/'.format(port),
                     headers=headers,
                     timeout=1.0)
-            logger.debug('Frontend: {0}; Headers: {1}'.format(host, r.headers))
+            logger.debug('Frontend: {0}; Headers: {1}; Payload: "{2}"'.format(
+                host, r.headers, r.text))
             return r.status_code
         except (requests.ConnectionError, requests.Timeout, socket.timeout):
             return -1

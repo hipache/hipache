@@ -10,23 +10,37 @@ import base
 logger = logging.getLogger(__name__)
 
 
-class TCPHandler(SocketServer.BaseRequestHandler):
+class BaseTCPHandler(SocketServer.BaseRequestHandler):
 
-    def _generate_response(self):
+    def generate_response(self, size):
         """ This generates a wrong HTTP request, Content-Length is higher
             than the response size.
         """
         r = 'HTTP/1.1 200 OK\n'
         r += 'Content-Type: text/plain\n'
-        r += 'Content-Length: 4096\n'
+        r += 'Content-Length: {0}\n'.format(size)
         r += '\n'
         r += 'test'
         return r
 
-    def handle(self):
+    def receive(self):
         data = self.request.recv(4096)
         logger.info("Received from {0}: {1}".format(self.client_address[0], data))
-        self.request.sendall(self._generate_response())
+
+
+class TCPHandlerBodyTooShort(BaseTCPHandler):
+
+    def handle(self):
+        self.receive()
+        self.request.sendall(self.generate_response(4096))
+        self.request.close()
+
+
+class TCPHandlerBodyTooLong(BaseTCPHandler):
+
+    def handle(self):
+        self.receive()
+        self.request.sendall(self.generate_response(2))
         self.request.close()
 
 
@@ -34,25 +48,43 @@ class ParseError(base.TestCase):
 
     """ This test makes sure an HTTP parse error won't kill the server """
 
-    def _spawn_server(self, port):
+    def _spawn_server(self, port, handler):
         pid = os.fork()
         if pid > 0:
             while True:
                 r = self.http_request('localhost', port=port)
                 if r > 0:
                     logger.info('FAKE httpd spawned on port {0}. PID: {1}'.format(port, pid))
+                    self.pids.append(pid)
                     return pid
                 time.sleep(0.5)
-            return pid
-        server = SocketServer.TCPServer(('localhost', port), TCPHandler)
+        SocketServer.TCPServer.allow_reuse_address = True
+        server = SocketServer.TCPServer(('localhost', port), handler)
+        server.allow_reuse_address = True
         server.serve_forever()
 
-    def test_parseerror(self):
+    def setUp(self):
+        self.pids = []
+
+    def tearDown(self):
+        if not self.pids:
+            return
+        for pid in self.pids:
+            os.kill(pid, signal.SIGKILL)
+        os.wait()
+
+    def test_parseerror_body_too_long(self):
         port = 2080
-        pid = self._spawn_server(port)
+        self._spawn_server(port, TCPHandlerBodyTooLong)
+        self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
+        # The request will throw a TCP timeout (since all bytes announced in
+        # the Content-Length cannot be read)
+        self.assertEqual(self.http_request('foobar'), 200)
+
+    def test_parseerror_body_too_short(self):
+        port = 2080
+        self._spawn_server(port, TCPHandlerBodyTooShort)
         self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
         # The request will throw a TCP timeout (since all bytes announced in
         # the Content-Length cannot be read)
         self.assertEqual(self.http_request('foobar'), -1)
-        os.kill(pid, signal.SIGKILL)
-        os.wait()
