@@ -27,7 +27,7 @@
         "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
     },
     "engines" : {
-        "node" : "0.10.x"
+        "node" : ">= 0.8.0"
     },
     "engineStrict": true,
     "author" : {
