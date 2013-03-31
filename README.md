@@ -50,7 +50,8 @@ backend.
             }
         },
         "redisHost": "127.0.0.1",
-        "redisPort": 6379
+        "redisPort": 6379,
+        "redisPassword": "password"
     }
 
 * __server.accessLog__: location of the Access logs, the format is the same as
@@ -65,6 +66,7 @@ each backend (per worker)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
 * __redisHost__ and __redisPort__: Redis configuration (you can omit those
 parameters to use the local redis on the default port)
+* __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
 
 
 ### 3. Spawn the server
