@@ -50,7 +50,7 @@ backend.
             }
         },
         "redisHost": "127.0.0.1",
-	"redisPort": 6379
+        "redisPort": 6379
     }
 
 * __server.accessLog__: location of the Access logs, the format is the same as
@@ -91,7 +91,7 @@ For instance, here is how to spawn the server with the `config_test.json`
 configuration file in order to run the tests.
 
     $ SETTINGS_FLAVOR=test hipache
-    
+
 
 ### 4. Configuring a vhost (redis)
 
