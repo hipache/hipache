@@ -1,6 +1,6 @@
 {
     "name" : "hipache",
-    "version" : "0.2.3",
+    "version" : "0.2.4",
     "description" : "Complete high-scaled reverse-proxy solution",
     "keywords": [
         "reverse",
@@ -16,6 +16,7 @@
         "lib" : "./lib"
     },
     "dependencies" : {
+        "read-installed" : "0.2.2",
         "http-proxy" : "git://github.com/samalba/node-http-proxy",
         "redis" : "0.8.x",
         "lru-cache": "2.2.x",
