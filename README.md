@@ -49,10 +49,8 @@ backend.
                 "cert": "/etc/ssl/ssl.crt"
             }
         },
-        "redis": {
-            "port": 6379,
-            "host": "127.0.0.1"
-        }
+        "redisHost": "127.0.0.1",
+	"redisPort": 6379
     }
 
 * __server.accessLog__: location of the Access logs, the format is the same as
@@ -65,7 +63,8 @@ each backend (per worker)
 * __server.deadBackendTTL__: The number of seconds a backend is flagged as
 `dead' before retrying to proxy another request to it
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
-* __redis__: Redis configuration (host & port)
+* __redisHost__ and __redisPort__: Redis configuration (you can omit those
+parameters to use the local redis on the default port)
 
 
 ### 3. Spawn the server

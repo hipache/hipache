@@ -2,6 +2,7 @@
 import os
 import time
 import signal
+import socket
 import logging
 import unittest
 import BaseHTTPServer
@@ -22,12 +23,15 @@ class HTTPHandler(BaseHTTPServer.BaseHTTPRequestHandler):
 
     def do_GET(self):
         self.send_response(self.server._code)
-        self.send_header('Content-Length', '0')
-        self.send_header('Connection', 'close')
+        body = self.server._body if self.server._body else 'This is a body'
+        self.send_header('Content-Length', len(body))
         if self.server._headers:
             for header in self.server._headers:
                 self.send_header(*header)
+        self.send_header('Connection', 'close')
         self.end_headers()
+        self.wfile.write(body)
+        self.wfile.flush()
 
     def do_HEAD(self):
         return self.do_GET()
@@ -63,7 +67,7 @@ class TestCase(unittest.TestCase):
             logger.info('httpd killed. PID: {0}'.format(pid))
         os.wait()
 
-    def spawn_httpd(self, port, code=200, headers=None):
+    def spawn_httpd(self, port, code=200, headers=None, body=None):
         pid = os.fork()
         if pid > 0:
             # In the father, wait for the child to be available
@@ -78,6 +82,7 @@ class TestCase(unittest.TestCase):
         httpd = BaseHTTPServer.HTTPServer(('localhost', port), HTTPHandler)
         httpd._code = code
         httpd._headers = headers
+        httpd._body = body
         httpd.serve_forever()
 
     def stop_httpd(self, pid):
@@ -108,7 +113,8 @@ class TestCase(unittest.TestCase):
             r = requests.get('http://localhost:{0}/'.format(port),
                     headers=headers,
                     timeout=1.0)
-            logger.debug('Frontend: {0}; Headers: {1}'.format(host, r.headers))
+            logger.debug('Frontend: {0}; Headers: {1}; Payload: "{2}"'.format(
+                host, r.headers, r.text))
             return r.status_code
-        except (requests.ConnectionError, requests.Timeout):
+        except (requests.ConnectionError, requests.Timeout, socket.timeout):
             return -1

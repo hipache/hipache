@@ -10,9 +10,5 @@
         "retryOnError": 0,
         "deadBackendOn500": true,
         "httpKeepAlive": false
-    },
-    "redis": {
-        "port": 6379,
-        "host": "127.0.0.1"
     }
 }
