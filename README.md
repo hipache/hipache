@@ -91,7 +91,7 @@ For instance, here is how to spawn the server with the `config_test.json`
 configuration file in order to run the tests.
 
     $ SETTINGS_FLAVOR=test hipache
-    
+
 
 ### 4. Configuring a vhost (redis)
 
@@ -225,6 +225,18 @@ requests for *.thing.example.tld, you will have to setup a wildcard for
 Even though Hipache support passive health checks, it's also possible to run
 active health checks. This mechanism requires to run an external program,
 you can find it on the [hipache-hchecker project page.](https://github.com/samalba/hipache-hchecker)
+
+### Run with Solaris/SmartOS SMF manifest
+
+Per default the config is loaded from /etc/hipache.json.
+
+cd /opt
+git clone https://github.com/tomfarm/hipache
+npm install
+cp hipache/config/config.json /etc/hipache.json
+
+svccfg import hipache.xml
+svcadm enable hipache
 
 
 Future improvements

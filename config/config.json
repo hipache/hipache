@@ -8,12 +8,7 @@
         "tcpTimeout": 30,
         "retryOnError": 3,
         "deadBackendOn500": true,
-        "httpKeepAlive": false,
-        "https": {
-            "port": 443,
-            "key": "/etc/ssl/ssl.key",
-            "cert": "/etc/ssl/ssl.crt"
-        }
+        "httpKeepAlive": false
     },
     "redisHost": "127.0.0.1",
     "redisPort": 6379
