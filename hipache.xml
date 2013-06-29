@@ -17,10 +17,10 @@
     </dependency>
 
     <method_context>
-      <method_credential user="root" group="root"/>
+      <method_credential user="www" group="www"/>
     </method_context>
 
-    <exec_method type="method" name="start" exec="/opt/local/bin/hipache -c %{config_file}" timeout_seconds="60">
+    <exec_method type="method" name="start" exec="/opt/hipache/bin/hipache -c %{config_file}" timeout_seconds="60">
       <method_context>
         <method_credential user='www' group='www' privileges='basic,net_privaddr'/>
         <method_environment>
