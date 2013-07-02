@@ -137,6 +137,27 @@ The frontend identifer is `mywebsite`, it could be anything.
 While the server is running, any of these steps can be re-run without messing
 up with the traffic.
 
+10. _Redirect_ or _Proxy_
+
+        If the path is a URL like http://www.formrausch.com/jobs the
+        request is redirected; otherwise if the backend is just the
+        domain with the protocoll the request is proxied to
+        the backend
+
+
+        redirect:
+
+        $ redis-cli rpush frontend:www.nicenewsite.com
+http://www.formrausch.com/jobs
+
+        proxy
+
+        $ redis-cli rpush frontend:www.nicenewsite.com
+http://www.formrausch.com
+
+        This is not the best solution. It's currently not possible
+        to redirect to the root path of a domain.
+
 
 Features
 --------
