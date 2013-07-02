@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <!DOCTYPE service_bundle SYSTEM "/usr/share/lib/xml/dtd/service_bundle.dtd.1">
+
 <service_bundle type="manifest" name="hipache">
 
   <service name="site/hipache" type="service" version="3">
-
     <create_default_instance enabled="true"/>
 
     <single_instance/>
@@ -17,12 +17,12 @@
     </dependency>
 
     <method_context>
-      <method_credential user="www" group="www"/>
+      <method_credential user="hipache" group="hipache"/>
     </method_context>
 
     <exec_method type="method" name="start" exec="/opt/hipache/bin/hipache -c %{config_file}" timeout_seconds="60">
       <method_context>
-        <method_credential user='www' group='www' privileges='basic,net_privaddr'/>
+        <method_credential user='hipache' group='hipache' privileges='basic,net_privaddr'/>
         <method_environment>
           <envvar name="PATH" value="/opt/local/bin/" />
         </method_environment>
