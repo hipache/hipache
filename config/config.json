@@ -1,20 +1,18 @@
 {
     "server": {
-        "accessLog": "/var/log/nginx/access.log",
+        "debug": true,
+        "accessLog": "/tmp/proxy2_access.log",
         "port": 80,
-        "workers": 10,
+        "workers": 2,
         "maxSockets": 100,
-        "deadBackendTTL": 30,
-        "tcpTimeout": 30,
+        "deadBackendTTL": 10,
+        "tcpTimeout": 10,
         "retryOnError": 3,
         "deadBackendOn500": true,
         "httpKeepAlive": false,
-        "https": {
-            "port": 443,
-            "key": "/etc/ssl/ssl.key",
-            "cert": "/etc/ssl/ssl.crt"
+        "lruCache": {
+            "size": 5,
+            "ttl": 5
         }
-    },
-    "redisHost": "127.0.0.1",
-    "redisPort": 6379
+    }
 }
