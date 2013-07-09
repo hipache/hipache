@@ -43,6 +43,8 @@ backend.
             "workers": 5,
             "maxSockets": 100,
             "deadBackendTTL": 30,
+            "address": ["127.0.0.1"],
+            "address6": ["::1"],
             "https": {
                 "port": 443,
                 "key": "/etc/ssl/ssl.key",
@@ -62,6 +64,8 @@ master process does not serve any request)
 each backend (per worker)
 * __server.deadBackendTTL__: The number of seconds a backend is flagged as
 `dead' before retrying to proxy another request to it
+* __server.address__: IPv4 Addresses  listening (HTTP and HTTPS)
+* __server.address6__: IPv6 Addresses  listening (HTTP and HTTPS)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
 * __redisHost__ and __redisPort__: Redis configuration (you can omit those
 parameters to use the local redis on the default port)
