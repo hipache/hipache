@@ -187,7 +187,7 @@ implemented a memory monitoring system to make sure that memory use doesn't
 go out of bounds. Each worker monitors its memory usage. If it crosses
 a given threshold, the worker stops accepting new connections, it lets
 the current requests complete cleanly, and it stops itself; it is then
-replaced my a new copy by the master process.
+replaced by a new copy by the master process.
 
 ### Dynamic configuration
 
