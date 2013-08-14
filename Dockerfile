@@ -18,6 +18,7 @@ run	wget -O - http://nodejs.org/dist/v0.8.23/node-v0.8.23-linux-x64.tar.gz | tar
 run	npm install hipache -g
 run	mkdir -p /var/log/supervisor
 add	./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
-expose	:80
-expose	:6379
+add	./config/config_dev.json /usr/local/lib/node_modules/hipache/config/config_dev.json
+expose	80
+expose	6379
 cmd	supervisord -n
