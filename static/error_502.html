@@ -7,6 +7,7 @@
       body { background-color: #dedede; margin: 0; text-align: center;}
       h1 { padding: 280px 0 0 0; margin: 0; text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 24px; font-weight: normal; }
       h2 { padding: 5px 0 0 0; margin: 0; text-align: center; font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size: 14px; color: #999; font-weight: normal; }
+      #count { color: black; }
     </style>
   </head>
   <body>
@@ -14,9 +15,30 @@
       <h1>
         Runnable Not Responding
       </h1>
-      <h2>
-        Please try again in a few moments.
+      <h2 id="count-message">
+        Auto refreshing the page in <span id="count"></span> seconds
       </h2>
+      <button id="stop">Stop</button>
     </div>
+    <script type="text/javascript">
+      var $stop, count, $count, $countMessage, interval;
+      // countdown
+      count = 3;
+      $count = document.querySelector('#count');
+      $count.innerHTML = count+'';
+      interval = setInterval(function () {
+        count--;
+        if (count === 0) window.location.href = window.location.href; // reload
+        $count.innerHTML = count+'';
+      }, 1000);
+      // stop
+      $countMessage = document.querySelector('#count-message');
+      $stop = document.querySelector('#stop');
+      $stop.onclick = function () {
+        clearInterval(interval);
+        $countMessage.style.display = "none";
+        $stop.style.display = "none";
+      };
+    </script>
   </body>
 </html>
