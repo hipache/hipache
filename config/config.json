@@ -1,18 +1,15 @@
 {
     "server": {
-        "debug": true,
-        "accessLog": "/tmp/proxy2_access.log",
+        "accessLog": "/var/log/nginx/access.log",
         "port": 80,
-        "workers": 2,
+        "workers": 8,
         "maxSockets": 100,
-        "deadBackendTTL": 10,
-        "tcpTimeout": 10,
+        "deadBackendTTL": 30,
+        "tcpTimeout": 30,
         "retryOnError": 3,
         "deadBackendOn500": true,
-        "httpKeepAlive": false,
-        "lruCache": {
-            "size": 5,
-            "ttl": 5
-        }
-    }
+        "httpKeepAlive": false
+    },
+    "redisHost": "localhost",
+    "redisPort": 6379
 }
