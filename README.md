@@ -54,7 +54,8 @@ backend.
         "redisHost": "127.0.0.1",
 	    "redisPort": 6379,
         "redisDatabase": 0,
-        "redisPassword": "password"
+        "redisPassword": "password",
+        "hostKeyTemplate": "os.hostname().toLowerCase() + '.host1'"
         
     }
 
@@ -74,6 +75,9 @@ each backend (per worker)
 parameters to use the local redis on the default port)
 * __redisDatabase__: Redis number database (default 0)
 * __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
+* __hostKeyTemplate__: Optional template that overrides the key used to lookup the 
+current host in redis. E.g. here it will always be the server name + '.host1', 
+regardless of the host header. Note that will be evaluated (eval()).
 
 
 ### 3. Spawn the server
@@ -146,6 +150,8 @@ The frontend identifer is `mywebsite`, it could be anything.
 While the server is running, any of these steps can be re-run without messing
 up with the traffic.
 
+Remember that they name of the key in redis can be changed by using the 
+hostKeyTemplate config setting.
 
 Features
 --------

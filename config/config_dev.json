@@ -14,5 +14,6 @@
             "size": 5,
             "ttl": 5
         }
-    }
+    },
+    "hostKeyTemplate": "os.hostname().toLowerCase() + '.dev'"
 }
