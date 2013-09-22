@@ -29,9 +29,10 @@ if (argv.h || argv.help) {
 
 if (argv.c || argv.config) {
     var configFile = argv.c ? argv.c : argv.config;
+    
     var data = fs.readFileSync(configFile);
     util.log('Loading config from ' + configFile);
-    config = JSON.parse(data);
+    config = eval('(' + data+')');
 } else {
     config = (function (configFile) {
         if (process.env.SETTINGS_FLAVOR !== undefined) {
@@ -39,7 +40,7 @@ if (argv.c || argv.config) {
         }
         util.log('Loading config from ' + configFile);
         var data = fs.readFileSync(configFile);
-        return JSON.parse(data);
+        return eval('('+data+')')
     }(path.resolve(__dirname, '..', 'config', 'config.json')));
 }
 

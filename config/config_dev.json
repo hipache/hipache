@@ -14,5 +14,12 @@
             "size": 5,
             "ttl": 5
         }
-    }
+    },
+    "frontendLookup": (function( hostKey, config ){
+        var os = require('os');
+        var key = 'dev_' + os.hostname().toLowerCase();
+        var frontends = [key];
+
+        return function(){ return frontends };
+    }())
 }

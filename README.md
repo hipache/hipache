@@ -54,7 +54,8 @@ backend.
         "redisHost": "127.0.0.1",
 	    "redisPort": 6379,
         "redisDatabase": 0,
-        "redisPassword": "password"
+        "redisPassword": "password",
+        "hostKeyTemplate": "os.hostname().toLowerCase() + '.host1'"
         
     }
 
@@ -74,6 +75,24 @@ each backend (per worker)
 parameters to use the local redis on the default port)
 * __redisDatabase__: Redis number database (default 0)
 * __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
+* __frontendLookup__:  Optional function to dynamically override the format of the Redis 
+keys used to lookup the backends. If __frontendLookup__ is not defined, Hipache will do three 
+lookups for each incoming request: one matching exactly the host header of the HTTP request, 
+another using a '*' + the last two components of this host header (in order to process
+wildcards) and a final one to match frontend:* to match a global wildcard. If __frontendLookup__ 
+is defined, then the lookup is done using the array of keys returned by calling __frontendLookup__. 
+Note: the frontend: is kept at all time. Remember that this function, if specified, will be
+called for every page request so it is important that it is not slow. Here is an example of
+ using only the machine name as the lookup key
+ ```javascript
+"frontendLookup": (function( hostKey, config ){
+  var os = require('os');
+  var key = os.hostname().toLowerCase();
+  var frontends = [key];
+
+  return function(){ return frontends };
+}())
+ ```
 
 
 ### 3. Spawn the server
@@ -146,6 +165,8 @@ The frontend identifer is `mywebsite`, it could be anything.
 While the server is running, any of these steps can be re-run without messing
 up with the traffic.
 
+Remember that the name of the frontend lookup key in redis can be changed by using the 
+__frontendLookup__ config setting.
 
 Features
 --------
