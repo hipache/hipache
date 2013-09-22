@@ -15,5 +15,11 @@
             "ttl": 5
         }
     },
-    "hostKeyTemplate": "os.hostname().toLowerCase() + '.dev'"
+    "frontendLookup": (function( hostKey, config ){
+        var os = require('os');
+        var key = 'dev_' + os.hostname().toLowerCase();
+        var frontends = [key];
+
+        return function(){ return frontends };
+    }())
 }
