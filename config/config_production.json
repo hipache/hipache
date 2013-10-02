@@ -10,6 +10,6 @@
         "deadBackendOn500": true,
         "httpKeepAlive": false
     },
-    "redisHost": "10.0.1.15",
+    "redisHost": "10.0.1.20",
     "redisPort": 6379
 }
