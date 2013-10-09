@@ -148,8 +148,11 @@ up with the traffic.
 
 ### 5. OS integration
 
-You can make hipache be available on system startup with __upstart__.
-Copy __upstart.conf__ file to __/etc/init/hipache.conf__. Then you can use:
+__Upstart__
+
+Copy upstart.conf to __/etc/init/hipache.conf__.
+
+Then you can use:
 
 ```
 start hipache
