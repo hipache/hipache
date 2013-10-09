@@ -146,6 +146,19 @@ The frontend identifer is `mywebsite`, it could be anything.
 While the server is running, any of these steps can be re-run without messing
 up with the traffic.
 
+### 5. OS integration
+
+__Upstart__
+
+Copy upstart.conf to __/etc/init/hipache.conf__.
+
+Then you can use:
+
+```
+start hipache
+stop hipache
+restart hipache
+```
 
 Features
 --------
