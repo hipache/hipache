@@ -20,7 +20,8 @@
         "http-proxy" : "git://github.com/samalba/node-http-proxy",
         "redis" : "0.8.x",
         "lru-cache": "2.2.x",
-        "optimist": "0.3.x"
+        "optimist": "0.3.x",
+        "request": "2.27.0"
     },
     "scripts" : {
         "start" : "node bin/hipache",
