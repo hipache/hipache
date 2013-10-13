@@ -36,6 +36,7 @@ its state across the multiple workers). You can use the Redis server to change
 its configuration while it's running or simply check the health state of a
 backend.
 
+```json
     {
         "server": {
             "accessLog": "/var/log/hipache_access.log",
@@ -51,12 +52,34 @@ backend.
                 "cert": "/etc/ssl/ssl.crt"
             }
         },
+        "api": {
+            "respawn": {
+                "request": {
+                    "uri": "http://some.web.service.com/api/v1/respawn",
+                    "qs ": {
+                        "param1": "value1"
+                    },
+                    "headers": {
+                        "Authorization": "blablabla",
+                        "Content-type": "application/json; charset=utf-8",
+                    },
+                    "method": "POST",
+                    "body": {
+                        "requestBodyData": 1,
+                        "dynamicParam": "$frontend"
+                    },
+                    "json": true
+                }
+                "afterFirstFail": true,
+                "ifAllDead": false,
+            }
+        },
         "redisHost": "127.0.0.1",
-	    "redisPort": 6379,
+        "redisPort": 6379,
         "redisDatabase": 0,
         "redisPassword": "password"
-        
     }
+```
 
 * __server.accessLog__: location of the Access logs, the format is the same as
 nginx
@@ -74,6 +97,52 @@ each backend (per worker)
 parameters to use the local redis on the default port)
 * __redisDatabase__: Redis number database (default 0)
 * __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
+* __api.respawn.request__: HTTP request options. Read `request` module documentation.
+* __api.respawn.afterFirstFail__: If true, respawn API call will be executed
+when request to randomly chosen backend fails
+* __api.respawn.ifAllDead__: If true, respawn will be called when all the backends
+are dead for given frontend URL
+
+
+### 2.1. Configuring the server (API request specification)
+
+`request` property of each API call specification has format of HTTP request options for [request](https://npmjs.org/package/request) module. There is one addition: you can specify variable parameters. To add variable anywhere in request options you should add `$parameterName` into any string. Currently list of supported variables has two items:
+
+* `$frontend` Frontend URL
+* `$backend` URL of backend
+
+##### Frontend name in query string parameters
+
+Here in __qs.frontend__ `$frontend` pattern will be replaced by real frontend URL.
+
+```json
+{
+  "uri": "http://some.web.service.com/api/v1/respawn",
+  "method": "GET",
+  "qs": {
+    "frontend": "some_salt$frontend"
+  },
+  "headers": {
+    "Authorization": "SECRET_TOKEN"
+  }
+}
+```
+
+##### Frontend & backend names in request JSON body
+
+```json
+{
+  "uri": "http://some.web.service.com/api/v1/respawn",
+  "method": "POST",
+  "headers": {
+    "Authorization": "SECRET_TOKEN"
+  },
+  "json": {
+    "frontendURL": "$frontend",
+    "deadBackend": "$backend"
+  }
+}
+```
 
 
 ### 3. Spawn the server
