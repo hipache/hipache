@@ -21,6 +21,12 @@ add	./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 add	./config/config_dev.json /usr/local/lib/node_modules/hipache/config/config_dev.json
 add	./config/config_test.json /usr/local/lib/node_modules/hipache/config/config_test.json
 add	./config/config.json /usr/local/lib/node_modules/hipache/config/config.json
+add ./generate_configurations.sh /tmp/generate_configurations.sh
+
 expose	80
 expose	6379
-cmd	["supervisord", "-n"]
+
+ENV REDIS_PORT_BIND "127.0.0.1"
+ENV SETTINGS_FLAVOR "dev"
+
+cmd	generate_configurations.sh && supervisord -n
