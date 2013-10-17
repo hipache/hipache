@@ -53,7 +53,7 @@ backend.
             }
         },
         "api": {
-            "respawn": {
+            "resume": {
                 "request": {
                     "uri": "http://some.web.service.com/api/v1/respawn",
                     "qs ": {
@@ -97,10 +97,10 @@ each backend (per worker)
 parameters to use the local redis on the default port)
 * __redisDatabase__: Redis number database (default 0)
 * __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
-* __api.respawn.request__: HTTP request options. Read `request` module documentation.
-* __api.respawn.afterFirstFail__: If true, respawn API call will be executed
+* __api.resume.request__: HTTP request options. Read `request` module documentation.
+* __api.resume.afterFirstFail__: If true, respawn API call will be executed
 when request to randomly chosen backend fails
-* __api.respawn.ifAllDead__: If true, respawn will be called when all the backends
+* __api.resume.ifAllDead__: If true, respawn will be called when all the backends
 are dead for given frontend URL
 
 
