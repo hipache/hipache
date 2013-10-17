@@ -30,4 +30,4 @@ ENV REDIS_BIND "127.0.0.1"
 ENV SETTINGS_FLAVOR "dev"
 ENV USE_SSL "false"
 
-cmd	/tmp/generate_configurations.sh && supervisord -n
+cmd	/bin/bash /tmp/generate_configurations.sh && supervisord -n
