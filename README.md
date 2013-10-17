@@ -54,24 +54,20 @@ backend.
         },
         "api": {
             "resume": {
-                "request": {
-                    "uri": "http://some.web.service.com/api/v1/respawn",
-                    "qs ": {
-                        "param1": "value1"
-                    },
-                    "headers": {
-                        "Authorization": "blablabla",
-                        "Content-type": "application/json; charset=utf-8",
-                    },
-                    "method": "POST",
-                    "body": {
-                        "requestBodyData": 1,
-                        "dynamicParam": "$frontend"
-                    },
-                    "json": true
-                }
-                "afterFirstFail": true,
-                "ifAllDead": false,
+                "uri": "http://some.web.service.com/api/v1/respawn",
+                "qs ": {
+                    "param1": "value1"
+                },
+                "headers": {
+                    "Authorization": "blablabla",
+                    "Content-type": "application/json; charset=utf-8",
+                },
+                "method": "POST",
+                "body": {
+                    "requestBodyData": 1,
+                    "dynamicParam": "$frontend"
+                },
+                "json": true
             }
         },
         "redisHost": "127.0.0.1",
@@ -97,11 +93,7 @@ each backend (per worker)
 parameters to use the local redis on the default port)
 * __redisDatabase__: Redis number database (default 0)
 * __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
-* __api.resume.request__: HTTP request options. Read `request` module documentation.
-* __api.resume.afterFirstFail__: If true, respawn API call will be executed
-when request to randomly chosen backend fails
-* __api.resume.ifAllDead__: If true, respawn will be called when all the backends
-are dead for given frontend URL
+* __api.resume__: HTTP API request options. Read `request` module documentation for details.
 
 
 ### 2.1. Configuring the server (API request specification)
