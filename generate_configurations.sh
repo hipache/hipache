@@ -33,7 +33,7 @@ echo """
         , "httpKeepAlive": false
 """ > /usr/local/lib/node_modules/hipache/config/config_prod.json
 
-if ["$USE_SSL" == "true"]; then
+if ["$USE_SSL" = "true"]; then
 echo """
         , "https": {
             "port": 443,
