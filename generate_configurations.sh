@@ -19,4 +19,35 @@ autorestart=true
 
 """ > /etc/supervisor/conf.d/supervisord.conf
 
-sed -i "s/bind 127.0.0.1/bind: ${REDIS_BIND_PORT}/" /etc/redis/redis.conf
+echo """
+{
+    "server": {
+        "accessLog": "/var/log/nginx/access.log"
+        , "port": 80
+        , "workers": 10
+        , "maxSockets": 100
+        , "deadBackendTTL": 30
+        , "tcpTimeout": 30
+        , "retryOnError": 3
+        , "deadBackendOn500": true
+        , "httpKeepAlive": false
+""" > /usr/local/lib/node_modules/hipache/config/config_prod.json
+
+if ["$USE_SSL" == "true"]; then
+echo """
+        , "https": {
+            "port": 443,
+            "key": "/etc/ssl/ssl.key",
+            "cert": "/etc/ssl/ssl.crt"
+        }
+""" >> /usr/local/lib/node_modules/hipache/config/config_prod.json
+fi
+
+echo """
+    },
+    "redisHost": "127.0.0.1"
+    , "redisPort": 6379
+}
+""" >> /usr/local/lib/node_modules/hipache/config/config_prod.json
+
+sed -i "s/bind 127.0.0.1/bind: ${REDIS_BIND}/" /etc/redis/redis.conf

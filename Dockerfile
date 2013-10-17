@@ -26,7 +26,7 @@ add ./generate_configurations.sh /tmp/generate_configurations.sh
 expose	80
 expose	6379
 
-ENV REDIS_PORT_BIND "127.0.0.1"
+ENV REDIS_BIND "127.0.0.1"
 ENV SETTINGS_FLAVOR "dev"
 ENV USE_SSL "false"
 
