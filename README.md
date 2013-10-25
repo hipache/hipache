@@ -53,7 +53,8 @@ backend.
             }
         },
         "api": {
-            "retries": 3,
+            "maxLookups": 5,
+            "lookupInterval": 1500,
             "resume": {
                 "uri": "http://some.web.service.com/api/v1/respawn",
                 "qs ": {
@@ -94,7 +95,8 @@ each backend (per worker)
 parameters to use the local redis on the default port)
 * __redisDatabase__: Redis number database (default 0)
 * __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
-* __api.retries__: Maximum number of API request tries  
+* __api.maxLookups__: Maximum number of Redis lookups done after API request.
+* __api.lookupInterval__: Interval between Redis lookups.
 * __api.resume__: HTTP API request options. Read `request` module documentation for details.
 
 
