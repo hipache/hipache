@@ -17,6 +17,9 @@
     "redisHost":     "192.168.56.101",
     "redisPort":     6379,
     "redisPassword": null,
+    "test": {
+        "backendHost": "127.0.0.1"
+    },
     "api":           {
         "maxLookups":     10,
         "lookupInterval": 2000,
