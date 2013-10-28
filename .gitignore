@@ -4,3 +4,6 @@ node_modules
 *.rdb
 *.pyc
 *~
+data/*
+!data/config.json
+!data/server.*

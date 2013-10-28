@@ -1,0 +1,29 @@
+{
+    "server":        {
+        "debug":          true,
+        "accessLog":      "data/hipache_access.log",
+        "port":           8000,
+        "workers":        5,
+        "maxSockets":     100,
+        "deadBackendTTL": 5,
+        "address": ["0.0.0.0"],
+        "address6": ["::0"],
+        "https": {
+            "port": 443,
+            "key": "data/server.key",
+            "cert": "data/server.crt"
+        }
+    },
+    "redisHost":     "192.168.56.101",
+    "redisPort":     6379,
+    "redisPassword": null,
+    "api":           {
+        "maxLookups":     10,
+        "lookupInterval": 2000,
+        "resume":         {
+            "uri":    "http://192.168.56.1:3000/$frontend/$backend/resume",
+            "method": "GET",
+            "json":   true
+        }
+    }
+}

@@ -1,47 +1,48 @@
 {
-    "name" : "hipache",
-    "version" : "0.2.4",
-    "description" : "Complete high-scaled reverse-proxy solution",
-    "keywords": [
-        "reverse",
-        "proxy",
-        "http",
-        "http-proxy"
-    ],
-    "main" : "./bin/hipache",
-    "bin": {
-        "hipache": "./bin/hipache"
-    },
-    "directories" : {
-        "lib" : "./lib"
-    },
-    "dependencies" : {
-        "read-installed" : "0.2.2",
-        "http-proxy" : "git://github.com/samalba/node-http-proxy",
-        "redis" : "0.8.x",
-        "lru-cache": "2.2.x",
-        "optimist": "0.3.x",
-        "request": "2.27.0"
-    },
-    "scripts" : {
-        "start" : "node bin/hipache",
-        "test" : "nodeunit test/test_*.js",
-        "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
-    },
-    "engines" : {
-        "node" : ">= 0.8.0"
-    },
-    "engineStrict": true,
-    "author" : {
-        "name" : "Samuel Alba",
-        "email" : "sam.alba@gmail.com",
-        "url" : "http://www.dotcloud.com/"
-    },
-    "maintainer" : [
-        "Sam Alba <sam.alba@gmail.com>"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/dotcloud/hipache.git"
-    }
+  "name": "hipache",
+  "version": "0.2.4",
+  "description": "Complete high-scaled reverse-proxy solution",
+  "keywords": [
+    "reverse",
+    "proxy",
+    "http",
+    "http-proxy"
+  ],
+  "main": "./bin/hipache",
+  "bin": {
+    "hipache": "./bin/hipache"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "dependencies": {
+    "read-installed": "0.2.2",
+    "http-proxy": "git://github.com/samalba/node-http-proxy",
+    "redis": "0.8.x",
+    "lru-cache": "2.2.x",
+    "optimist": "0.3.x",
+    "request": "2.27.0",
+    "express": "~3.4.3"
+  },
+  "scripts": {
+    "start": "node bin/hipache",
+    "test": "nodeunit test/test_*.js",
+    "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
+  },
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "engineStrict": true,
+  "author": {
+    "name": "Samuel Alba",
+    "email": "sam.alba@gmail.com",
+    "url": "http://www.dotcloud.com/"
+  },
+  "maintainer": [
+    "Sam Alba <sam.alba@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/dotcloud/hipache.git"
+  }
 }
