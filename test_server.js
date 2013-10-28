@@ -24,7 +24,7 @@ app.get('/app/:host/:app/pause', function(req, res, next) {
 app.get('/app/:host/:app/resume', function(req, res, next) {
     var multi = client.multi()
     multi.del('frontend:' + req.params.host)
-    multi.rpush('frontend:' + req.params.host, '192.168.56.1:' + app.get('port'))
+    multi.rpush('frontend:' + req.params.host, config.test.backendHost + app.get('port'))
     multi.exec(function(err) {
         if (err) next(err)
         else res.send(200, {ok: true})

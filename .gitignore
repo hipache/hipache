@@ -5,5 +5,3 @@ node_modules
 *.pyc
 *~
 data/*
-!data/config.json
-!data/server.*
