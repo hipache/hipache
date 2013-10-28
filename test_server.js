@@ -6,6 +6,10 @@ var config = require('./data/config.json')
   , app = express()
   , client = redis.createClient(config.redisPort, config.redisHost)
 
+if (config.redisPassword) {
+    client.auth(config.redisPassword)
+}
+
 app.configure(function() {
     app.set('port', process.env.PORT || 3000)
     app.use(app.router)
