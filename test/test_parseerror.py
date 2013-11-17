@@ -105,6 +105,6 @@ class ParseError(base.TestCase):
         data += 'Host: foobar\n\n'
         sock.sendall(data)
         response_code = sock.recv(12).split(' ')[1]
-        self.assertEqual(response_code, '200')
+        self.assertEqual(response_code, '400')
         sock.sendall(data)
         sock.close()
