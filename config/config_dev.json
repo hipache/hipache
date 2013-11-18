@@ -2,7 +2,7 @@
     "server": {
         "debug": true,
         "accessLog": "/tmp/proxy2_access.log",
-        "port": 80,
+        "port": 8080,
         "workers": 2,
         "maxSockets": 100,
         "deadBackendTTL": 10,
