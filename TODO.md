@@ -16,7 +16,7 @@ The idea is to validate the format of the configuration file at startup and to
 fallback on default value when the parameter does not exist.
 
 
-Configuration adaptaters
+Configuration adapters
 ------------------------
 
 While the core of the configuration relies on Redis, it is possible to
