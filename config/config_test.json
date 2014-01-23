@@ -1,9 +1,9 @@
 {
     "server": {
         "debug": true,
-        "accessLog": "/tmp/proxy2_test_access.log",
         "port": 1080,
         "workers": 2,
+        "accessLogMode" : "syslog",
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "tcpTimeout": 5,

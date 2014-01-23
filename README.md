@@ -39,6 +39,7 @@ backend.
     {
         "server": {
             "accessLog": "/var/log/hipache_access.log",
+            "accessLogMode" : "file",
             "port": 80,
             "workers": 5,
             "maxSockets": 100,
@@ -60,6 +61,8 @@ backend.
 
 * __server.accessLog__: location of the Access logs, the format is the same as
 nginx
+* __server.accessLogMode: "syslog" to output accessLog to syslog or "file" to
+use accessLog as output file
 * __server.port__: Port to listen to (HTTP)
 * __server.workers__: Number of workers to be spawned (specify at least 1, the
 master process does not serve any request)
