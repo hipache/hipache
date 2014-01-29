@@ -23,7 +23,8 @@
         "optimist": "0.3.x",
         "commander": "1.2.0",
         "lodash": "1.3.1",
-        "winston": "0.7.2"
+        "winston": "0.7.2",
+        "winston-syslogudp": "0.0.6"
     },
     "scripts" : {
         "start" : "node bin/hipache",

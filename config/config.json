@@ -1,15 +1,23 @@
 {
     "server": {
         "accessLog": "/var/log/hipache.log",
-        "port": 80,
+        "port": 81,
         "workers": 10,
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "tcpTimeout": 30,
         "retryOnError": 3,
         "deadBackendOn500": true,
-        "httpKeepAlive": false
+        "httpKeepAlive": false,
+        "syslog": {
+          "host": "example.com"
+        },
+        "https": {
+          "port": 443,
+          "key": "/opt/certs/server.key",
+          "cert": "/opt/certs/server.crt"
+        }
     },
     "redisHost": "127.0.0.1",
-    "redisPort": 6379
+    "redisPort": 16379
 }
