@@ -160,6 +160,27 @@ stop hipache
 restart hipache
 ```
 
+### 6. SNI support for TLS/SSL
+
+Additional TLS/SSL-Keys can be added for use with SNI (Server Name Indication).
+Be aware that not every client out there supports SNI and this can result in certificate
+error notifications.
+
+Taking the example above I want to add an TLS/SSL key to www.dotcloud.com.
+
+Here are the steps I will follow:
+
+1. __Add__ key and certificate
+
+        $ redis-cli hmset sni:www.dotcloud.com domain www.dotcloud.com key "`cat dotcloud.key`" cert "`cat dotcloud.cert`"
+        OK
+
+2. __Update__ SNI configuration of all workers via sending message
+
+        $ redis-cli publish "sni configuration" reload
+        (integer) 10
+
+
 Features
 --------
 
