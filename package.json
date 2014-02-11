@@ -16,11 +16,11 @@
         "lib" : "./lib"
     },
     "dependencies" : {
-        "read-installed" : "0.2.2",
-        "http-proxy" : "0.10.x",
-        "redis" : "0.8.x",
-        "lru-cache": "2.2.x",
-        "optimist": "0.3.x"
+        "read-installed" : "0.2.5",
+        "http-proxy" : "0.9.x",
+        "redis" : "0.10.x",
+        "lru-cache": "2.5.x",
+        "optimist": "0.6.x"
     },
     "scripts" : {
         "start" : "node bin/hipache",
@@ -28,7 +28,7 @@
         "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
     },
     "engines" : {
-        "node" : ">= 0.8.0"
+        "node" : ">= 0.10.25"
     },
     "engineStrict": true,
     "author" : {
