@@ -41,10 +41,12 @@ class SimpleTestCase(base.TestCase):
             'http://localhost:{0}'.format(port + 1)
             ])
         # Generate some traffic to force the failing one to be removed
-        for i in xrange(5):
-            self.http_request('foobar')
+        codes = []
+        for i in xrange(10):
+            codes.append(self.http_request('foobar'))
+        self.assertIn(502, codes)
         # Then all request should reach the healthy one
-        for i in xrange(5):
+        for i in xrange(10):
             self.assertEqual(self.http_request('foobar'), 200)
 
     def test_one_crashed(self):
