@@ -7,9 +7,9 @@ script:
     - npm test
     - npm run-script jshint
     # Running functional tests
-    - apt-get update
-    - apt-get install python-pip redis-server
+    - sudo apt-get update
+    - sudo apt-get install python-pip redis-server
     - ./bin/hipache -c config/config_test.json &
     - redis-server &
-    - cd test/functional && pip install -r requirements.txt
+    - cd test/functional && sudo pip install -r requirements.txt
     - cd test/functional && python -m unittest discover

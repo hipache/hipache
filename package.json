@@ -23,7 +23,8 @@
         "optimist": "0.6.x"
     },
     "devDependencies" : {
-        "mocha" : "1.x"
+        "mocha" : "1.x",
+        "jshint": "2.x"
     },
     "scripts" : {
         "start" : "node bin/hipache",
@@ -31,7 +32,7 @@
         "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
     },
     "engines" : {
-        "node" : ">= 0.10.25"
+        "node" : ">= 0.8.x"
     },
     "engineStrict": true,
     "author" : {
