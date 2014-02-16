@@ -74,6 +74,12 @@ each backend (per worker)
 parameters to use the local redis on the default port)
 * __redisDatabase__: Redis number database (default 0)
 * __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
+* __redisMasterHost__ and __redisMasterPort__: Send redis write commands to
+master redis and other commands to redisHost/redisPort conf (assuming it could
+be a redis slave). You can omit this if Redis is not configured with
+master/slave arch)
+* __redisMasterPassword__: Redis master pasword (you can omit this if Redis
+doesn't require auth and if you're not using multi-redis arch)
 
 
 ### 3. Spawn the server
