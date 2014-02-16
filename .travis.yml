@@ -11,5 +11,5 @@ script:
     - sudo apt-get install python-pip redis-server
     - ./bin/hipache -c config/config_test.json &
     - redis-server &
-    - cd test/functional && sudo pip install -r requirements.txt
-    - cd test/functional && python -m unittest discover
+    - (cd test/functional && sudo pip install -r requirements.txt)
+    - (cd test/functional && python -m unittest discover)
