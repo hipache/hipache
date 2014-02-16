@@ -38,6 +38,6 @@ Run the tests themselves:
     # enter the Python workspace
     workon hipache
     # go to the test directory and invoke the tests
-    cd test ; python -m unittest discover
+    cd test/functional && python -m unittest discover
 
 Remember to stop Hipache once you're done.

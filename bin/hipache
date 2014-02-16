@@ -45,9 +45,11 @@ if (argv.c || argv.config) {
 
 if (cluster.isMaster) {
     // Run the master
-    master(config);
+    var m = master(config);
+    m.run();
     util.log('Server is running. ' + JSON.stringify(config.server));
 } else {
     // Run the worker
-    worker(config);
+    var w = worker(config);
+    w.run();
 }
