@@ -1,7 +1,6 @@
 language: node_js
 node_js:
   - "0.10"
-  - "0.8"
 
 script:
     - npm test
@@ -9,7 +8,7 @@ script:
     # Running functional tests
     - sudo apt-get update
     - sudo apt-get install python-pip redis-server
-    - ./bin/hipache -c config/config_test.json &
+    - node --trace-deprecation ./bin/hipache -c config/config_test.json &
     - redis-server &
     - (cd test/functional && sudo pip install -r requirements.txt)
     - (cd test/functional && python -m unittest discover)

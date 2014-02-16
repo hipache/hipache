@@ -32,11 +32,11 @@
         "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
     },
     "engines" : {
-        "node" : ">= 0.8.x"
+        "node" : ">=0.10.0"
     },
     "engineStrict": true,
     "author" : {
-        "name" : "Samuel Alba",
+        "name" : "Sam Alba",
         "email" : "sam.alba@gmail.com",
         "url" : "http://www.dotcloud.com/"
     },
