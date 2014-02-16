@@ -1,6 +1,8 @@
 Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
+[![Build Status](https://travis-ci.org/dotcloud/hipache.png)](https://travis-ci.org/dotcloud/hipache)
+
 What is it?
 -----------
 
