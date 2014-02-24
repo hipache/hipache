@@ -1,0 +1,15 @@
+{
+    "server": {
+        "accessLog": "/var/log/access.log",
+        "port": 80,
+        "workers": 10,
+        "maxSockets": 100,
+        "deadBackendTTL": 30,
+        "tcpTimeout": 30,
+        "retryOnError": 3,
+        "deadBackendOn500": true,
+        "httpKeepAlive": false
+    },
+    "redisHost": "10.0.1.125",
+    "redisPort": 6379
+}
