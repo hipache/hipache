@@ -35,7 +35,7 @@ if (argv.c || argv.config) {
 } else {
     config = (function (configFile) {
         if (process.env.SETTINGS_FLAVOR !== undefined) {
-            path = configFile.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
+            configFile = configFile.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
         }
         util.log('Loading config from ' + configFile);
         var data = fs.readFileSync(configFile);
