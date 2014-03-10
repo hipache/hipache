@@ -38,7 +38,8 @@
     "jshint-stylish": "^0.1.5",
     "eslint-stylish": "^0.2.0",
     "gulp-util": "^2.2.14",
-    "chai": "^1.9.0"
+    "chai": "^1.9.0",
+    "istanbul": "^0.2.6"
   },
   "scripts": {
     "start": "node bin/hipache",
