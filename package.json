@@ -1,50 +1,66 @@
 {
-    "name" : "hipache",
-    "version" : "0.2.5",
-    "description" : "Complete high-scaled reverse-proxy solution",
-    "keywords": [
-        "reverse",
-        "proxy",
-        "http",
-        "http-proxy"
-    ],
-    "main" : "./bin/hipache",
-    "bin": {
-        "hipache": "./bin/hipache"
-    },
-    "directories" : {
-        "lib" : "./lib"
-    },
-    "dependencies" : {
-        "read-installed" : "0.2.5",
-        "http-proxy" : "1.0.x",
-        "redis" : "0.10.x",
-        "lru-cache": "2.5.x",
-        "optimist": "0.6.x"
-    },
-    "devDependencies" : {
-        "mocha" : "1.x",
-        "jshint": "2.x"
-    },
-    "scripts" : {
-        "start" : "node bin/hipache",
-        "test" : "mocha test/test_*.js",
-        "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
-    },
-    "engines" : {
-        "node" : ">=0.10.0"
-    },
-    "engineStrict": true,
-    "author" : {
-        "name" : "Sam Alba",
-        "email" : "sam.alba@gmail.com",
-        "url" : "http://www.dotcloud.com/"
-    },
-    "maintainer" : [
-        "Sam Alba <sam.alba@gmail.com>"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "http://github.com/dotcloud/hipache.git"
-    }
+  "name": "hipache",
+  "version": "0.2.5",
+  "description": "Complete high-scaled reverse-proxy solution",
+  "keywords": [
+    "reverse",
+    "proxy",
+    "http",
+    "http-proxy"
+  ],
+  "homepage": "https://github.com/dotcloud/hipache",
+  "bugs": {
+    "url": "https://github.com/dotcloud/hipache/issues",
+    "email": "sam.alba@gmail.com"
+  },
+  "license": "MIT",
+  "main": "./bin/hipache",
+  "bin": {
+    "hipache": "./bin/hipache"
+  },
+  "directories": {
+    "lib": "./lib"
+  },
+  "dependencies": {
+    "read-installed": "0.2.5",
+    "http-proxy": "1.0.x",
+    "redis": "0.10.x",
+    "lru-cache": "2.5.x",
+    "optimist": "0.6.x"
+  },
+  "devDependencies": {
+    "mocha": "1.x",
+    "jshint": "2.x",
+    "gulp": "^3.5.5",
+    "gulp-mocha": "^0.4.1",
+    "gulp-eslint": "^0.1.5",
+    "gulp-jshint": "^1.5.0",
+    "jshint-stylish": "^0.1.5",
+    "eslint-stylish": "^0.2.0",
+    "gulp-util": "^2.2.14",
+    "chai": "^1.9.0"
+  },
+  "scripts": {
+    "start": "node bin/hipache",
+    "test": "istanbul test _mocha --report html -- test/*.js --reporter spec",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
+    "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
+  },
+  "engines": {
+    "node": ">=0.10.0",
+    "npm": ">=1.0.0"
+  },
+  "engineStrict": true,
+  "author": {
+    "name": "Sam Alba",
+    "email": "sam.alba@gmail.com",
+    "url": "http://www.dotcloud.com/"
+  },
+  "maintainer": [
+    "Sam Alba <sam.alba@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/dotcloud/hipache.git"
+  }
 }
