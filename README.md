@@ -1,7 +1,13 @@
 Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
-[![Build Status](https://travis-ci.org/dotcloud/hipache.png)](https://travis-ci.org/dotcloud/hipache)
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url]
+
+<!--
+Provision coverall for later use
+[![Coverage Status][coveralls-image]][coveralls-url]
+-->
+
 
 What is it?
 -----------
@@ -54,7 +60,7 @@ backend.
             }
         },
         "redisHost": "127.0.0.1",
-	    "redisPort": 6379,
+        "redisPort": 6379,
         "redisDatabase": 0,
         "redisPassword": "password"
         
@@ -101,8 +107,8 @@ Or by specifying your configuration file:
 __Managing multiple configuration files:__
 
 The default configuration file is `config.json`. It's possible to have
-different configuration files named `config_<suffix>.json`. The suffix is got
-from an environment variable called `SETTINGS_FLAVOR`.
+different configuration files named `config_<suffix>.json`, where the suffix
+is the value of an environment variable named `SETTINGS_FLAVOR`.
 
 For instance, here is how to spawn the server with the `config_test.json`
 configuration file in order to run the tests.
@@ -178,7 +184,7 @@ As seen in the example above, multiple backends can be attached to a frontend.
 All requests coming to the frontend are load-balanced across all healthy
 backends.
 
-The backend to use for a specific request is determined at random. Subsequent
+The backend to use for a specific request is determined randomly. Subsequent
 requests coming from the same client won't necessarily be routed to the same
 backend (since backend selection is purely random).
 
@@ -221,8 +227,7 @@ So fast, that it didn't increase measurably the HTTP request latency!
 ### WebSocket
 
 Hipache supports the WebSocket protocol. It doesn't do any fancy handling
-for the WebSocket protocol; it relies entirely on the support in NodeJS
-and node-http-proxy.
+on its own and relies entirely on NodeJS and node-http-proxy.
 
 ### SSL
 
@@ -261,3 +266,16 @@ Future improvements
 -------------------
 
 [Read the TODO page](https://github.com/dotcloud/hipache/blob/master/TODO.md)
+
+
+[npm-url]: https://npmjs.org/package/hipache
+[npm-image]: https://badge.fury.io/js/hipache.png
+
+[travis-url]: http://travis-ci.org/dotcloud/hipache
+[travis-image]: https://secure.travis-ci.org/dotcloud/hipache.png?branch=master
+
+[coveralls-url]: https://coveralls.io/r/dotcloud/hipache
+[coveralls-image]: https://coveralls.io/repos/dotcloud/hipache/badge.png?branch=master
+
+[depstat-url]: https://david-dm.org/dotcloud/hipache
+[depstat-image]: https://david-dm.org/dotcloud/hipache.png

@@ -20,28 +20,21 @@ var help = [
     '   -h, --help                  Display help'
 ].join('\n');
 
-var config;
-
-
 if (argv.h || argv.help) {
     return util.puts(help);
 }
 
-if (argv.c || argv.config) {
-    var configFile = argv.c ? argv.c : argv.config;
-    var data = fs.readFileSync(configFile);
-    util.log('Loading config from ' + configFile);
-    config = JSON.parse(data);
-} else {
-    config = (function (configFile) {
-        if (process.env.SETTINGS_FLAVOR !== undefined) {
-            path = configFile.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
-        }
-        util.log('Loading config from ' + configFile);
-        var data = fs.readFileSync(configFile);
-        return JSON.parse(data);
-    }(path.resolve(__dirname, '..', 'config', 'config.json')));
+var configFile = argv.c || argv.config;
+
+if (!configFile) {
+    configFile = path.resolve(__dirname, '..', 'config', 'config.json');
+    if (process.env.SETTINGS_FLAVOR !== undefined) {
+        configFile = configFile.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
+    }
 }
+
+util.log('Loading config from ' + configFile);
+var config = JSON.parse(fs.readFileSync(configFile));
 
 if (cluster.isMaster) {
     // Run the master

@@ -1,4 +1,4 @@
-
+/*globals require:false, describe:false, before:false, it:false*/
 'use strict';
 
 var fs = require('fs'),
