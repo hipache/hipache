@@ -15,7 +15,7 @@
     var fs = require('fs');
 
     var tests = ['./test/**/*.js'];
-    var scripts = ['*.js', './lib/*.js', './test/*.js'];
+    var scripts = ['*.js', './bin/*', './lib/*.js', './test/*.js'];
     // var scripts = ['./lib/*.js', './test/*.js'];
 
     gulp.task('mocha', function () {
