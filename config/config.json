@@ -16,4 +16,7 @@
         }
     },
     "driver": ["redis://127.0.0.1:6379"]
+    "etcdHost": "172.17.42.1",
+    "etcdPort": 4001,
+    "etcdPath": "/hipache/"
 }

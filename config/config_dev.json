@@ -14,5 +14,8 @@
             "size": 5,
             "ttl": 5
         }
-    }
+    },
+    "etcdHost": "172.17.42.1",
+    "etcdPort": 4001,
+    "etcdPath": "/hipache/"
 }
