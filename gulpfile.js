@@ -23,23 +23,18 @@
             .pipe(mocha({reporter: 'nyan'}));
     });
 
-    gulp.task("mocha|catch", function () {
+    gulp.task('mocha|catch', function () {
         return gulp.src(tests)
-            .pipe(mocha({ reporter: 'spec' }).on("error", function (err) {
+            .pipe(mocha({reporter: 'spec'}).on('error', function (err) {
                 console.log(err.toString());
                 this.emit('end');
             })
         );
     });
 
-    var jsconfig = JSON.parse(fs.readFileSync('./jshint.json')); // .jshintrc'));
-    // var esconfig = JSON.parse(fs.readFileSync('./.eslintrc'));
-
     gulp.task('hint', function () {
         gulp.src(scripts)
-            // eslint(esconfig),
-            // eslint.formatEach(esreporter),
-            .pipe(jshint(jsconfig))
+            .pipe(jshint())
             .pipe(jshint.reporter(jsreporter));
     });
 
