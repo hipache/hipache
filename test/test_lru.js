@@ -45,8 +45,8 @@
 
         describe('#real lru limits ', function () {
             it('Reaching the number of objects limits', function () {
-                var lru = new LruCache(1);
-                lru.enabled = true;
+                var lru = new LruCache();
+                lru.enabled = {size: 1};
                 for (var x = 0; x < 2; x++) {
                     lru.set(x, '0123456789');
                     expect(lru.get(x)).to.eql('0123456789');
@@ -57,8 +57,8 @@
 
             it('Reaching the ttl', function (done) {
                 var ttl = 0.05;
-                var lru = new LruCache(0, ttl);
-                lru.enabled = true;
+                var lru = new LruCache();
+                lru.enabled = {size: 0, ttl: ttl};
                 lru.set('ttltest', '0123456789');
                 expect(lru.get('ttltest')).to.eql('0123456789');
                 setTimeout(function () {
