@@ -36,7 +36,6 @@
     "gulp-eslint": "^0.1.5",
     "gulp-jshint": "^1.5.0",
     "jshint-stylish": "^0.1.5",
-    "eslint-stylish": "^0.2.0",
     "gulp-util": "^2.2.14",
     "chai": "^1.9.0",
     "istanbul": "^0.2.6"
@@ -45,7 +44,7 @@
     "start": "node bin/hipache",
     "test": "istanbul test _mocha --report html -- test/*.js --reporter spec",
     "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
+    "jshint": "jshint -- bin/hipache lib/*.js"
   },
   "engines": {
     "node": ">=0.10.0",
