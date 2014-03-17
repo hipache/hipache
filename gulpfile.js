@@ -11,7 +11,7 @@
 
     var jsreporter = require('jshint-stylish');
 
-    var tests = ['./test/**/*.js'];
+    var tests = ['./test/*.js'];
     var scripts = ['*.js', './bin/*', './lib/*.js', './test/*.js'];
     // var scripts = ['./lib/*.js', './test/*.js'];
 
