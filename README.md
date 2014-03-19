@@ -57,13 +57,14 @@ backend.
                 "port": 443,
                 "key": "/etc/ssl/ssl.key",
                 "cert": "/etc/ssl/ssl.crt"
-            }
+            },
+            "greedyWildcard": true
         },
         "redisHost": "127.0.0.1",
         "redisPort": 6379,
         "redisDatabase": 0,
         "redisPassword": "password"
-        
+
     }
 
 * __server.accessLog__: location of the Access logs, the format is the same as
@@ -114,7 +115,7 @@ For instance, here is how to spawn the server with the `config_test.json`
 configuration file in order to run the tests.
 
     $ SETTINGS_FLAVOR=test hipache
-    
+
 
 ### 4. Configuring a vhost (redis)
 
@@ -254,6 +255,11 @@ in the configuration, but not for *.thing.example.tld. If you want to serve
 requests for *.thing.example.tld, you will have to setup a wildcard for
 *.example.tld. It means that you cannot (yet) send requests for
 *.thing.example.tld and *.stuff.example.tld to different backends.
+
+This behavior can be modified to try to match the wildcards against all but the
+last labels of the requested virtual host by changing the greedyWildcard config
+option to false. After doing this, if you request some.thing.example.tld, Hipache
+will look for *.thing.example.tld, but not for *.example.tld.
 
 ### Active Health-Check
 
