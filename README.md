@@ -57,8 +57,7 @@ backend.
                 "port": 443,
                 "key": "/etc/ssl/ssl.key",
                 "cert": "/etc/ssl/ssl.crt"
-            },
-            "greedyWildcard": true
+            }
         },
         "redisHost": "127.0.0.1",
         "redisPort": 6379,
@@ -246,20 +245,8 @@ Those error pages can be customized.
 When adding virtual hosts in Hipache configuration, you can specify wildcards.
 E.g., instead (or in addition to) www.example.tld, you can insert
 *.example.tld. Hipache will look for an exact match first, and then for a
-wildcard one.
-
-Note that the current implementation only tries to match wildcards against the
-last two labels of the requested virtual host. What does that mean? If you
-issue a request for some.thing.example.tld, Hipache will look for *.example.tld
-in the configuration, but not for *.thing.example.tld. If you want to serve
-requests for *.thing.example.tld, you will have to setup a wildcard for
-*.example.tld. It means that you cannot (yet) send requests for
-*.thing.example.tld and *.stuff.example.tld to different backends.
-
-This behavior can be modified to try to match the wildcards against all but the
-last labels of the requested virtual host by changing the greedyWildcard config
-option to false. After doing this, if you request some.thing.example.tld, Hipache
-will look for *.thing.example.tld, but not for *.example.tld.
+wildcard one up to 5 subdomains deep, e.g. foo.bar.baz.qux.quux will attempt to
+match itself first, then *.bar.baz.qux.quux, then *.baz.qux.quux, etc.
 
 ### Active Health-Check
 
