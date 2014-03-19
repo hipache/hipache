@@ -7,7 +7,7 @@ All tests are written using `mocha` and `chai`.
 
 That's quite simple:
 
-"""
+```
 var expect = require('chai').expect;
 var log = require('npmlog');
 
@@ -19,7 +19,7 @@ describe('My Module', function () {
         });
     })
 });
-"""
+```
 
 Running the tests can be done directly using the mocha binary, or istanbul for coverage, or if you want a no-brainer just use the gulp tasks:
 
