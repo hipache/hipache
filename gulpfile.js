@@ -11,17 +11,22 @@
 
     var jsreporter = require('jshint-stylish');
 
-    var tests = ['./test/*.js'];
-    var scripts = ['*.js', './bin/*', './lib/*.js', './test/*.js'];
-    // var scripts = ['./lib/*.js', './test/*.js'];
+    var unittests = ['./test/unit/*.js'];
+    var functests = ['./test/functional/*.js'];
+    var scripts = ['*.js', './bin/*', './lib/**/*.js', './test/**/*.js'];
 
-    gulp.task('mocha', function () {
-        return gulp.src(tests)
+    gulp.task('test:unit', function () {
+        return gulp.src(unittests)
             .pipe(mocha({ reporter: 'spec' }));
     });
 
-    gulp.task("mocha|catch", function () {
-        return gulp.src(tests)
+    gulp.task('test:func', ['test:unit'], function () {
+        return gulp.src(functests)
+            .pipe(mocha({ reporter: 'spec' }));
+    });
+
+    gulp.task('test:catched', function () {
+        return gulp.src(unittests)
             .pipe(mocha({ reporter: 'spec' }).on("error", function (/*err*/) {
                 this.emit('end');
             })
@@ -31,7 +36,7 @@
     // var esconfig = JSON.parse(fs.readFileSync('./.eslintrc'));
 
     gulp.task('hint', function () {
-        gulp.src(scripts)
+        return gulp.src(scripts)
             // eslint(esconfig),
             // eslint.formatEach(esreporter),
             .pipe(jshint())
@@ -39,7 +44,7 @@
     });
 
     gulp.task('hackonit', function () {
-        gulp.watch(scripts, ['mocha|catch', 'hint']);
+        gulp.watch(scripts, ['test:catched', 'hint']);
     });
 
 }());
