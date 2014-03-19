@@ -1,18 +1,14 @@
-(function(){
+(function () {
     'use strict';
 
     var spawn = require('child_process').spawn;
     var npmlog = require('npmlog');
-    var path = require('path');
 
-    var RedisServer = function (/*confName*/) {
+    var RedisServer = function () {
         var child;
 
         this.start = function (options) {
-            // Finally execute your script below - here "ls -lA"
-            child = spawn("redis-server", ['-'
-                    // path.join(__dirname, 'redis-' + (confName || 'default') + '.conf')
-                ], {cwd: process.cwd()});
+            child = spawn("redis-server", ['-'], {cwd: process.cwd()});
             var stdout = '',
                 stderr = '';
 
@@ -30,7 +26,7 @@
                 npmlog.error('RedisServer', '', data);
             });
 
-            child.on('close', function(code) {
+            child.on('close', function (code) {
                 npmlog.silly('RedisServer', '', "Done with exit code " + code);
             });
 
