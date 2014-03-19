@@ -8,6 +8,15 @@ Provision coverall for later use
 [![Coverage Status][coveralls-image]][coveralls-url]
 -->
 
+<!> This Branch is not ready to merge <!>
+
+It contains heavy refactoring and API breaking changes.
+It's currently not usable nor even testable.
+
+The focus of this branch is the introduction of drivers (see lib/drivers) and enhanced testing.
+
+<!> This Branch is not ready to merge <!>
+
 
 What is it?
 -----------
