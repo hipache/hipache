@@ -20,7 +20,7 @@ script:
     # Now, test
     - npm test
     # Running pythonic functional tests
-    - (cd test/functional && sudo pip install -r requirements.txt)
     - redis-server &
     - node --trace-deprecation ./bin/hipache -c config/config_test.json &
+    - (cd test/functional && sudo pip install -r requirements.txt)
     - (cd test/functional && python -m unittest discover)
