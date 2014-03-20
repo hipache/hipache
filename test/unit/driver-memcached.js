@@ -1,35 +1,53 @@
 (function () {
-    /*globals describe:false, it:false, before:false, after:false, afterEach:false*/
+    /*globals describe:false, before:false, after:false*/
     'use strict';
 
     // Useful if you want to see servers talk to you
     // require('npmlog').level = 'silly';
 
-    var expect = require('chai').expect;
+    // var expect = require('chai').expect;
 
     var Driver = require('../../lib/drivers/memcached');
     var Server = require('../fixtures/servers/memcached');
 
     var s1 = new Server();
     var s2 = new Server();
-    var s3 = new Server();
+    // var s3 = new Server();
 
     // Start all servers beforehand
     before(function () {
         s1.start(['9001']);
         s2.start(['9002']);
-        s3.start(['9003']);
+        // s3.start(['9003']);
     });
 
     // Shutdown pips!
     after(function () {
         s1.stop();
         s2.stop();
-        s3.stop();
+        // s3.stop();
     });
 
+    var testReading = require('./driver-test-reading');
 
     describe('Memcached', function () {
+        describe('#operating', function () {
+            testReading(Driver, ['memcached://:9001']);
+        });
+
+        describe('#operating-use-prefix', function () {
+            testReading(Driver, ['memcached://:9001/#someprefix']);
+        });
+
+        describe('#operating-a-cluster', function () {
+            testReading(Driver, ['memcached://:9001/', 'memcached://:9002/']);
+        });
+
+        // describe('#operating-cluster', function () {
+        //     testReading(Driver, ['memcached://:9001', 'memcached://:9002']);
+        // });
+
+
     //     var red;
 
     //     afterEach(function () {
