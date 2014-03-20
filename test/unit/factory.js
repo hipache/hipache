@@ -1,5 +1,5 @@
 (function () {
-    /*globals describe:false, it:false*/
+    /*globals describe:false, it:false, before:false, after:false*/
     'use strict';
 
     // XXX need to test standalone npm modules providing drivers
@@ -7,6 +7,20 @@
     var expect = require('chai').expect;
 
     var factory = require('../../lib/drivers/factory');
+
+    var Server = require('../fixtures/servers/redis');
+
+    var s1 = new Server();
+
+    // Start a default server (will silently fail is there is one already
+    before(function () {
+        s1.start(['port 6379']);
+    });
+
+    // Shutdown
+    after(function () {
+        s1.stop();
+    });
 
     describe('Driver factory', function () {
         ['redis:', 'memcached://', 'etcd://', 'etcds://', 'redis:///ß∞'].forEach(function (u) {
