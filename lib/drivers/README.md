@@ -80,7 +80,7 @@ Below is the bare minimum you need to get started:
 (function () {
     'use strict';
     var util = require('util');
-    var IHipDriver = require('./IHipDriver');
+    var IHipDriver = require('./ihipdriver');
 
     var MyProvider = function () {
         IHipDriver.apply(this, arguments);
