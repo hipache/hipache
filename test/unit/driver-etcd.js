@@ -1,27 +1,30 @@
 (function () {
-    /*globals describe:false, it:false, before:false, after:false, afterEach:false*/
+    /*globals describe:false, before:false, after:false*/
     'use strict';
 
     // Useful if you want to see servers talk to you
     // require('npmlog').level = 'silly';
 
-    var expect = require('chai').expect;
+    // var expect = require('chai').expect;
 
     var Driver = require('../../lib/drivers/etcd');
     var Server = require('../fixtures/servers/etcd');
 
     var s1 = new Server();
-    var s2 = new Server();
-    var s3 = new Server();
+    // var s2 = new Server();
+    // var s3 = new Server();
 
     // Start all servers beforehand
     before(function () {
         // Simple server
-        s1.start(['-bind-addr=127.0.0.1:8001', '-addr=127.0.0.1:8001', '-peer-bind-addr=127.0.0.1:8011', '-peer-addr=127.0.0.1:8011']);
+        s1.start(['-bind-addr=127.0.0.1:8001', '-addr=127.0.0.1:8001', '-peer-bind-addr=127.0.0.1:8011',
+            '-peer-addr=127.0.0.1:8011']);
         // With authentication
-        // s2.start(['-bind-addr=127.0.0.1:7002', '-addr=127.0.0.1:8002', '-peer-bind-addr=127.0.0.1:8012', '-peer-addr=127.0.0.1:8012']);
+        // s2.start(['-bind-addr=127.0.0.1:7002', '-addr=127.0.0.1:8002', '-peer-bind-addr=127.0.0.1:8012',
+        // '-peer-addr=127.0.0.1:8012']);
         // Wacky server
-        // s3.start(['-bind-addr=127.0.0.1:8003', '-addr=127.0.0.1:8003', '-peer-bind-addr=127.0.0.1:8013', '-peer-addr=127.0.0.1:8013']);
+        // s3.start(['-bind-addr=127.0.0.1:8003', '-addr=127.0.0.1:8003', '-peer-bind-addr=127.0.0.1:8013',
+        // '-peer-addr=127.0.0.1:8013']);
     });
 
     // Shutdown pips!
@@ -31,13 +34,25 @@
         // s3.stop();
     });
 
-    describe('Etcd', function () {
-        var red;
+    var testReading = require('./driver-test-reading');
 
-        afterEach(function () {
-            // Ensure STOPPED client in any case
-            red.destructor();
+    describe('Etcd', function () {
+        describe('#operating', function () {
+            testReading(Driver, ['etcd://:8001']);
         });
+
+        describe('#operating-use-prefix', function () {
+            testReading(Driver, ['etcd://:8001/#someprefix']);
+        });
+    });
+
+
+        // var red;
+
+        // afterEach(function () {
+        //     // Ensure STOPPED client in any case
+        //     red.destructor();
+        // });
 
         // describe('#simple, no authentication', function () {
         //     // it('Bogus host fail', function (done) {
@@ -147,97 +162,6 @@
         //     });
         // });
 
-        describe('#reading', function () {
-            it('Domain with no match, no fallback', function (done) {
-                red = new Driver('etcd://:8001');
-
-                red.read(['unmatched.com', '*'], function (err, data) {
-                    console.warn('----', err, data);
-                    expect(data).to.eql([
-                        [],
-                        [],
-                        []
-                    ]);
-                    red.destructor();
-                    done();
-                });
-            });
-
-            // it('Single domain with a backend', function (done) {
-            //     red = new Driver('etcd://:7001');
-            //     red.create('domain.com', 'myvhost', function () {
-            //         red.add('domain.com', 'backend:1234', function () {
-            //             red.read(['domain.com', '*'], function (err, data) {
-            //                 expect(data).to.eql([
-            //                     ['myvhost', 'backend:1234'],
-            //                     [],
-            //                     []
-            //                 ]);
-            //                 red.destructor();
-            //                 done();
-            //             });
-            //         });
-            //     });
-            // });
-
-            // it('Single domain with multiple backends', function (done) {
-            //     red = new Driver('etcd://:7001');
-            //     red.add('domain.com', 'backend:4567', function () {
-            //         red.read(['domain.com', '*'], function (err, data) {
-            //             expect(data).to.eql([
-            //                 ['myvhost', 'backend:1234', 'backend:4567'],
-            //                 [],
-            //                 []
-            //             ]);
-            //             red.destructor();
-            //             done();
-            //         });
-            //     });
-            // });
-
-            // it('Single domain with multiple backends and fallback', function (done) {
-            //     red = new Driver('etcd://:7001');
-            //     red.add('*', 'backend:910', function () {
-            //         red.read(['domain.com', '*'], function (err, data) {
-            //             expect(data).to.eql([
-            //                 ['myvhost', 'backend:1234', 'backend:4567'],
-            //                 ['backend:910'],
-            //                 []
-            //             ]);
-            //             red.destructor();
-            //             done();
-            //         });
-            //     });
-            // });
-
-            // it('Single domain with multiple backends and fallback plus dead', function (done) {
-            //     red = new Driver('etcd://:7001');
-            //     red.mark('domain.com', 1, 'backend:4567', 2, 1, function (e, d) {
-            //         red.read(['domain.com', '*'], function (err, data) {
-            //             expect(data).to.eql([
-            //                 ['myvhost', 'backend:1234', 'backend:4567'],
-            //                 ['backend:910'],
-            //                 ['1']
-            //             ]);
-
-            //             // Now, let it expire
-            //             setTimeout(function () {
-            //                 red.read(['domain.com', '*'], function (err, data) {
-            //                     expect(data).to.eql([
-            //                         ['myvhost', 'backend:1234', 'backend:4567'],
-            //                         ['backend:910'],
-            //                         []
-            //                     ]);
-            //                     red.destructor();
-            //                     done();
-            //                 });
-            //             }, 1000);
-            //         });
-            //     });
-            // });
-        });
-
-    });
 
 
 })();
