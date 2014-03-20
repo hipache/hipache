@@ -30,7 +30,7 @@
     });
 
     // These also tests expiring / timeouts, hence are long - to be run manually only
-    gulp.task('test:drivers', ['test:unit'], function () {
+    gulp.task('test:drivers', function () {
         return gulp.src(driverstests)
             .pipe(mocha({ reporter: 'spec' }));
     });
@@ -51,7 +51,7 @@
         );
     });
 
-    gulp.task('test:func', ['test:drivers'], function () {
+    gulp.task('test:func', function () {
         return gulp.src(functests)
             .pipe(mocha({ reporter: 'spec' }));
     });

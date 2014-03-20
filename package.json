@@ -42,13 +42,14 @@
     "npmlog": "^0.0.6",
     "memcached": "^0.2.8",
     "node-etcd": "^2.0.10",
-    "ws": "^0.4.31"
+    "ws": "^0.4.31",
+    "coveralls": "^2.10.0"
   },
   "scripts": {
     "start": "node bin/hipache",
-    "test": "istanbul test _mocha --report html -- test/*.js --reporter spec",
-    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage",
-    "jshint": "jshint -- bin/hipache lib/*.js"
+    "test": "istanbul test _mocha --report html -- test/**/*.js --reporter spec",
+    "coveralls": "istanbul cover _mocha --report lcovonly -- test/**/*.js -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
+    "hint": "gulp hint"
   },
   "engines": {
     "node": ">=0.10.0",
@@ -61,7 +62,8 @@
     "url": "http://www.dotcloud.com/"
   },
   "maintainer": [
-    "Sam Alba <sam.alba@gmail.com>"
+    "Sam Alba <sam.alba@gmail.com>",
+    "Olivier Gambier <viapanda@gmail.com>"
   ],
   "repository": {
     "type": "git",

@@ -1,18 +1,23 @@
 language: node_js
 node_js:
-  - "0.10"
+    - "0.10"
+
+before_install:
+    - sudo apt-get update
+
+install:
+    - sudo apt-get install redis-server memcached
+    - sudo apt-get install python-pip
+    - npm install -g gulp
+    - (cd test/functional && sudo pip install -r requirements.txt)
 
 script:
     # Ensure things are ok
-    - npm run-script jshint
+    - npm run-script hint
     # Tests require a runnable redis-server in the path
-    - sudo apt-get update
-    - sudo apt-get install redis-server
     # Now, test
     - npm test
     # Running pythonic functional tests
-    - sudo apt-get install python-pip
     - node --trace-deprecation ./bin/hipache -c config/config_test.json &
     - redis-server &
-    - (cd test/functional && sudo pip install -r requirements.txt)
     - (cd test/functional && python -m unittest discover)
