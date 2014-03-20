@@ -2,11 +2,14 @@ language: node_js
 node_js:
     - "0.10"
 
+env:
+    - NO_ETCD=true
+
 before_install:
     - sudo apt-get update
 
 install:
-    # - sudo apt-get install redis-server memcached
+    - sudo apt-get install redis-server memcached
     # - sudo apt-get install python-pip
     # - (cd test/functional && sudo pip install -r requirements.txt)
     - npm install -g gulp
@@ -16,7 +19,7 @@ script:
     # Hinting
     - npm run-script hint
     # # Now, test
-    # - npm test
+    - npm test
     # # Running pythonic functional tests
     # - redis-server &
     # - node --trace-deprecation ./bin/hipache -c config/config_test.json &

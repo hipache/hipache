@@ -2,6 +2,13 @@
     /*globals describe:false, before:false, after:false*/
     'use strict';
 
+    var npmlog = require('npmlog');
+
+    if (process.env.NO_MEMCACHED) {
+        npmlog.error('Test', 'No memcached server on this machine! No tests, then.');
+        return;
+    }
+
     // Useful if you want to see servers talk to you
     // require('npmlog').level = 'silly';
 
