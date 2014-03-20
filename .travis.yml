@@ -10,8 +10,7 @@ before_install:
 
 install:
     - sudo apt-get install redis-server memcached
-    # - sudo apt-get install python-pip
-    # - (cd test/functional && sudo pip install -r requirements.txt)
+    - sudo apt-get install python-pip
     - npm install -g gulp
     - npm install
 
@@ -21,6 +20,7 @@ script:
     # # Now, test
     - npm test
     # # Running pythonic functional tests
-    # - redis-server &
-    # - node --trace-deprecation ./bin/hipache -c config/config_test.json &
-    # - (cd test/functional && python -m unittest discover)
+    - redis-server &
+    - node --trace-deprecation ./bin/hipache -c config/config_test.json &
+    - (cd test/functional && sudo pip install -r requirements.txt)
+    - (cd test/functional && python -m unittest discover)
