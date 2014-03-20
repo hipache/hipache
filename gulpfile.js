@@ -11,29 +11,10 @@
 
     var jsreporter = require('jshint-stylish');
 
-    var unittests = ['./test/unit/*.js'];
+    var driverstests = ['./test/unit/driver-*'];
+    var unittests = ['./test/unit/*.js', '!./test/unit/driver-*'];
     var functests = ['./test/functional/*.js'];
     var scripts = ['*.js', './bin/*', './lib/**/*.js', './test/**/*.js'];
-
-    gulp.task('test:unit', function () {
-        return gulp.src(unittests)
-            .pipe(mocha({ reporter: 'spec' }));
-    });
-
-    gulp.task('test:func', ['test:unit'], function () {
-        return gulp.src(functests)
-            .pipe(mocha({ reporter: 'spec' }));
-    });
-
-    gulp.task('test:catched', function () {
-        return gulp.src(unittests)
-            .pipe(mocha({ reporter: 'spec' }).on("error", function (/*err*/) {
-                this.emit('end');
-            })
-        );
-    });
-
-    // var esconfig = JSON.parse(fs.readFileSync('./.eslintrc'));
 
     gulp.task('hint', function () {
         return gulp.src(scripts)
@@ -43,8 +24,47 @@
             .pipe(jshint.reporter(jsreporter));
     });
 
-    gulp.task('hackonit', function () {
-        gulp.watch(scripts, ['test:catched', 'hint']);
+    gulp.task('test:unit', function () {
+        return gulp.src(unittests)
+            .pipe(mocha({ reporter: 'spec' }));
+    });
+
+    // These also tests expiring / timeouts, hence are long - to be run manually only
+    gulp.task('test:drivers', ['test:unit'], function () {
+        return gulp.src(driverstests)
+            .pipe(mocha({ reporter: 'spec' }));
+    });
+
+    gulp.task('test:unit-catched', ['hint'], function () {
+        return gulp.src(unittests)
+            .pipe(mocha({ reporter: 'spec' }).on("error", function (/*err*/) {
+                this.emit('end');
+            })
+        );
+    });
+
+    gulp.task('test:drivers-catched', ['test:unit-catched'], function () {
+        return gulp.src(driverstests)
+            .pipe(mocha({ reporter: 'spec' }).on("error", function (/*err*/) {
+                this.emit('end');
+            })
+        );
+    });
+
+    gulp.task('test:func', ['test:drivers'], function () {
+        return gulp.src(functests)
+            .pipe(mocha({ reporter: 'spec' }));
+    });
+
+
+    // var esconfig = JSON.parse(fs.readFileSync('./.eslintrc'));
+
+    gulp.task('hack-hipache', function () {
+        gulp.watch(scripts, ['test:unit-catched']);
+    });
+
+    gulp.task('hack-drivers', function () {
+        gulp.watch(scripts, ['test:drivers-catched']);
     });
 
 }());

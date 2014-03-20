@@ -24,8 +24,10 @@ describe('My Module', function () {
 Running the tests can be done directly using the mocha binary, or istanbul for coverage, or if you want a no-brainer just use the gulp tasks:
 
  * `gulp test:unit`
+ * `gulp test:drivers`
  * `gulp test:func`
- * `gulp hackonit`
+ * `gulp hack-hipache`
+ * `gulp hack-drivers`
 
 Dos and donts
 ------------------------
