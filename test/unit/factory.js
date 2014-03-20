@@ -13,19 +13,24 @@
     var s1 = new Server();
 
     // Start a default server (will silently fail is there is one already
-    before(function () {
+    before(function (done) {
         s1.start(['port 6379']);
+        s1.once('started', done);
     });
 
     // Shutdown
-    after(function () {
+    after(function (done) {
         s1.stop();
+        s1.once('stopped', done);
     });
 
     describe('Driver factory', function () {
         ['redis:', 'memcached://', 'etcd://', 'etcds://', 'redis:///ß∞'].forEach(function (u) {
             it(u, function () {
                 var driverInstance = factory.getDriver(u);
+                driverInstance.once('ready', function () {
+                    driverInstance.destructor();
+                });
                 var t = u.match(/^([a-z]+)/).pop();
                 if (t !== 'redis') {
                     t = t.replace(/s$/, '');
