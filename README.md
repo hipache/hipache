@@ -1,7 +1,7 @@
 Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url]
 
 What is it?
 -----------
@@ -258,3 +258,6 @@ Future improvements
 
 [depstat-url]: https://david-dm.org/dotcloud/hipache
 [depstat-image]: https://david-dm.org/dotcloud/hipache.png
+
+[codeclimate-url]: https://codeclimate.com/github/dotcloud/hipache
+[codeclimate-image]: https://codeclimate.com/github/dotcloud/hipache.png
