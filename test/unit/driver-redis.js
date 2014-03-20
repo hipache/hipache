@@ -28,6 +28,8 @@
         s3.stop();
     });
 
+    var testReading = require('./driver-test-reading');
+
     describe('Redis', function () {
         var red;
 
@@ -36,9 +38,9 @@
             red.destructor();
         });
 
-        describe('#simple, no authentication', function () {
+        describe('#connecting-no-authent', function () {
             it('Bogus host fail', function (done) {
-                red = new Driver('redis://wontresolve:7001');
+                red = new Driver(['redis://wontresolve:7001']);
                 // Expect to reenter on error, not connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(false);
@@ -47,11 +49,11 @@
                     red.destructor();
                     done();
                 };
-                red.on('error', handler);
-                red.on('ready', handler);
+                red.once('error', handler);
+                red.once('ready', handler);
             });
             it('Bogus port fail', function (done) {
-                red = new Driver('redis://:123456');
+                red = new Driver(['redis://:123456']);
                 // Expect to reenter on error, not connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(false);
@@ -60,11 +62,26 @@
                     red.destructor();
                     done();
                 };
-                red.on('error', handler);
-                red.on('ready', handler);
+                red.once('error', handler);
+                red.once('ready', handler);
             });
+            // Does redis really return an error in that case?
+            // it('Bogus database fail', function (done) {
+            //     red = new Driver(['redis://:7001/whateverthefuck']);
+            //     // Expect to reenter on error, not connected
+            //     var handler = function (e) {
+            //         console.warn('************', e);
+            //         // expect(red.connected).to.eql(true);
+            //         // expect(e).to.eql(new Error());
+            //         // Force stop NOW
+            //         red.destructor();
+            //         done();
+            //     };
+            //     red.on('error', handler);
+            //     red.on('ready', handler);
+            // });
             it('Successful connection', function (done) {
-                red = new Driver('redis://:7001');
+                red = new Driver(['redis://:7001']);
                 // Expect to reenter on ready, connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(true);
@@ -73,15 +90,15 @@
                     red.destructor();
                     done();
                 };
-                red.on('error', handler);
-                red.on('ready', handler);
+                red.once('error', handler);
+                red.once('ready', handler);
             });
 
         });
 
-        describe('#authenticated', function () {
+        describe('#connecting-authentication', function () {
             it('No password', function (done) {
-                red = new Driver('redis://:7002');
+                red = new Driver(['redis://:7002']);
                 // Expect to reenter on error, connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(true);
@@ -90,12 +107,12 @@
                     red.destructor();
                     done();
                 };
-                red.on('error', handler);
-                red.on('ready', handler);
+                red.once('error', handler);
+                red.once('ready', handler);
             });
 
             it('Wrong password', function (done) {
-                red = new Driver('redis://:bogusshit@:7002');
+                red = new Driver(['redis://:bogusshit@:7002']);
                 // Expect to reenter on error, connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(true);
@@ -104,12 +121,12 @@
                     red.destructor();
                     done();
                 };
-                red.on('error', handler);
-                red.on('ready', handler);
+                red.once('error', handler);
+                red.once('ready', handler);
             });
 
             it('Ok password', function (done) {
-                red = new Driver('redis://:superpassword@:7002');
+                red = new Driver(['redis://:superpassword@:7002']);
                 // Expect to reenter on ready, connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(true);
@@ -118,14 +135,14 @@
                     red.destructor();
                     done();
                 };
-                red.on('error', handler);
-                red.on('ready', handler);
+                red.once('error', handler);
+                red.once('ready', handler);
             });
         });
 
         describe('#wacky', function () {
             it('loosing connection', function (done) {
-                red = new Driver('redis://:7003');
+                red = new Driver(['redis://:7003']);
                 var readyHandler = function (e) {
                     expect(red.connected).to.eql(true);
                     expect(e).to.eql(undefined);
@@ -138,98 +155,30 @@
                     red.destructor();
                     done();
                 };
-                red.on('error', errorHandler);
-                red.on('ready', readyHandler);
+                red.once('error', errorHandler);
+                red.once('ready', readyHandler);
             });
         });
 
-        describe('#reading', function () {
-            it('Domain with no match, no fallback', function (done) {
-                red = new Driver('redis://:7001');
-
-                red.read(['unmatched.com', '*'], function (err, data) {
-                    expect(data).to.eql([
-                        [],
-                        [],
-                        []
-                    ]);
-                    red.destructor();
-                    done();
-                });
-            });
-
-            it('Single domain with a backend', function (done) {
-                red = new Driver('redis://:7001');
-                red.create('domain.com', 'myvhost', function () {
-                    red.add('domain.com', 'backend:1234', function () {
-                        red.read(['domain.com', '*'], function (err, data) {
-                            expect(data).to.eql([
-                                ['myvhost', 'backend:1234'],
-                                [],
-                                []
-                            ]);
-                            red.destructor();
-                            done();
-                        });
-                    });
-                });
-            });
-
-            it('Single domain with multiple backends', function (done) {
-                red = new Driver('redis://:7001');
-                red.add('domain.com', 'backend:4567', function () {
-                    red.read(['domain.com', '*'], function (err, data) {
-                        expect(data).to.eql([
-                            ['myvhost', 'backend:1234', 'backend:4567'],
-                            [],
-                            []
-                        ]);
-                        red.destructor();
-                        done();
-                    });
-                });
-            });
-
-            it('Single domain with multiple backends and fallback', function (done) {
-                red = new Driver('redis://:7001');
-                red.add('*', 'backend:910', function () {
-                    red.read(['domain.com', '*'], function (err, data) {
-                        expect(data).to.eql([
-                            ['myvhost', 'backend:1234', 'backend:4567'],
-                            ['backend:910'],
-                            []
-                        ]);
-                        red.destructor();
-                        done();
-                    });
-                });
-            });
-
-            it('Single domain with multiple backends and fallback plus dead', function (done) {
-                red = new Driver('redis://:7001');
-                red.mark('domain.com', 1, 'backend:4567', 2, 1, function () {
-                    red.read(['domain.com', '*'], function (err, data) {
-                        expect(data).to.eql([
-                            ['myvhost', 'backend:1234', 'backend:4567'],
-                            ['backend:910'],
-                            ['1']
-                        ]);
-
-                        // Now, let it expire
-                        setTimeout(function () {
-                            red.read(['domain.com', '*'], function (err, data) {
-                                expect(data).to.eql([
-                                    ['myvhost', 'backend:1234', 'backend:4567'],
-                                    ['backend:910'],
-                                    []
-                                ]);
-                                red.destructor();
-                                done();
-                            });
-                        }, 1000);
-                    });
-                });
-            });
+        describe('#operating', function () {
+            testReading(Driver, ['redis://:7001']);
         });
+
+        describe('#operating-use-prefix', function () {
+            testReading(Driver, ['redis://:7001/#someprefix']);
+        });
+
+        describe('#operating-use-database', function () {
+            testReading(Driver, ['redis://:7001/1#someprefix']);
+        });
+
+        describe('#operating-use-database-and-prefix', function () {
+            testReading(Driver, ['redis://:7001/2#someprefix']);
+        });
+
+        describe('#operating-use-wholeshit', function () {
+            testReading(Driver, ['redis://:superpassword@:7002/1#someprefix']);
+        });
+
     });
 })();
