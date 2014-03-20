@@ -15,10 +15,18 @@
     // var s3 = new Server();
 
     // Start all servers beforehand
-    before(function () {
-        // Simple server
+    before(function (done) {
         s1.start(['-bind-addr=127.0.0.1:8001', '-addr=127.0.0.1:8001', '-peer-bind-addr=127.0.0.1:8011',
             '-peer-addr=127.0.0.1:8011']);
+
+        // For some reason, etcd needs time to take-off the ground :(
+        s1.once('started', function () {
+            setTimeout(function () {
+                done();
+            }, 1500);
+        });
+
+        // Simple server
         // With authentication
         // s2.start(['-bind-addr=127.0.0.1:7002', '-addr=127.0.0.1:8002', '-peer-bind-addr=127.0.0.1:8012',
         // '-peer-addr=127.0.0.1:8012']);
