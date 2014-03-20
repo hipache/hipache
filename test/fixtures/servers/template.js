@@ -39,7 +39,8 @@
 
             child.on('close', function (code) {
                 npmlog.silly('Server#' + command, '', 'Done with exit code ' + code);
-            });
+                this.emit('stopped');
+            }.bind(this));
 
             if (stdin) {
                 child.stdin.write(stdin.join('\n') + '\n');

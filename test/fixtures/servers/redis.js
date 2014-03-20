@@ -22,6 +22,12 @@
             redisController.on('error', function () {});
         };
 
+        var pStop = this.stop;
+        this.stop = function () {
+            redisController.end();
+            pStop();
+        };
+
         this.feed = function (key, value, callback) {
             redisController.rpush(key, value, callback);
         };
