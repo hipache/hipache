@@ -10,12 +10,18 @@
     var util = require('util');
     var EventEmitter = require('events').EventEmitter;
 
-    var Server = function (command, args) {
+    var Generic = function (command, args) {
+        if (!((args = args || []) instanceof Array)) {
+            args = [args];
+        }
+
         var child;
 
         this.start = function (moreArgs, stdin) {
-            moreArgs = moreArgs ? args.concat(moreArgs) : args;
-            child = spawn(command, moreArgs, {cwd: process.cwd()});
+            if (!((moreArgs = moreArgs || []) instanceof Array)) {
+                moreArgs = [moreArgs];
+            }
+            child = spawn(command, args.concat(moreArgs), {cwd: process.cwd()});
             var stdout = '',
                 stderr = '';
 
@@ -43,9 +49,13 @@
             }.bind(this));
 
             if (stdin) {
-                child.stdin.write(stdin.join('\n') + '\n');
+                if (stdin instanceof Array) {
+                    stdin = stdin.join('\n');
+                }
+                child.stdin.write(stdin + '\n');
                 child.stdin.end();
             }
+            return this;
         };
 
         this.stop = function () {
@@ -53,10 +63,11 @@
                 child.kill('SIGTERM');
                 child = null;
             }
+            return this;
         };
     };
 
-    util.inherits(Server, EventEmitter);
-    module.exports = Server;
+    util.inherits(Generic, EventEmitter);
+    module.exports = Generic;
 
 })();

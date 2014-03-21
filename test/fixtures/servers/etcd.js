@@ -5,14 +5,14 @@
      * A server wrapper to manipulate Etcd server instances.
      */
 
-    var Server = require('./template');
+    var Generic = require('./generic');
     var util = require('util');
 
-    var EtcdServer = function () {
-        Server.apply(this, ['etcd', []]);
+    var Etcd = function () {
+        Generic.apply(this, ['etcd', []]);
     };
 
-    util.inherits(EtcdServer, Server);
-    module.exports = EtcdServer;
+    util.inherits(Etcd, Generic);
+    module.exports = Etcd;
 
 })();

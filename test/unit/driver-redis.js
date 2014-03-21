@@ -2,6 +2,13 @@
     /*globals describe:false, it:false, before:false, after:false, afterEach:false*/
     'use strict';
 
+    var npmlog = require('npmlog');
+
+    if (process.env.NO_REDIS) {
+        npmlog.error('Test', 'No redis server on this machine! No tests, then.');
+        return;
+    }
+
     // Useful if you want to see servers talk to you
     // require('npmlog').level = 'silly';
 
@@ -9,26 +16,29 @@
 
     var Driver = require('../../lib/drivers/redis');
     var Server = require('../fixtures/servers/redis');
+    var testReading = require('./driver-test-reading');
 
     var s1 = new Server();
     var s2 = new Server();
     var s3 = new Server();
 
-    // Start all servers beforehand
-    before(function () {
-        s1.start(['port 7001']);
-        s2.start(['port 7002', 'requirepass superpassword']);
-        s3.start(['port 7003']);
+    // Start all needed servers
+    before(function (done) {
+        s1.start('port 7001').once('started', function () {
+            s2.start(['port 7002', 'requirepass superpassword']).once('started', function () {
+                s3.start(['port 7003', 'slaveof 127.0.0.1 7001']).once('started', done);
+            });
+        });
     });
 
-    // Shutdown pips!
-    after(function () {
-        s1.stop();
-        s2.stop();
-        s3.stop();
+    // Shutdown
+    after(function (done) {
+        s1.stop().once('stopped', function () {
+            s2.stop().once('stopped', function () {
+                s3.stop().once('stopped', done);
+            });
+        });
     });
-
-    var testReading = require('./driver-test-reading');
 
     describe('Redis', function () {
         var red;
@@ -141,13 +151,18 @@
         });
 
         describe('#wacky', function () {
+            var s = new Server();
+            before(function (done) {
+                s.start('port 7004').once('started', done);
+            });
+
             it('loosing connection', function (done) {
-                red = new Driver(['redis://:7003']);
+                red = new Driver(['redis://:7004']);
                 var readyHandler = function (e) {
                     expect(red.connected).to.eql(true);
                     expect(e).to.eql(undefined);
                     // Kill the redis
-                    s3.stop();
+                    s.stop();
                 };
                 var errorHandler = function (e) {
                     // We are down
@@ -158,26 +173,29 @@
                 red.once('error', errorHandler);
                 red.once('ready', readyHandler);
             });
+
+        // Writing on a slave
+            // ['redis://:7003/4']
+
         });
 
-        describe('#operating', function () {
-            testReading(Driver, ['redis://:7001']);
-        });
-
-        describe('#operating-use-prefix', function () {
-            testReading(Driver, ['redis://:7001/#someprefix']);
-        });
-
-        describe('#operating-use-database', function () {
-            testReading(Driver, ['redis://:7001/1#someprefix']);
-        });
-
-        describe('#operating-use-database-and-prefix', function () {
-            testReading(Driver, ['redis://:7001/2#someprefix']);
-        });
-
-        describe('#operating-use-wholeshit', function () {
-            testReading(Driver, ['redis://:superpassword@:7002/1#someprefix']);
+        [
+        // Simple
+            ['redis://:7001'],
+        // Use prefixes
+            ['redis://:7001/#someprefix'],
+        // Use databases
+            ['redis://:7001/1'],
+        // Use database and prefix
+            ['redis://:7001/2#someprefix'],
+        // Use authentication, database and prefix
+            ['redis://:superpassword@:7002/1#someprefix']
+        // XXX Use master / slave. Too hard to predict replication timings
+            // ['redis://:7003/3', 'redis://:7001/3']
+        ].forEach(function (setup) {
+            describe(setup, function () {
+                testReading(Driver, setup);
+            });
         });
 
     });

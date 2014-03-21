@@ -1,5 +1,5 @@
 (function () {
-    /*globals describe:false, it:false, before:false, after:false*/
+    /*globals describe:false, it:false*/
     'use strict';
 
     // XXX need to test standalone npm modules providing drivers
@@ -7,36 +7,23 @@
     var expect = require('chai').expect;
 
     var factory = require('../../lib/drivers/factory');
-
-    var Server = require('../fixtures/servers/redis');
-
-    var s1 = new Server();
-
-    // Start a default server (will silently fail is there is one already
-    before(function (done) {
-        s1.start(['port 6379']);
-        s1.once('started', done);
-    });
-
-    // Shutdown
-    after(function (done) {
-        s1.stop();
-        s1.once('stopped', done);
-    });
+    var idriver = require('../../lib/drivers/ihipdriver');
 
     describe('Driver factory', function () {
-        ['redis:', 'memcached://', 'etcd://', 'etcds://', 'redis:///ß∞'].forEach(function (u) {
+        ['redis:', 'memcached://', 'etcd:', 'etcds://', 'redis:///ß∞'].forEach(function (u) {
             it(u, function () {
-                var driverInstance = factory.getDriver(u);
-                driverInstance.once('ready', function () {
-                    driverInstance.destructor();
-                });
                 var t = u.match(/^([a-z]+)/).pop();
                 if (t !== 'redis') {
                     t = t.replace(/s$/, '');
                 }
                 var driverClass = require('../../lib/drivers/' + t);
+
+                var driverInstance = factory.getDriver(u);
+                driverInstance.once('error', function () {});
+                driverInstance.once('ready', function () {});
+
                 expect(driverInstance).to.be.an.instanceof(driverClass);
+                expect(driverInstance).to.be.an.instanceof(idriver);
             });
         });
 

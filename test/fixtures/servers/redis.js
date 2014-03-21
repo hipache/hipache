@@ -5,42 +5,16 @@
      * A server wrapper to manipulate Redis server instances.
      */
 
-    var Server = require('./template');
+    var Generic = require('./generic');
     var util = require('util');
 
-    var redis = require('redis');
+    var Redis = function () {
+        Generic.apply(this, ['redis-server', ['-']]);
 
-    var RedisServer = function () {
-        Server.apply(this, ['redis-server', ['-']]);
-
-        var redisController;
-
-        var pStart = this.start;
-        this.start = function (stdin) {
-            pStart.apply(this, [null, stdin]);
-            redisController = redis.createClient(stdin.join('\n').match(/port ([0-9]+)/).pop(), '127.0.0.1');
-            redisController.on('error', function () {});
-        };
-
-        var pStop = this.stop;
-        this.stop = function () {
-            redisController.end();
-            pStop();
-        };
-
-        this.feed = function (key, value, callback) {
-            redisController.rpush(key, value, callback);
-        };
-
-        Object.defineProperty(this, 'client', {
-            get: function () {
-                return redisController;
-            }
-        });
-
+        this.start = this.start.bind(this, null);
     };
 
-    util.inherits(RedisServer, Server);
-    module.exports = RedisServer;
+    util.inherits(Redis, Generic);
+    module.exports = Redis;
 
 })();

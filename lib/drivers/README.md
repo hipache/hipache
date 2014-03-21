@@ -11,8 +11,8 @@ Alternatives
 
 Right now, we provide implementations and some tests for:
 
- * etcd (no ssl client cert auth support)
- * memcached (no sasl support)
+ * etcd (though: no ssl client cert auth support)
+ * memcached (though: no sasl support)
 
 Both of these should be considered highly experimental:
 
@@ -25,7 +25,7 @@ Both of these should be considered highly experimental:
 How to use...
 -------------
 
-Etcd: `npm install -g nodejs-etcd` and in your config file: `{"driver": "etcd://host:port"}`
+Etcd: `npm install -g node-etcd` and in your config file: `{"driver": "etcd://host:port"}`
 
 Memcached: `npm install -g memcached` and in your config file: `{"driver": "memcached://host:port"}`
 
@@ -37,12 +37,12 @@ Specifying which driver / options to use is a matter of writing an URL (in the c
 
  * `{"driver": "protocol://user:password@host:port/dbname#prefix"}`
  * for drivers that can work as master / slave (eg: redis), and if you want write operations to go to a specific server, specify an array of servers - the last one will be used exclusively for write operations and the first one for reads `{"driver": ["redis://:slaveport/", "redis://masterhost:masterport/"]}`
- * for drivers that support clusters of servers (eg: memcached), specify an array with the cluster full list: `{"driver": ["memcached://mainhost/", "memcached://otherhost/"]}`
- * for drivers that optionnaly support SSL (eg: etcd), add an extra "s" at the end of the protocol: `{"driver": "etcds://host:port"}`
+ * for drivers that support clusters of servers (eg: memcached), specify the cluster list: `{"driver": ["memcached://mainhost/", "memcached://otherhost/"]}`
+ * for drivers that optionnaly support SSL (eg: etcd), add an extra "s" at the end of the protocol name: `{"driver": "etcds://host:port"}`
 
 Examples using Redis:
 
- * Simplest form: `{"driver": "redis://"}`
+ * Simplest form: `{"driver": "redis:"}`
  * Specifying an host and port: `{"driver": "redis://host:port"}`
  * And a password: `{"driver": "redis://:password@host:port"}`
  * Using a specific database: `{"driver": "redis:///1"}`
@@ -56,13 +56,13 @@ If the driver supports a "database" concept (eg: Redis), you can specify it usin
 
  * `{"driver": "redis:///1"}`
 
-You can also specify prefixes that will be prepended to keys using hashes (if you are the kind of guy who customize PCs with flame stickers :-)):
+You can also specify prefixes that will be prepended to keys using hashes:
  * `{"driver": "redis:///1#someprefix"}`
 
 ... what you can't do
 ---------------------
 
-No, you can't mix different drivers at the same time.
+No, you can't mix different drivers.
 
 No, we are not adding optionnal drivers dependencies as Hipache dependencies - you *have* to `npm install (-g)` the driver dep manually.
 
@@ -71,8 +71,8 @@ Rolling your own
 
 You need to:
 
- * create a file in this folder named "myprovider.js", where myprovider is the protocol name that will be used by urls
- * create an instanciable class in that file that inherits IHipDriver
+ * create a file in this folder named "myprovider.js", where `myprovider` is the protocol name that will be used in driver urls
+ * create an instanciable class in that file that inherits `IHipDriver`
 
 Below is the bare minimum you need to get started:
 
@@ -116,7 +116,7 @@ You SHOULD implement the `create` and `add` methods to ease testing.
 
 You MAY additionnally implement the `destructor()` method if you want to do some cleanup/closing when we shutdown workers.
 
-Obviously, you might require additional dependencies - don't add them here, but instead try / catch your require and log some information about what you need.
+Obviously, you might require additional dependencies - don't add them here, but instead try / catch your require and log some information about what the user need to install to have your thing run.
 
 You have at your disposal `this.drivers`, an array that contains urls objects describing what endpoints the user requested (these are nodejs' urls).
 

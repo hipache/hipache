@@ -5,14 +5,14 @@
      * A server wrapper to manipulate Hipache server instances.
      */
 
-    var Server = require('./template');
+    var Generic = require('./generic');
     var util = require('util');
 
-    var HipacheServer = function () {
-        Server.apply(this, ['node', ['../../bin/hipache', '-c']]);
+    var Hipache = function () {
+        Generic.apply(this, ['node', ['../../bin/hipache', '-c']]);
     };
 
-    util.inherits(HipacheServer, Server);
-    module.exports = HipacheServer;
+    util.inherits(Hipache, Generic);
+    module.exports = Hipache;
 
 })();
