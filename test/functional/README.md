@@ -1,6 +1,8 @@
 Hipache tests
 =============
 
+<!> This is deprecated - tests now use mocha, though it's a bit rough in there, and some python tests have not been migrated yet. And it doesn't hurt to have these as well.<!>
+
 The tests use the Python `unittest` framework. Why the ... use Python test inside a Node.js project? Because the Q&A team working on Hipache is more familiar with Python, and it was more productive to let them use Python.
 
 

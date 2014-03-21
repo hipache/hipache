@@ -14,6 +14,7 @@
     var driverstests = ['./test/unit/driver-*'];
     var unittests = ['./test/unit/*.js', '!./test/unit/driver-*'];
     var functests = ['./test/functional/*.js'];
+    var alltests = ['./test/**/*.js'];
     var scripts = ['*.js', './bin/*', './lib/**/*.js', './test/**/*.js'];
 
     gulp.task('hint', function () {
@@ -56,14 +57,18 @@
             .pipe(mocha({ reporter: 'spec' }));
     });
 
+    gulp.task('test:all', function () {
+        return gulp.src(alltests)
+            .pipe(mocha({ reporter: 'spec' }));
+    });
 
     // var esconfig = JSON.parse(fs.readFileSync('./.eslintrc'));
 
-    gulp.task('hack-hipache', function () {
+    gulp.task('hack:hipache', function () {
         gulp.watch(scripts, ['test:unit-catched']);
     });
 
-    gulp.task('hack-drivers', function () {
+    gulp.task('hack:drivers', function () {
         gulp.watch(scripts, ['test:drivers-catched']);
     });
 

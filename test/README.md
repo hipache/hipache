@@ -26,8 +26,9 @@ Running the tests can be done directly using the mocha binary, or istanbul for c
  * `gulp test:unit`
  * `gulp test:drivers`
  * `gulp test:func`
- * `gulp hack-hipache`
- * `gulp hack-drivers`
+ * `gulp test:all`
+ * `gulp hack:hipache`
+ * `gulp hack:drivers`
 
 Dos and donts
 ------------------------

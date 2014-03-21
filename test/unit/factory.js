@@ -19,7 +19,9 @@
                 var driverClass = require('../../lib/drivers/' + t);
 
                 var driverInstance = factory.getDriver(u);
-                driverInstance.once('error', function () {});
+                driverInstance.once('error', function () {
+                    driverInstance.destructor();
+                });
                 driverInstance.once('ready', function () {
                     driverInstance.destructor();
                 });
