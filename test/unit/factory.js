@@ -20,7 +20,9 @@
 
                 var driverInstance = factory.getDriver(u);
                 driverInstance.once('error', function () {});
-                driverInstance.once('ready', function () {});
+                driverInstance.once('ready', function () {
+                    driverInstance.destructor();
+                });
 
                 expect(driverInstance).to.be.an.instanceof(driverClass);
                 expect(driverInstance).to.be.an.instanceof(idriver);

@@ -4,7 +4,7 @@
 
     var expect = require('chai').expect;
 
-    var LruCache = require('../lib/lru.js');
+    var LruCache = require('../../lib/lru.js');
 
     describe('Lru', function () {
         describe('#dumb lru', function () {
