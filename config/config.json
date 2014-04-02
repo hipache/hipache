@@ -15,6 +15,5 @@
             "cert": "/etc/ssl/ssl.crt"
         }
     },
-    "redisHost": "127.0.0.1",
-    "redisPort": 6379
+    "driver": ["redis://127.0.0.1:6379"]
 }

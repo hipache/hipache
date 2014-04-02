@@ -4,7 +4,7 @@
 
     var expect = require('chai').expect;
     var fs = require('fs');
-    var AccessLogger = require('../lib/accesslogger.js');
+    var AccessLogger = require('../../lib/accesslogger.js');
 
     describe('Logger', function () {
         describe('#creation', function () {

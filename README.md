@@ -1,13 +1,7 @@
 Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url]
-
-<!--
-Provision coverall for later use
-[![Coverage Status][coveralls-image]][coveralls-url]
--->
-
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url]
 
 What is it?
 -----------
@@ -59,11 +53,7 @@ backend.
                 "cert": "/etc/ssl/ssl.crt"
             }
         },
-        "redisHost": "127.0.0.1",
-        "redisPort": 6379,
-        "redisDatabase": 0,
-        "redisPassword": "password"
-
+        "driver": ["redis://:password@127.0.0.1:6379/0"]
     }
 
 * __server.accessLog__: location of the Access logs, the format is the same as
@@ -78,17 +68,13 @@ each backend (per worker)
 * __server.address__: IPv4 Addresses  listening (HTTP and HTTPS)
 * __server.address6__: IPv6 Addresses  listening (HTTP and HTTPS)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
-* __redisHost__ and __redisPort__: Redis configuration (you can omit those
-parameters to use the local redis on the default port)
-* __redisDatabase__: Redis number database (default 0)
-* __redisPassword__: Redis password (you can omit this if Redis doesn't require auth)
-* __redisMasterHost__ and __redisMasterPort__: Send redis write commands to
-master redis and other commands to redisHost/redisPort conf (assuming it could
-be a redis slave). You can omit this if Redis is not configured with
-master/slave arch)
-* __redisMasterPassword__: Redis master pasword (you can omit this if Redis
-doesn't require auth and if you're not using multi-redis arch)
+* __driver__: Redis url (you can omit this entirely to use the local redis on the default port)
 
+If you want a master/slave Redis, specify a second url for the master, eg: __driver__: ["redis://slave:port", "redis://master:port"].
+
+More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri.
+
+More infos about drivers in lib/drivers.
 
 ### 3. Spawn the server
 
@@ -272,3 +258,6 @@ Future improvements
 
 [depstat-url]: https://david-dm.org/dotcloud/hipache
 [depstat-image]: https://david-dm.org/dotcloud/hipache.png
+
+[codeclimate-url]: https://codeclimate.com/github/dotcloud/hipache
+[codeclimate-image]: https://codeclimate.com/github/dotcloud/hipache.png

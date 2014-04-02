@@ -1,0 +1,20 @@
+{
+    "server": {
+        "debug": true,
+        "accessLog": "/tmp/hipache-test.log",
+        "port": 1080,
+        "workers": 2,
+        "maxSockets": 100,
+        "deadBackendTTL": 30,
+        "tcpTimeout": 5,
+        "retryOnError": 0,
+        "deadBackendOn500": true,
+        "httpKeepAlive": false,
+        "https": {
+            "port": 1443,
+            "key": "./test/fixtures/configs/hipache-key.pem",
+            "cert": "./test/fixtures/configs/hipache-crt.pem"
+        }
+    },
+    "driver": "redis://127.0.0.1:7777"
+}
