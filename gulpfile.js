@@ -22,7 +22,8 @@
             // eslint(esconfig),
             // eslint.formatEach(esreporter),
             .pipe(jshint())
-            .pipe(jshint.reporter(jsreporter));
+            .pipe(jshint.reporter(jsreporter))
+            .pipe(jshint.reporter('fail'));
     });
 
     gulp.task('test:unit', function () {
@@ -36,7 +37,16 @@
             .pipe(mocha({ reporter: 'spec' }));
     });
 
-    gulp.task('test:unit-catched', ['hint'], function () {
+
+    gulp.task('hint-catched', function () {
+        return gulp.src(scripts)
+            // eslint(esconfig),
+            // eslint.formatEach(esreporter),
+            .pipe(jshint())
+            .pipe(jshint.reporter(jsreporter));
+    });
+
+    gulp.task('test:unit-catched', ['hint-catched'], function () {
         return gulp.src(unittests)
             .pipe(mocha({ reporter: 'spec' }).on("error", function (/*err*/) {
                 this.emit('end');
