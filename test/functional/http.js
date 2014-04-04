@@ -7,8 +7,8 @@
     var http = require('http');
     var Readable = require('stream').Readable;
     var fs = require('fs');
-    // var npmlog = require('npmlog');
-    // npmlog.level = 'silly';
+    var npmlog = require('npmlog');
+    npmlog.level = 'silly';
 
 
 
@@ -299,7 +299,7 @@
         this.timeout(100000);
         host('simple').connects('http://localhost:8201');
 
-        var stream = fs.createReadStream('/dev/urandom', {start: 0, end: 100000000});
+        var stream = fs.createReadStream('/dev/urandom', {start: 0, end: 1000000000});
         // var stream = fs.createReadStream('/Users/dmp/dev/dmp42/hipache/random', {start: 0, end: 100});
 
         // host('simple').puts('0123456478987878798789789', 201);
