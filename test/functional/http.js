@@ -138,6 +138,7 @@
 
     // Stop all running servers after the tests
     after(function (done) {
+        commander.redis.hack();
         commander.stopAll(done);
     });
 
