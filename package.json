@@ -34,10 +34,11 @@
     "author" : {
         "name" : "Samuel Alba",
         "email" : "sam.alba@gmail.com",
-        "url" : "http://www.dotcloud.com/"
+        "url" : "http://www.docker.com/"
     },
     "maintainer" : [
-        "Sam Alba <sam.alba@gmail.com>"
+        "Sam Alba <sam.alba@gmail.com>",
+        "Olivier Gambier <viapanda@gmail.com>"
     ],
     "repository": {
         "type": "git",
