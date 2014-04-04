@@ -7,8 +7,8 @@
     var http = require('http');
     var Readable = require('stream').Readable;
     var fs = require('fs');
-    var npmlog = require('npmlog');
-    npmlog.level = 'silly';
+    // var npmlog = require('npmlog');
+    // npmlog.level = 'silly';
 
 
 
