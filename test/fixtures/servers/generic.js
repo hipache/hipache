@@ -60,7 +60,7 @@
 
         this.stop = function () {
             if (child) {
-                child.kill('SIGTERM');
+                child.kill();
                 child = null;
             }
             return this;
