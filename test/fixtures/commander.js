@@ -41,11 +41,21 @@
                 start(red, config, callback);
                 red.once('started', function () {
                     driver = redis.createClient(config.match(/port ([0-9]+)/).pop(), '127.0.0.1');
+                    driver.on('error', function () {
+
+                    });
                 });
                 red.once('stopped', function () {
-                    console.warn('gonna stop whist');
-                    driver.end();
+                    if (driver) {
+                        driver.end();
+                    }
                 });
+            };
+
+            this.hack = function () {
+                // Force driver end
+                driver.end();
+                driver = null;
             };
 
             this.stop = function (callback) {
