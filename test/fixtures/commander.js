@@ -1,14 +1,13 @@
 (function () {
     'use strict';
 
-    var WebSocketServer = require('ws').Server;
+    // var WebSocketServer = require('ws').Server;
     var connect = require('connect');
     var http = require('http');
 
     var RedisServer = require('./servers/redis');
     var HipacheServer = require('./servers/hipache');
-
-    // var redis = require('redis');
+    var redis = require('redis');
 
     // , wss;//, hp;
 
@@ -18,52 +17,134 @@
     var Commander = function () {
         var servers = [];
 
-        this.startRedis = function (config, callback) {
-            config = config || 'port 7777';
-            var s = new RedisServer();
-            s.start(config).once('started', callback || function () {});
-            servers.push(s);
-        };
-
-        this.startHipache = function (config, callback) {
-            config = config || 'test/fixtures/configs/hipache-config.json';
-            var s = new HipacheServer();
-            s.start(config).once('started', callback || function () {});
-            servers.push(s);
-        };
-
-        this.startWs = function (port) {
-            var ws = new WebSocketServer({port: port});
-
-            ws.on('open', function () {
-                ws.send('pong:open');
+        var start = function (server, config, callback) {
+            server.once('started', callback || function () {});
+            server.once('stopped', function () {
+                servers.splice(servers.indexOf(server), 1);
             });
+            servers.push(server);
+            server.start(config);
+        };
 
-            ws.on('connection', function (ws) {
-                ws.on('message', function (message) {
-                    ws.send('pong:message:' + message);
+        var stop = function (server, callback) {
+            server.once('stopped', callback || function () {});
+            server.stop();
+        };
+
+        this.redis = new (function () {
+            var red;
+            var driver;
+
+            this.start = function (config, callback) {
+                red = new RedisServer();
+                config = config || 'port 7777';
+                start(red, config, callback);
+                red.once('started', function () {
+                    driver = redis.createClient(config.match(/port ([0-9]+)/).pop(), '127.0.0.1');
+                    driver.on('error', function () {
+
+                    });
                 });
-                ws.send('pong:connection');
+                red.once('stopped', function () {
+                    if (driver) {
+                        driver.end();
+                    }
+                });
+            };
+
+            this.hack = function () {
+                // Force driver end
+                driver.end();
+                driver = null;
+            };
+
+            this.stop = function (callback) {
+                red.once('stopped', callback || function () {});
+                red.stop();
+            };
+
+            this.declare = function (hostname, backends, callback) {
+                // Alt-syntax: [name, back1, back2], callback
+                if (hostname instanceof Array) {
+                    callback = backends;
+                    backends = hostname;
+                    hostname = backends.shift();
+                }
+                if (!(backends instanceof Array)) {
+                    backends = [backends];
+                }
+                backends.unshift(hostname);
+                backends.unshift('frontend:' + hostname);
+                driver.rpush(backends, callback);
+            };
+
+            this.show = function (host, callback) {
+                var m = driver.multi();
+                m.lrange('frontend:' + host, 0, -1);
+                m.exec(callback);
+            };
+
+            this.flush = function (callback) {
+                driver.flushdb(callback);
+            };
+        })();
+
+        this.hipache = new (function () {
+            this.start = function (config, callback) {
+                // Hipache needs quite some time to get of the ground, and we lack a signal...
+                start(new HipacheServer(), config || 'test/fixtures/configs/hipache-config.json', function () {
+                    if (callback) {
+                        setTimeout(callback, 1500);
+                    }
+                });
+            };
+        })();
+
+        this.startHttp = function (config, callback) {
+            var s = http.createServer(connect().use(config.middleware));
+
+            s.stop = s.close.bind(s, function () {
+                s.emit('stopped');
             });
-            return ws;
+
+            s.start = function (port) {
+                this.listen(port);
+                this.emit('started');
+            };
+
+            start(s, config.port, callback);
         };
 
-        this.startHttp = function (port, middleware) {
-            var app = connect().use(middleware);
-            var s = http.createServer(app);
-            s.listen(port);
-            return s;
-        };
-
-        this.stopAll = function (callback) {
+        var stopAll = this.stopAll = function (callback) {
             if (!servers.length) {
                 if (callback) {
                     callback();
                 }
                 return;
             }
-            servers.shift().stop().once('stopped', this.stopAll.bind(this, callback));
+            stop(servers[0], function () {
+                stopAll(callback);
+            });
         };
+
+
+        // this.startWs = function (port) {
+        //     var ws = new WebSocketServer({port: port});
+
+        //     ws.on('open', function () {
+        //         ws.send('pong:open');
+        //     });
+
+        //     ws.on('connection', function (ws) {
+        //         ws.on('message', function (message) {
+        //             ws.send('pong:message:' + message);
+        //         });
+        //         ws.send('pong:connection');
+        //     });
+        //     return ws;
+        // };
+
+
 
         // this.start = function () {
         //     // Redis
