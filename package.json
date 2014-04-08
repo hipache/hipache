@@ -16,7 +16,6 @@
         "lib" : "./lib"
     },
     "dependencies" : {
-        "read-installed" : "0.2.2",
         "http-proxy" : "git+https://github.com/samalba/node-http-proxy.git",
         "redis" : "0.8.x",
         "lru-cache": "2.2.x",
