@@ -4,369 +4,310 @@
 
     var expect = require('chai').expect;
     var commander = require('../fixtures/commander');
-    var redis = require('redis');
     var http = require('http');
+    var Readable = require('stream').Readable;
+    var fs = require('fs');
     // var npmlog = require('npmlog');
     // npmlog.level = 'silly';
 
 
-    var driver;
+
+    // Kinky helper to be used by tests
+    var host = function (name) {
+        return new (function () {
+            this.connects = function (backends) {
+                before(function (done) {
+                    commander.redis.declare(name, backends, done);
+                });
+                return this;
+            };
+
+            this.queries = function (method, stream, statusCode) {
+                var testName = 'Hostname ' + name;
+                if (!(statusCode instanceof Function)) {
+                    testName += ' should answer: ' + statusCode;
+                }
+                it(testName, function (done) {
+                    var opts = {
+                        hostname: hipacheHost,
+                        headers: {Host: name},
+                        port: hipachePort,
+                        path: '',
+                        method: method || 'GET'
+                    };
+
+                    if (stream && (stream instanceof Readable)) {
+                        opts.headers['Transfer-encoding'] = 'chunked';
+                    }
+
+                    var req = http.request(opts, function (res) {
+                        // Unless the connection is destroyed we are flooding the server...
+                        res.connection.destroy();
+
+                        if (!(statusCode instanceof Function)) {
+                            statusCode = statusCode.toString().split('-');
+                            var up = parseInt(statusCode.pop(), 10);
+                            expect(res.statusCode).to.be.below(up + 1);
+                            expect(res.statusCode).to.be.above(parseInt(statusCode.pop() || up, 10) - 1);
+                        } else {
+                            statusCode(res.statusCode);
+                        }
+                        done();
+                    });
+
+                    if (stream) {
+                        if (stream instanceof Readable) {
+                            stream.pipe(req);
+                            return;
+                        } else {
+                            req.write(JSON.stringify(stream));
+                        }
+                    }
+
+                    req.end();
+
+                });
+                return this;
+            };
+
+            // Consider these as generally without body
+            this.gets = this.queries.bind(this, 'GET', null);
+            this.heads = this.queries.bind(this, 'HEAD', null);
+            this.options = this.queries.bind(this, 'OPTIONS', null);
+            this.traces = this.queries.bind(this, 'TRACE', null);
+            this.deletes = this.queries.bind(this, 'DELETE', null);
+            this.posts = this.queries.bind(this, 'POST');
+            this.puts = this.queries.bind(this, 'PUT');
+
+        })();
+    };
+
+    host.flush = function () {
+        after(function (done) {
+            commander.redis.flush(done);
+        });
+    };
+
+
+    // A simple final middleware that returns given code
+    var okMiddleWare = function (code, req, res) {
+        // var bodyString = '';
+        req.on('data', function(chunk) {
+            chunk.toString();
+        });
+
+        req.on('end', function() {
+            res.statusCode = code;
+            res.end('Shoobidouwa\n');
+            req.connection.destroy();
+            // console.warn('Got body', bodyString);
+        });
+    };
+
+
+
 
     // Start redis
     before(function (done) {
-        commander.startRedis(null, done);
-    });
-
-    // Start client
-    before(function () {
-        driver = redis.createClient(7777, '127.0.0.1');
+        commander.redis.start(null, done);
     });
 
     // Start hipache
     before(function (done) {
-        this.timeout(5000);
-        // Hipache needs quite some time to get of the ground, and we lack a signal...
-        commander.startHipache(null, function () {
-            setTimeout(done, 2000);
-        });
+        commander.hipache.start(null, done);
     });
 
-    // Start 10 httpd, starting with port 2080 and answer code 201
-    var httpdcount = 10;
-    var httpdcountok = 7;
-    var port = 2080;
-    var code = 201;
-    var httpd = [];
-    for (var x = 0; x < httpdcount; x++) {
-        httpd.push('');
-    }
+    // Where to connect...
+    var hipachePort = 1080;
+    var hipacheHost = '127.0.0.1';
 
-    // Startd httpd daemon pool with ok middleware
-    var okMiddleWare = function (code, req, res) {
-        res.statusCode = code;
-        res.setHeader('X-Requested', req.headers.host);
-        res.end('Shoobidouwa\n');
-        req.connection.destroy();
-    };
+    // A stack of httpd
+    before(function () {
+        commander.startHttp({port: 8201, middleware: okMiddleWare.bind({}, 201)});
+        commander.startHttp({port: 8202, middleware: okMiddleWare.bind({}, 202)});
+        commander.startHttp({port: 8203, middleware: okMiddleWare.bind({}, 203)});
+        commander.startHttp({port: 8204, middleware: okMiddleWare.bind({}, 204)});
+        commander.startHttp({port: 8205, middleware: okMiddleWare.bind({}, 205)});
+        commander.startHttp({port: 8206, middleware: okMiddleWare.bind({}, 206)});
+        commander.startHttp({port: 8207, middleware: okMiddleWare.bind({}, 207)});
 
-    httpd.forEach(function (v, k) {
-        before(function (done) {
-            // Have failing backends after
-            httpd.shift();
-            var k2 = k;
-            if (k >= httpdcountok) {
-                k2 += 300;
-            }
-            httpd.push(commander.startHttp(port + k, okMiddleWare.bind({}, code + k2)));
-            done();
-        });
-    }, this);
+        commander.startHttp({port: 8501, middleware: okMiddleWare.bind({}, 501)});
+        commander.startHttp({port: 8502, middleware: okMiddleWare.bind({}, 502)});
+        commander.startHttp({port: 8503, middleware: okMiddleWare.bind({}, 503)});
+    });
 
-
-    // Helpers methods
-    var getter = function (hostname, callback) {
-        var options = {
-            hostname: '127.0.0.1',
-            headers: {Host: hostname},
-            port: 1080,
-            path: '',
-            method: 'GET'/*,
-            callback: callback*/
-        };
-
-        var req = http.request(options, callback);
-        // req.on('error', function () {
-        //     console.warn('aaaa', arguments);
-        // });
-        req.end();
-    };
-
-    var bulkTest = function (tests) {
-        Object.keys(tests).forEach(function (host) {
-            it(host, function (done) {
-                getter(host, function (res) {
-                    // console.warn(res.headers, res.statusCode);
-                    expect(res.statusCode).to.eql(tests[host]);
-                    // So, unless the connection is destroy, we are obviously flooding
-                    // the server...
-                    res.connection.destroy();
-                    done();
-                });
-            });
-        });
-    };
+    // Stop all running servers after the tests
+    after(function (done) {
+        commander.redis.hack();
+        commander.stopAll(done);
+    });
 
     describe('Domain matching, single backends', function () {
-
         describe('#alone-simple-domain', function () {
-            before(function (done) {
-                driver.rpush(['frontend:simple', 'simple', 'http://localhost:' + port], done);
-            });
+            host('simple').connects('http://localhost:8201');
 
-            bulkTest({
-                'simple': code
-            });
+            host('simple').gets(201);
+            host('simple').heads(201);
+            host('simple').options(201);
+            host('simple').traces(201);
+            host('simple').deletes(201);
+            host('simple').posts({}, 201);
+            host('simple').puts({}, 201);
 
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
 
-        describe('#multiple-simple-domains', function () {
-            before(function (done) {
-                driver.rpush(['frontend:simple', 'simple', 'http://localhost:' + port], done);
-            });
+        describe('#multiple-simple-domains at a given time', function () {
+            host('simple').connects('http://localhost:8201');
+            host('foo.bar').connects('http://localhost:8202');
+            host('a.b.c.d.e.f.g.h.i.j.k.l.m').connects('http://localhost:8203');
 
-            before(function (done) {
-                driver.rpush(['frontend:foo.bar', 'foo.bar', 'http://localhost:' + (port + 1)], done);
-            });
+            host('simple').gets(201);
+            host('foo.bar').gets(202);
+            host('a.b.c.d.e.f.g.h.i.j.k.l.m').gets(203);
 
-            before(function (done) {
-                driver.rpush(['frontend:a.b.c.d.e.f.g.h.i.j.k.l.m', 'a.b.c.d.e.f.g.h.i.j.k.l.m',
-                    'http://localhost:' + (port + 2)], done);
-            });
-
-            bulkTest({
-                'simple': code,
-                'foo.bar': code + 1,
-                'a.b.c.d.e.f.g.h.i.j.k.l.m': code + 2
-            });
-
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
 
         describe('#single-wildcard', function () {
-            before(function (done) {
-                driver.rpush(['frontend:*.foo.bar', '*.foo.bar', 'http://localhost:' + port], done);
-            });
+            host('*.foo.bar').connects('http://localhost:8201');
 
-            bulkTest({
-                'test.foo.bar': code,
-                'pipo.foo.bar': code,
-                'foo.bar': 400
-            });
+            host('test.foo.bar').gets(201);
+            host('pipo.foo.bar').gets(201);
+            host('foo.bar').gets(400);
 
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
 
         describe('#single-wildcard-short-domain', function () {
-            before(function (done) {
-                driver.rpush(['frontend:*.foo', '*.foo', 'http://localhost:' + port], done);
-            });
+            host('*.foo').connects('http://localhost:8201');
 
-            bulkTest({
-                'bar.foo': code,
-                'foo.bar': 400,
-                'foo': 400
-            });
+            host('bar.foo').gets(201);
+            host('foo.bar').gets(400);
+            host('foo').gets(400);
 
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
 
         describe('#wildcard-priority', function () {
-            before(function (done) {
-                driver.rpush(['frontend:*.foo.bar', '*.foo.bar', 'http://localhost:' + port], done);
-            });
+            host('*.foo.bar').connects('http://localhost:8201');
+            host('foo.bar').connects('http://localhost:8202');
+            host('pipo.foo.bar').connects('http://localhost:8203');
+            host('*.baz.foo.bar').connects('http://localhost:8204');
 
-            before(function (done) {
-                driver.rpush(['frontend:foo.bar', 'foo.bar', 'http://localhost:' + (port + 1)], done);
-            });
+            host('test.foo.bar').gets(201);
+            host('foo.bar').gets(202);
+            host('pipo.foo.bar').gets(203);
+            host('qux.baz.foo.bar').gets(204);
+            host('qux.bix.foo.bar').gets(201);
+            host('qux.bix.bar.foo').gets(400);
 
-            before(function (done) {
-                driver.rpush(['frontend:pipo.foo.bar', 'pipo.foo.bar', 'http://localhost:' + (port + 2)], done);
-            });
-
-            before(function (done) {
-                driver.rpush(['frontend:*.baz.foo.bar', '*.baz.foo.bar', 'http://localhost:' + (port + 3)], done);
-            });
-
-            bulkTest({
-                'test.foo.bar': code,
-                'foo.bar': code + 1,
-                'pipo.foo.bar': code + 2,
-                'qux.baz.foo.bar': code + 3,
-                'qux.bix.foo.bar': code,
-                'qux.bix.bar.foo': 400
-            });
-
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
 
         describe('#wildcard-depth', function () {
-            before(function (done) {
-                driver.rpush(['frontend:*.quux', '*.quux', 'http://localhost:' + port], done);
-            });
+            host('*.quux').connects('http://localhost:8201');
+            host('*.qux.quux').connects('http://localhost:8202');
+            host('*.baz.qux.quux').connects('http://localhost:8203');
+            host('*.bar.baz.qux.quux').connects('http://localhost:8204');
+            host('foo.bar.baz.qux.quux').connects('http://localhost:8205');
+            host('*.foo.bar.baz.qux.quux').connects('http://localhost:8206');
+            host('*.quuux.foo.bar.baz.qux.quux').connects('http://localhost:8207');
 
-            before(function (done) {
-                driver.rpush(['frontend:*.qux.quux', '*.qux.quux', 'http://localhost:' + (port + 1)], done);
-            });
+            host('too.deep.quuux.foo.bar.baz.qux.quux').gets(206);
+            host('too.deep.foo.bar.baz.qux.quux').gets(206);
+            host('foo.bar.baz.qux.quux').gets(205);
+            host('bar.bar.baz.qux.quux').gets(204);
+            host('foo.baz.qux.quux').gets(203);
+            host('foo.qux.quux').gets(202);
+            host('foo.quux').gets(201);
 
-            before(function (done) {
-                driver.rpush(['frontend:*.baz.qux.quux', '*.baz.qux.quux', 'http://localhost:' + (port + 2)], done);
-            });
-
-            before(function (done) {
-                driver.rpush(['frontend:*.bar.baz.qux.quux', '*.bar.baz.qux.quux',
-                    'http://localhost:' + (port + 3)], done);
-            });
-
-            before(function (done) {
-                driver.rpush(['frontend:foo.bar.baz.qux.quux', 'foo.bar.baz.qux.quux',
-                    'http://localhost:' + (port + 4)], done);
-            });
-
-            before(function (done) {
-                driver.rpush(['frontend:*.foo.bar.baz.qux.quux', '*.foo.bar.baz.qux.quux',
-                    'http://localhost:' + (port + 5)], done);
-            });
-
-            before(function (done) {
-                driver.rpush(['frontend:*.quuux.foo.bar.baz.qux.quux', '*.quuux.foo.bar.baz.qux.quux',
-                    'http://localhost:' + (port + 6)], done);
-            });
-
-
-            bulkTest({
-                'too.deep.quuux.foo.bar.baz.qux.quux': code + 5,
-                'too.deep.foo.bar.baz.qux.quux': code + 5,
-                'foo.bar.baz.qux.quux': code + 4,
-                'bar.bar.baz.qux.quux': code + 3,
-                'foo.baz.qux.quux': code + 2,
-                'foo.qux.quux': code + 1,
-                'foo.quux': code
-            });
-
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
 
     });
 
     describe('Multi backends', function () {
         describe('#alone-simple-domain', function () {
-            before(function (done) {
-                driver.rpush(['frontend:foobar', 'foobar',
-                    'http://localhost:' + port,
-                    'http://localhost:' + (port + 1),
-                    'http://localhost:' + (port + 2)
-                ], done);
-            });
+            host('foobar').connects(['http://localhost:8201', 'http://localhost:8202', 'http://localhost:8203']);
 
             for (var x = 0; x < 20; x++) {
-                /*jshint loopfunc: true */
-                it('foobar' + x, function (done) {
-                    getter('foobar', function (res) {
-                        expect(res.statusCode).to.be.above(code - 1);
-                        expect(res.statusCode).to.be.below(code + 3);
-                        res.connection.destroy();
-                        done();
-                    });
-                });
+                host('foobar').gets('201-203');
             }
 
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
+
         });
 
         describe('#absent-simple-domain', function () {
-            bulkTest({
-                'simple': 400
-            });
+            host('simple').gets(400);
         });
 
         describe('#one-of-the-backends-is-down', function () {
-            before(function (done) {
-                driver.rpush(['frontend:simple', 'simple', 'http://localhost:' + port, 'http://localhost:15000'], done);
-            });
+            host('simple').connects(['http://localhost:8201', 'http://localhost:15000']);
 
             // Let's try to beat the odds...
             var madeFail;
             for (var x = 0; x < 20; x++) {
                 /*jshint loopfunc: true */
-                it('try hitting the unbound backend' + x, function (done) {
-                    getter('simple', function (res) {
-                        // If we haven't hit the failing backend yet, and we have a failing code
-                        // then mark as failed
-                        if (!madeFail && (res.statusCode === 502)) {
-                            madeFail = true;
-                        } else {
-                            // Otherwise, by all means we should get a 200
-                            expect(res.statusCode).to.eql(code);
-                        }
-                        res.connection.destroy();
-                        done();
-                    });
+                host('simple').gets(function (response) {
+                    // If we haven't hit the failing backend yet, and we have a failing code then mark as failed
+                    if (!madeFail && (response === 502)) {
+                        madeFail = true;
+                    } else {
+                        // Otherwise, by all means we should get a normal response code
+                        expect(response).to.eql(201);
+                    }
                 });
             }
 
-            it('did hit the unbound backend', function () {
+            it('did hit the unbound backend once', function () {
                 expect(madeFail).to.eql(true);
             });
 
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
 
 
         describe('#one-of-the-backends-is-failing', function () {
-            before(function (done) {
-                driver.rpush(['frontend:simple', 'simple', 'http://localhost:' + port,
-                    'http://localhost:' + (port + httpdcountok)], done);
-            });
+            host('simple').connects(['http://localhost:8201', 'http://localhost:8501']);
 
             // Let's try to beat the odds...
             var madeFail;
             for (var x = 0; x < 20; x++) {
                 /*jshint loopfunc: true */
-                it('try hitting the failing backend' + x, function (done) {
-                    getter('simple', function (res) {
-                        // If we haven't hit the failing backend yet, and we have a failing code
-                        // then mark as failed
-                        if (!madeFail && (res.statusCode === code + 300 + httpdcountok)) {
-                            madeFail = true;
-                        } else {
-                            // Otherwise, by all means we should get a 200
-                            expect(res.statusCode).to.eql(code);
-                        }
-                        res.connection.destroy();
-                        done();
-                    });
+                host('simple').gets(function (response) {
+                    // If we haven't hit the failing backend yet, and we have a failing code then mark as failed
+                    if (!madeFail && (response === 501)) {
+                        madeFail = true;
+                    } else {
+                        // Otherwise, by all means we should get a normal response code
+                        expect(response).to.eql(201);
+                    }
                 });
             }
 
-            it('did hit the failing backend', function () {
+            it('did hit the unbound backend once', function () {
                 expect(madeFail).to.eql(true);
             });
 
-            after(function (done) {
-                driver.flushdb(done);
-            });
+            host.flush();
         });
     });
 
-    // Stop httpd daemon pool
-    httpd.forEach(function () {
-        after(function (done) {
-            httpd.shift().close(done);
-        });
+    describe('Uploading 500MB to the server', function () {
+        this.timeout(100000);
+        host('simple').connects('http://localhost:8201');
+
+        var stream = fs.createReadStream('/dev/urandom', {start: 0, end: 500000000});
+        // var stream = fs.createReadStream('/Users/dmp/dev/dmp42/hipache/random', {start: 0, end: 100});
+
+        // host('simple').puts('0123456478987878798789789', 201);
+        host('simple').puts(stream, 201);
+
+        host.flush();
     });
 
-    // Stop redis driver, redis server and hipache
-    after(function (done) {
-        driver.end();
-        commander.stopAll(done);
-    });
 
 
 })();

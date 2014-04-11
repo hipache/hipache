@@ -22,7 +22,7 @@
     "lib": "./lib"
   },
   "dependencies": {
-    "http-proxy": "1.0.x",
+    "http-proxy": "1.0.2",
     "redis": "0.10.x",
     "lru-cache": "2.5.x",
     "optimist": "0.6.x"
