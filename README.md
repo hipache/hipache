@@ -235,8 +235,8 @@ match itself first, then *.bar.baz.qux.quux, then *.baz.qux.quux, etc.
 ### Active Health-Check
 
 Even though Hipache support passive health checks, it's also possible to run
-active health checks. This mechanism requires to run an external program,
-you can find it on the [hipache-hchecker project page.](https://github.com/samalba/hipache-hchecker)
+active health checks. This mechanism requires to run an external program. There
+are two solutions available: [hipache-hchecker (golang)](https://github.com/samalba/hipache-hchecker) and [hipcheck (node.js)](https://github.com/runnable/hipcheck).
 
 
 Future improvements
