@@ -22,7 +22,7 @@
         "optimist": "0.3.x"
     },
     "scripts" : {
-        "start" : "node bin/hipache",
+        "start" : "./bin/hipache",
         "test" : "nodeunit test/test_*.js",
         "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
     },
