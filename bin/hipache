@@ -1,20 +1,20 @@
 #!/bin/sh
 
-ROOT_DIR=`pwd -P`
+ROOT_DIR="`pwd -P`"
 
-cd `dirname $0`
-TARGET_FILE=`basename $0`
+cd "`dirname \"$0\"`"
+TARGET_FILE="`basename \"$0\"`"
 
 # Iterate down a (possible) chain of symlinks
 while [ -L "$TARGET_FILE" ]
 do
-    TARGET_FILE=`readlink $TARGET_FILE`
-    cd `dirname $TARGET_FILE`
-    TARGET_FILE=`basename $TARGET_FILE`
+    TARGET_FILE="`readlink \"$TARGET_FILE\"`"
+    cd "`dirname \"$TARGET_FILE\"`"
+    TARGET_FILE="`basename \"$TARGET_FILE\"`"
 done
 
-BASE_DIR=`pwd -P`
+BASE_DIR="`pwd -P`"
 
-cd $ROOT_DIR
+cd "$ROOT_DIR"
 
-exec node --expose-gc --always-compact -- "${BASE_DIR}/hipache.js" $@
+exec node --expose-gc --always-compact -- "${BASE_DIR}/hipache.js" "$@"
