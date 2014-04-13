@@ -1,6 +1,6 @@
 {
     "name" : "hipache",
-    "version" : "0.2.8",
+    "version" : "0.2.9",
     "description" : "Complete high-scaled reverse-proxy solution",
     "keywords": [
         "reverse",
@@ -16,14 +16,13 @@
         "lib" : "./lib"
     },
     "dependencies" : {
-        "read-installed" : "0.2.2",
         "http-proxy" : "git+https://github.com/samalba/node-http-proxy.git",
         "redis" : "0.8.x",
         "lru-cache": "2.2.x",
         "optimist": "0.3.x"
     },
     "scripts" : {
-        "start" : "node bin/hipache",
+        "start" : "./bin/hipache",
         "test" : "nodeunit test/test_*.js",
         "jshint": "jshint --config jshint.json -- bin/hipache lib/*.js"
     },
