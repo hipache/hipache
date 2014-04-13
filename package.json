@@ -1,6 +1,6 @@
 {
   "name": "hipache",
-  "version": "0.2.5",
+  "version": "0.3.0",
   "description": "Complete high-scaled reverse-proxy solution",
   "keywords": [
     "reverse",
@@ -46,7 +46,7 @@
     "connect": "^2.14.3"
   },
   "scripts": {
-    "start": "node bin/hipache",
+    "start": "./bin/hipache",
     "test": "istanbul test _mocha --report html -- test/**/*.js --reporter spec",
     "coveralls": "istanbul cover _mocha --report lcovonly -- test/**/*.js -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "hint": "gulp hint"
