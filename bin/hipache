@@ -1,20 +1,54 @@
 #!/bin/sh
+':' //; exec node --expose-gc --always-compact -- "$0" "$@"
 
-ROOT_DIR="`pwd -P`"
+'use strict';
 
-cd "`dirname \"$0\"`"
-TARGET_FILE="`basename \"$0\"`"
+var fs = require('fs'),
+    path = require('path'),
+    cluster = require('cluster'),
+    util = require('util'),
+    argv = require('optimist').argv,
+    master = require('../lib/master'),
+    worker = require('../lib/worker');
 
-# Iterate down a (possible) chain of symlinks
-while [ -L "$TARGET_FILE" ]
-do
-    TARGET_FILE="`readlink \"$TARGET_FILE\"`"
-    cd "`dirname \"$TARGET_FILE\"`"
-    TARGET_FILE="`basename \"$TARGET_FILE\"`"
-done
+var help = [
+    'usage: hipache [options]',
+    '',
+    'Starts a hipache server',
+    '',
+    'options:',
+    '   -c, --config CONFIGFILE     Location of the configuration file',
+    '   -h, --help                  Display help'
+].join('\n');
 
-BASE_DIR="`pwd -P`"
+var config;
 
-cd "$ROOT_DIR"
 
-exec node --expose-gc --always-compact -- "${BASE_DIR}/hipache.js" "$@"
+if (argv.h || argv.help) {
+    return util.puts(help);
+}
+
+if (argv.c || argv.config) {
+    var configFile = argv.c ? argv.c : argv.config;
+    var data = fs.readFileSync(configFile);
+    util.log('Loading config from ' + configFile);
+    config = JSON.parse(data);
+} else {
+    config = (function (configFile) {
+        if (process.env.SETTINGS_FLAVOR !== undefined) {
+            path = configFile.replace(/\.json$/, '_' + process.env.SETTINGS_FLAVOR + '.json');
+        }
+        util.log('Loading config from ' + configFile);
+        var data = fs.readFileSync(configFile);
+        return JSON.parse(data);
+    }(path.resolve(__dirname, '..', 'config', 'config.json')));
+}
+
+if (cluster.isMaster) {
+    // Run the master
+    master(config);
+    util.log('Server is running. ' + JSON.stringify(config.server));
+} else {
+    // Run the worker
+    worker(config);
+}
