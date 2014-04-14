@@ -7,7 +7,7 @@ var fs = require('fs'),
     path = require('path'),
     cluster = require('cluster'),
     util = require('util'),
-    argv = require('optimist').argv,
+    argv = require('minimist')(process.argv.slice(2)),
     master = require('../lib/master'),
     worker = require('../lib/worker');
 

@@ -25,7 +25,7 @@
     "http-proxy": "1.0.2",
     "redis": "0.10.x",
     "lru-cache": "2.5.x",
-    "optimist": "0.6.x"
+    "minimist": "0.0.8"
   },
   "devDependencies": {
     "mocha": "1.x",
