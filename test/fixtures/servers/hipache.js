@@ -9,7 +9,7 @@
     var util = require('util');
 
     var Hipache = function () {
-        Generic.apply(this, ['node', ['bin/hipache', '-c']]);
+        Generic.apply(this, ['./bin/hipache', ['-c']]);
     };
 
     util.inherits(Hipache, Generic);
