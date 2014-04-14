@@ -110,7 +110,7 @@ Now, that will throw miserably, because you MUST implement at least the followin
 
 You SHOULD BETTER send a `IDriver.READY` event when your provider is ready.
 
-You SHOULD catch all your exceptions/errors and instead send an `error` event.
+You SHOULD catch all your exceptions/errors and instead send an `IDriver.ERROR` event.
 
 You SHOULD implement the `create` and `add` methods to ease testing.
 
