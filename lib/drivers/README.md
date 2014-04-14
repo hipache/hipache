@@ -80,7 +80,7 @@ Below is the bare minimum you need to get started:
 (function () {
     'use strict';
     var util = require('util');
-    var IDriver = require('./IDriver');
+    var IDriver = require('../utils/idriver');
 
     var MyProvider = function () {
         IDriver.apply(this, arguments);
