@@ -3,6 +3,7 @@
     'use strict';
 
     var npmlog = require('npmlog');
+    var DriverError = require('../../lib/utils/drivererror');
 
     if (process.env.NO_REDIS) {
         npmlog.error('Test', 'No redis server on this machine! No tests, then.');
@@ -54,7 +55,8 @@
                 // Expect to reenter on error, not connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(false);
-                    expect(e).to.eql(new Error());
+                    expect(e.name).to.eql('DriverError');
+                    expect(e.category).to.eql(DriverError.UNSPECIFIED);
                     // Force stop NOW
                     red.destructor();
                     done();
@@ -67,7 +69,8 @@
                 // Expect to reenter on error, not connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(false);
-                    expect(e).to.eql(new Error());
+                    expect(e.name).to.eql('DriverError');
+                    expect(e.category).to.eql(DriverError.UNSPECIFIED);
                     // Force stop NOW
                     red.destructor();
                     done();
@@ -112,7 +115,8 @@
                 // Expect to reenter on error, connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(true);
-                    expect(e).to.eql(new Error());
+                    expect(e.name).to.eql('DriverError');
+                    expect(e.category).to.eql(DriverError.UNSPECIFIED);
                     // Force stop NOW
                     red.destructor();
                     done();
@@ -126,7 +130,8 @@
                 // Expect to reenter on error, connected
                 var handler = function (e) {
                     expect(red.connected).to.eql(true);
-                    expect(e).to.eql(new Error());
+                    expect(e.name).to.eql('DriverError');
+                    expect(e.category).to.eql(DriverError.UNSPECIFIED);
                     // Force stop NOW
                     red.destructor();
                     done();
@@ -166,7 +171,8 @@
                 };
                 var errorHandler = function (e) {
                     // We are down
-                    expect(e).to.eql(new Error());
+                    expect(e.name).to.eql('DriverError');
+                    expect(e.category).to.eql(DriverError.UNSPECIFIED);
                     red.destructor();
                     done();
                 };

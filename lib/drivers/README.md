@@ -72,7 +72,7 @@ Rolling your own
 You need to:
 
  * create a file in this folder named "myprovider.js", where `myprovider` is the protocol name that will be used in driver urls
- * create an instanciable class in that file that inherits `IHipDriver`
+ * create an instanciable class in that file that inherits `IDriver`
 
 Below is the bare minimum you need to get started:
 
@@ -80,13 +80,13 @@ Below is the bare minimum you need to get started:
 (function () {
     'use strict';
     var util = require('util');
-    var IHipDriver = require('./ihipdriver');
+    var IDriver = require('../utils/idriver');
 
     var MyProvider = function () {
-        IHipDriver.apply(this, arguments);
+        IDriver.apply(this, arguments);
     };
 
-    util.inherits(MyProvider, IHipDriver);
+    util.inherits(MyProvider, IDriver);
 
     module.exports = MyProvider;
 })();
@@ -108,9 +108,9 @@ Now, that will throw miserably, because you MUST implement at least the followin
 
 2. `mark = function (frontend, id, url, len, ttl)` a method to mark a given backend as dead.
 
-You SHOULD BETTER send a `IHipDriver.READY` event when your provider is ready.
+You SHOULD BETTER send a `IDriver.READY` event when your provider is ready.
 
-You SHOULD catch all your exceptions/errors and instead send a `IHipDriver.ERROR` event.
+You SHOULD catch all your exceptions/errors and instead send an `IDriver.ERROR` event.
 
 You SHOULD implement the `create` and `add` methods to ease testing.
 
