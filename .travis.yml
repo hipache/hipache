@@ -24,3 +24,6 @@ script:
     - sudo apt-get install python-pip
     - (cd test/functional && sudo pip install -r requirements.txt)
     - (cd test/functional && python -m unittest discover)
+
+after_script:
+    - npm run coveralls
