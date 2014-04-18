@@ -1,18 +1,20 @@
 language: node_js
 node_js:
-    - "0.11"
+    # XXX right now, segfaulting on the 500MB upload
+    # - "0.11"
     - "0.10"
 
 env:
+    # Don't know yet how to install etcd on travis ubuntu, so disable the tests
     - NO_ETCD=true
 
 before_install:
     - sudo apt-get update
-    - npm install -g gulp
     - sudo apt-get install redis-server memcached
+    - npm install -g gulp
 
 after_install:
-    # Pythonic tests require these to be started manually
+    # Pythonic tests require
     - sudo apt-get install python-pip
     - redis-server &
     - ./bin/hipache -c config/config_test.json &
