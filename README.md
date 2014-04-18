@@ -1,8 +1,7 @@
 Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url]
-[![Stories in Ready][waffle-image]][waffle-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url] [![Stories in Ready][waffle-image]][waffle-url]
 
 What is it?
 -----------
