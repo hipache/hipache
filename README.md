@@ -22,7 +22,7 @@ Hipache is based on the node-http-proxy library.
 Run it!
 -------
 
-### 1. Install it
+### 1. Installation
 
 From the shell:
 
@@ -31,12 +31,9 @@ From the shell:
 *The '-g' option will make the 'hipache' bin-script available system-wide (usually linked from '/usr/local/bin')*
 
 
-### 2. Configuring the server (config.json)
+### 2. Configuration (config.json)
 
-dotCloud proxy2 uses a Redis server to manage its configuration (and to share
-its state across the multiple workers). You can use the Redis server to change
-its configuration while it's running or simply check the health state of a
-backend.
+Basic Hipache configuration is described in a json file. For example:
 
     {
         "server": {
@@ -52,7 +49,7 @@ backend.
                 "cert": "/etc/ssl/ssl.crt"
             }
         },
-        "driver": ["redis://:password@127.0.0.1:6379/0"]
+        "driver": "redis://:password@127.0.0.1:6379/0"
     }
 
 * __server.accessLog__: location of the Access logs, the format is the same as
@@ -63,34 +60,28 @@ master process does not serve any request)
 * __server.maxSockets__: The maximum number of sockets which can be opened on
 each backend (per worker)
 * __server.deadBackendTTL__: The number of seconds a backend is flagged as
-`dead' before retrying to proxy another request to it
+`dead' before retrying to proxy another request to it (doesn't apply if you are using a third-party health checker)
 * __server.address__: IPv4 and IPv6 Addresses listening (HTTP and HTTPS)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
-* __driver__: Redis url (you can omit this entirely to use the local redis on the default port)
+* __driver__: Redis url (you can omit this entirely to use the local redis on the default port). If you want a master/slave Redis, specify a second url for the master, eg: `driver: ["redis://slave:port", "redis://master:port"]`. More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri. More infos about drivers in [lib/drivers](tree/master/lib).
 
-If you want a master/slave Redis, specify a second url for the master, eg: __driver__: ["redis://slave:port", "redis://master:port"].
+### 3. Spawning
 
-More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri.
-
-More infos about drivers in lib/drivers.
-
-### 3. Spawn the server
-
-From the shell:
+From the shell (defaults to using the `config/config.json` file):
 
     $ hipache
 
-Or if you use the port 80:
+If you use a privileged port (eg: 80):
 
     $ sudo hipache
 
-Or by specifying your configuration file:
+If you want to use a specific configuration file:
 
-    $ hipache --config config.json
+    $ hipache --config path/to/someConfig.json
 
 __Managing multiple configuration files:__
 
-The default configuration file is `config.json`. It's possible to have
+The default configuration file is `config/config.json`. It's possible to have
 different configuration files named `config_<suffix>.json`, where the suffix
 is the value of an environment variable named `SETTINGS_FLAVOR`.
 
@@ -102,9 +93,9 @@ configuration file in order to run the tests.
 
 ### 4. Configuring a vhost (redis)
 
-All the configuration is managed through Redis. This makes it possible to
+All vhost configuration is managed through Redis. This makes it possible to
 update the configuration dynamically and gracefully while the server is
-running.
+running, and have that state shared accross workers and even accross Hipache instances.
 
 It also makes it simple to write configuration adapters. It would be trivial
 to load a plain text configuration file into Redis (and update it at runtime).
@@ -157,6 +148,8 @@ start hipache
 stop hipache
 restart hipache
 ```
+
+The configuration file used is `/etc/hipache.json`.
 
 Features
 --------
@@ -235,15 +228,20 @@ match itself first, then *.bar.baz.qux.quux, then *.baz.qux.quux, etc.
 ### Active Health-Check
 
 Even though Hipache support passive health checks, it's also possible to run
-active health checks. This mechanism requires to run an external program. There
-are two solutions available: [hipache-hchecker (golang)](https://github.com/samalba/hipache-hchecker) and [hipcheck (node.js)](https://github.com/runnable/hipcheck).
+active health checks. This mechanism requires to run an external program (see third-party softwares below).
 
 
-Future improvements
+Third party softwares of interest
 -------------------
 
-[Read the TODO page](https://github.com/dotcloud/hipache/blob/master/TODO.md)
+Health-checkers:
 
+ * [hipache-hchecker (golang)](https://github.com/samalba/hipache-hchecker)
+ * [hipcheck (node.js)](https://github.com/runnable/hipcheck).
+
+A web interface to manage vhosts:
+
+ * [airfield](https://github.com/emblica/airfield)
 
 [npm-url]: https://npmjs.org/package/hipache
 [npm-image]: https://badge.fury.io/js/hipache.png
