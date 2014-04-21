@@ -11,7 +11,7 @@
     describe('Driver factory', function () {
         describe('#existing-drivers', function () {
             [
-                'redis:', 'memcached://', 'etcd:', 'etcds://', 'redis:///ß∞',
+                ['redis:'], ['memcached://'], ['etcd:'], ['etcds://'], ['redis:///ß∞'],
                 ['redis://', 'redis://']
             ].forEach(function (urls) {
 
@@ -40,29 +40,29 @@
         describe('#erroring-on-bogus-urls', function () {
             it('"nopassaran://" (unregistered) should emit error', function (done) {
                 factory.once('error', function (e) {
-                    expect(e.name).to.eql('DriverError');
+                    expect(e).to.be.instanceof(DriverError);
                     expect(e.category).to.eql(DriverError.MISSING_DRIVER);
                     done();
                 });
-                factory.getDriver('nopassaran://');
+                factory.getDriver(['nopassaran://']);
             });
 
             it('"bogus" (no scheme) should emit error', function (done) {
                 factory.once('error', function (e) {
-                    expect(e.name).to.eql('DriverError');
+                    expect(e).to.be.instanceof(DriverError);
                     expect(e.category).to.eql(DriverError.BOGUS_URL);
                     done();
                 });
-                factory.getDriver('bogus');
+                factory.getDriver(['bogus']);
             });
 
             it('drivertpl:// (which is broken) should emit error', function (done) {
                 factory.once('error', function (e) {
-                    expect(e.name).to.eql('DriverError');
+                    expect(e).to.be.instanceof(DriverError);
                     expect(e.category).to.eql(DriverError.BROKEN_DRIVER);
                     done();
                 });
-                factory.getDriver('drivertpl://');
+                factory.getDriver(['drivertpl://']);
             });
         });
 
