@@ -11,13 +11,13 @@
     },
     "https": {
         "port": 443,
-        "address": "127.0.0.1",
+        "bind": "127.0.0.1",
         "key": "/etc/ssl/ssl.key",
         "cert": "/etc/ssl/ssl.crt"
     },
     "http": {
         "port": 80,
-        "address": "127.0.0.1",
+        "bind": "127.0.0.1",
     },
     "driver": "redis://127.0.0.1:6379"
 }
