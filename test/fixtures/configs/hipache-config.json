@@ -13,12 +13,12 @@
     "user": "dmp",
     "group": "staff",
     "http": {
-        "port": 82,
-        "bind": "::1"
+        "port": 1080,
+        "bind": "127.0.0.1"
     },
     "https": {
         "port": 1443,
-        "bind": "::1",
+        "bind": "127.0.0.1",
         "key": "./test/fixtures/configs/hipache-key.pem",
         "cert": "./test/fixtures/configs/hipache-crt.pem"
     },
