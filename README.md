@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/dotcloud/hipache.png?label=ready&title=Ready)](https://waffle.io/dotcloud/hipache)
 Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
