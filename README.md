@@ -2,6 +2,7 @@ Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
 [![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url]
+[![Stories in Ready][waffle-image]][waffle-url]
 
 What is it?
 -----------
@@ -257,3 +258,6 @@ A web interface to manage vhosts:
 
 [codeclimate-url]: https://codeclimate.com/github/dotcloud/hipache
 [codeclimate-image]: https://codeclimate.com/github/dotcloud/hipache.png
+
+[waffle-url]: https://waffle.io/dotcloud/hipache
+[waffle-image]: https://badge.waffle.io/dotcloud/hipache.png?label=in%20progress&title=Ready
