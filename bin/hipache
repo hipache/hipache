@@ -8,8 +8,9 @@ var fs = require('fs'),
     cluster = require('cluster'),
     util = require('util'),
     argv = require('minimist')(process.argv.slice(2)),
+    Config = require('../lib/config/config'),
     master = require('../lib/master'),
-    worker = require('../lib/worker');
+    Worker = require('../lib/worker');
 
 var help = [
     'usage: hipache [options]',
@@ -18,6 +19,7 @@ var help = [
     '',
     'options:',
     '   -c, --config CONFIGFILE     Location of the configuration file',
+    '   -d, --dry                   Test configuration and exit (doesn\'t actually start hipache)',
     '   -h, --help                  Display help'
 ].join('\n');
 
@@ -35,15 +37,38 @@ if (!configFile) {
 }
 
 util.log('Loading config from ' + configFile);
-var config = JSON.parse(fs.readFileSync(configFile));
 
-if (cluster.isMaster) {
-    // Run the master
-    var m = master(config);
-    m.run();
-    util.log('Server is running. ' + JSON.stringify(config.server));
-} else {
-    // Run the worker
-    var w = worker(config);
-    w.run();
-}
+fs.readFile(configFile, function (err, data) {
+    if (err) {
+        throw new Error('Couldn\'t locate requested config file at: ' + configFile);
+    }
+
+    var config;
+    try {
+        config = new Config(data);
+    } catch (e) {
+        util.log('Failed loading your configuration!');
+        throw e;
+    }
+
+    // Wait for configuration to say ready...
+    config.once('ready', function () {
+
+        if (argv.d || argv.dry) {
+            util.log('Configuration file looks ok. Here is the result:');
+            util.log(config.inspect());
+            return;
+        }
+
+        if (cluster.isMaster) {
+            // Run the master
+            var m = master(config);
+            m.run();
+            util.log('Server is running.');
+        } else {
+            // Run the worker
+            var w = new Worker(config);
+            w.run();
+        }
+    });
+});
