@@ -38,20 +38,37 @@ if (!configFile) {
 
 util.log('Loading config from ' + configFile);
 
-var config = new Config(JSON.parse(fs.readFileSync(configFile)));
+fs.readFile(configFile, function (err, data) {
+    if (err) {
+        throw new Error('Couldn\'t locate requested config file at: ' + configFile);
+    }
 
-if (argv.d || argv.dry) {
-    util.log('Configuration file looks ok.');
-    return;
-}
+    var config;
+    try {
+        config = new Config(data);
+    } catch (e) {
+        util.log('Failed loading your configuration!');
+        throw e;
+    }
 
-if (cluster.isMaster) {
-    // Run the master
-    var m = master(config);
-    m.run();
-    util.log('Server is running.');
-} else {
-    // Run the worker
-    var w = new Worker(config);
-    w.run();
-}
+    // Wait for configuration to say ready...
+    config.once('ready', function () {
+
+        if (argv.d || argv.dry) {
+            util.log('Configuration file looks ok. Here is the result:');
+            util.log(config.inspect());
+            return;
+        }
+
+        if (cluster.isMaster) {
+            // Run the master
+            var m = master(config);
+            m.run();
+            util.log('Server is running.');
+        } else {
+            // Run the worker
+            var w = new Worker(config);
+            w.run();
+        }
+    });
+});

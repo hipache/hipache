@@ -10,8 +10,10 @@
         "deadBackendOn500": true,
         "httpKeepAlive": false
     },
+    "user": "dmp",
+    "group": "staff",
     "http": {
-        "port": 1080,
+        "port": 82,
         "bind": "::1"
     },
     "https": {
