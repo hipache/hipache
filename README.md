@@ -9,7 +9,6 @@ WARNING
 
 This is the documentation for `master`. If you are running Hipache release, you should look at the documentation on the `0.3` branch.
 
-
 What is it?
 -----------
 
