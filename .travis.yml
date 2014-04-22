@@ -12,6 +12,12 @@ before_install:
     - sudo apt-get update
     - sudo apt-get install redis-server memcached
     - npm install -g gulp
+    # Zookeeper install
+    - pushd $HOME
+    - curl -C - http://apache.osuosl.org/zookeeper/zookeeper-3.4.5/zookeeper-3.4.5.tar.gz | tar -zx
+    - mv $HOME/zookeeper-3.4.5 $HOME/zookeeper
+    - chmod a+x $HOME/zookeeper/bin/zkServer.sh
+    - popd
 
 after_install:
     # Pythonic tests require
@@ -20,6 +26,7 @@ after_install:
     - ./bin/hipache -c config/config_test.json &
 
 before_script:
+    - export PATH=$HOME/zookeeper/bin:$PATH
     # Hinting - XXX should fail!
     - npm run-script hint
 

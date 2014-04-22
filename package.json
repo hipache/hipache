@@ -41,13 +41,14 @@
     "npmlog": "^0.0.6",
     "memcached": "^0.2.8",
     "node-etcd": "^2.0.10",
+    "node-zookeeper-client": "^0.2.1",
     "ws": "^0.4.31",
     "coveralls": "^2.10.0",
     "connect": "^2.14.3"
   },
   "scripts": {
     "start": "./bin/hipache",
-    "test": "istanbul test _mocha --report html -- test/**/*.js --reporter spec",
+    "test": "istanbul test _mocha --report html -- test/**/*.js --reporter spec --timeout 4000",
     "coveralls": "istanbul cover _mocha --report lcovonly -- test/**/*.js -R spec && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage",
     "hint": "gulp hint"
   },
