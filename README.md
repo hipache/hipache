@@ -64,7 +64,7 @@ each backend (per worker)
 `dead' before retrying to proxy another request to it (doesn't apply if you are using a third-party health checker)
 * __server.address__: IPv4 and IPv6 Addresses listening (HTTP and HTTPS)
 * __server.https__: SSL configuration (omit this section to disable HTTPS)
-* __driver__: Redis url (you can omit this entirely to use the local redis on the default port). If you want a master/slave Redis, specify a second url for the master, eg: `driver: ["redis://slave:port", "redis://master:port"]`. More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri. More infos about drivers in [lib/drivers](tree/master/lib).
+* __driver__: Redis url (you can omit this entirely to use the local redis on the default port). If you want a master/slave Redis, specify a second url for the master, eg: `driver: ["redis://slave:port", "redis://master:port"]`. More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri. More infos about drivers in [lib/drivers](https://github.com/dotcloud/hipache/tree/master/lib/drivers).
 
 ### 3. Spawning
 
