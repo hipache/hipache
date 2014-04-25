@@ -1,5 +1,5 @@
 #!/bin/sh
-':' //; exec node --expose-gc --always-compact -- "$0" "$@"
+':' //; exec "$(command -v nodejs || command -v node)" --expose-gc --always-compact -- "$0" "$@"
 
 'use strict';
 
