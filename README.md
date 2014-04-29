@@ -1,8 +1,13 @@
 Hipache: a distributed HTTP and websocket proxy
 ===============================================
 
-[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url]
-[![Stories in Ready][waffle-image]][waffle-url]
+[![NPM version][npm-image]][npm-url] [![Build Status][travis-image]][travis-url]  [![Dependency Status][depstat-image]][depstat-url] [![Coverage Status][coveralls-image]][coveralls-url] [![Code Climate][codeclimate-image]][codeclimate-url] [![Stories in Ready][waffle-image]][waffle-url]
+
+WARNING
+-----------
+
+This is the documentation for `master`. If you are running Hipache release, you should look at the documentation on the `0.3` branch.
+
 
 What is it?
 -----------
@@ -39,32 +44,44 @@ Basic Hipache configuration is described in a json file. For example:
     {
         "server": {
             "accessLog": "/var/log/hipache_access.log",
-            "port": 80,
             "workers": 5,
             "maxSockets": 100,
             "deadBackendTTL": 30,
-            "address": ["127.0.0.1", "::1"],
-            "https": {
-                "port": 443,
-                "key": "/etc/ssl/ssl.key",
-                "cert": "/etc/ssl/ssl.crt"
-            }
+        },
+        "http": {
+            "port": 80,
+            "bind": ["127.0.0.1", "::1"],
+        },
+        "https": {
+            "port": 443,
+            "bind": ["127.0.0.1", "::1"]
+            "key": "/etc/ssl/ssl.key",
+            "cert": "/etc/ssl/ssl.crt"
         },
         "driver": "redis://:password@127.0.0.1:6379/0"
     }
 
-* __server.accessLog__: location of the Access logs, the format is the same as
-nginx
-* __server.port__: Port to listen to (HTTP)
-* __server.workers__: Number of workers to be spawned (specify at least 1, the
-master process does not serve any request)
-* __server.maxSockets__: The maximum number of sockets which can be opened on
-each backend (per worker)
-* __server.deadBackendTTL__: The number of seconds a backend is flagged as
-`dead' before retrying to proxy another request to it (doesn't apply if you are using a third-party health checker)
-* __server.address__: IPv4 and IPv6 Addresses listening (HTTP and HTTPS)
-* __server.https__: SSL configuration (omit this section to disable HTTPS)
-* __driver__: Redis url (you can omit this entirely to use the local redis on the default port). If you want a master/slave Redis, specify a second url for the master, eg: `driver: ["redis://slave:port", "redis://master:port"]`. More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri. More infos about drivers in [lib/drivers](https://github.com/dotcloud/hipache/tree/master/lib/drivers).
+ * __server__: generic server settings, like acceslog location, or number of workers
+    * __server.accessLog__: location of the Access logs, the format is the same as
+nginx. Defaults to `/var/log/hipache/access.log` if not specified.
+    * __server.workers__: Number of workers to be spawned. You need to request to have at least 1 woker, as the
+master process does not serve any request. Defaults to `10` if not specified.
+    * __server.maxSockets__: The maximum number of sockets which can be opened on each backend (per worker). Defaults to `100` if not specified.
+    * __server.deadBackendTTL__: The number of seconds a backend is flagged as
+'dead' before retrying to proxy another request to it (doesn't apply if you are using a third-party health checker). Defaults to `30`.
+ * __http__: specifies on which ips/ports hipache will listen for http traffic. By default, hipache listens only on 127.0.0.1:80
+    * __http.port__: port to listen to for http. Defaults to `80`.
+    * __http.bind__: IPv4 (or IPv6) address, or addresses to listen to. You can specify a single ip, an array of ips, or an array of objects `{address: IP, port: PORT}` if you want to use a specific port on a specific ip. Defaults to `127.0.0.1`.
+ * __http__: specifies on which ips/ports hipache will listen for https traffic. By default, hipache doesn't listens for https traffic.
+    * __https.port__: port to listen to for https. Defaults to `443`.
+    * __https.key__: path to key file to use. No default.
+    * __https.passphrase__: optional passphrase for the key file.
+    * __https.cert__: path to certificate file to use. No default.
+    * __https.ca__: optional path to additional CA file to serve. Might be a string, or an array.
+    * __https.bind__: similarly to http.bind, you can specific a single ip, an array of ip, or an array of objects to override the port, key/cert/ca files on a per-ip basis.
+* __driver__: Redis url to connect to for dynamic vhost configurations. If you want a master/slave Redis, specify a second url for the master, eg: `driver: ["redis://slave:port", "redis://master:port"]`. More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri. More infos about drivers in [lib/drivers](https://github.com/dotcloud/hipache/tree/master/lib/drivers). You can omit this entirely to use the local redis on the default port, which is the default.
+* __user__: if starting as root (which you might do if you want to use a privileged port), will drop root privileges as soon as it's bound. Defaults to `www-data`. Note that you MUST specify a user if you start hipache as root. You can specify `user: root` if you don't mind (strongly discouraged!). You can use either user names or ids.
+* __group__: if starting as root, will downgrade group to this. If left empty, will try to downgrade to a group named after the specified `user`. Defaults to `www-data`.
 
 ### 3. Spawning
 
@@ -79,6 +96,10 @@ If you use a privileged port (eg: 80):
 If you want to use a specific configuration file:
 
     $ hipache --config path/to/someConfig.json
+
+If you want to just test a specific configuration file:
+
+    $ hipache --dry --config path/to/someConfig.json
 
 __Managing multiple configuration files:__
 
@@ -209,8 +230,7 @@ on its own and relies entirely on NodeJS and node-http-proxy.
 
 ### SSL
 
-If provided with a SSL private key and certificate, Hipache will support SSL
-connections, for "regular" requests as well as WebSocket upgrades.
+Hipache supports SSL for "regular" requests as well as WebSocket upgrades.
 
 ### Custom HTML error pages
 
