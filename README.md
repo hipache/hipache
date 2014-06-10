@@ -72,7 +72,7 @@ master process does not serve any request. Defaults to `10` if not specified.
  * __http__: specifies on which ips/ports hipache will listen for http traffic. By default, hipache listens only on 127.0.0.1:80
     * __http.port__: port to listen to for http. Defaults to `80`.
     * __http.bind__: IPv4 (or IPv6) address, or addresses to listen to. You can specify a single ip, an array of ips, or an array of objects `{address: IP, port: PORT}` if you want to use a specific port on a specific ip. Defaults to `127.0.0.1`.
- * __http__: specifies on which ips/ports hipache will listen for https traffic. By default, hipache doesn't listens for https traffic.
+ * __https__: specifies on which ips/ports hipache will listen for https traffic. By default, hipache doesn't listens for https traffic.
     * __https.port__: port to listen to for https. Defaults to `443`.
     * __https.key__: path to key file to use. No default.
     * __https.passphrase__: optional passphrase for the key file.
