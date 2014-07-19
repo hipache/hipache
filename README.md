@@ -46,11 +46,11 @@ Basic Hipache configuration is described in a json file. For example:
             "accessLog": "/var/log/hipache_access.log",
             "workers": 5,
             "maxSockets": 100,
-            "deadBackendTTL": 30,
+            "deadBackendTTL": 30
         },
         "http": {
             "port": 80,
-            "bind": ["127.0.0.1", "::1"],
+            "bind": ["127.0.0.1", "::1"]
         },
         "https": {
             "port": 443,
