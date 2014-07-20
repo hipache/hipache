@@ -79,9 +79,9 @@ master process does not serve any request. Defaults to `10` if not specified.
     * __https.cert__: path to certificate file to use. No default.
     * __https.ca__: optional path to additional CA file to serve. Might be a string, or an array.
     * __https.bind__: similarly to http.bind, you can specific a single ip, an array of ip, or an array of objects to override the port, key/cert/ca files on a per-ip basis.
-* __driver__: Redis url to connect to for dynamic vhost configurations. If you want a master/slave Redis, specify a second url for the master, eg: `driver: ["redis://slave:port", "redis://master:port"]`. More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri. More infos about drivers in [lib/drivers](https://github.com/dotcloud/hipache/tree/master/lib/drivers). You can omit this entirely to use the local redis on the default port, which is the default.
-* __user__: if starting as root (which you might do if you want to use a privileged port), will drop root privileges as soon as it's bound. Defaults to `www-data`. Note that you MUST specify a user if you start hipache as root. You can specify `user: root` if you don't mind (strongly discouraged!). You can use either user names or ids.
-* __group__: if starting as root, will downgrade group to this. If left empty, will try to downgrade to a group named after the specified `user`. Defaults to `www-data`.
+ * __driver__: Redis url to connect to for dynamic vhost configurations. If you want a master/slave Redis, specify a second url for the master, eg: `driver: ["redis://slave:port", "redis://master:port"]`. More generally, the driver syntax is: `redis://:password@host:port/database#prefix` - all parameter are optional, hence just `redis:` is a valid driver uri. More infos about drivers in [lib/drivers](https://github.com/dotcloud/hipache/tree/master/lib/drivers). You can omit this entirely to use the local redis on the default port, which is the default.
+ * __user__: if starting as root (which you might do if you want to use a privileged port), will drop root privileges as soon as it's bound. Defaults to `www-data`. Note that you MUST specify a user if you start hipache as root. You can specify `user: root` if you don't mind (strongly discouraged!). You can use either user names or ids.
+ * __group__: if starting as root, will downgrade group to this. If left empty, will try to downgrade to a group named after the specified `user`. Defaults to `www-data`.
 
 ### 3. Spawning
 
