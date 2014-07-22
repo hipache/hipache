@@ -13,7 +13,8 @@ from    ubuntu:14.04
 run apt-get -y update
 
 # Install supervisor, node, npm and redis
-run apt-get -y install supervisor nodejs npm redis-server
+run apt-get -y install supervisor nodejs npm redis-server python-pip
+run pip install supervisor-stdout
 
 # Manually add hipache folder
 run mkdir ./hipache
