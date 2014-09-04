@@ -7,7 +7,7 @@
         "tcpTimeout": 30,
         "retryOnError": 3,
         "deadBackendOn500": true,
-        "httpKeepAlive": false,
+        "httpKeepAlive": false
     },
     "https": {
         "port": 443,
@@ -17,7 +17,7 @@
     },
     "http": {
         "port": 80,
-        "bind": "127.0.0.1",
+        "bind": "127.0.0.1"
     },
     "driver": "redis://127.0.0.1:6379"
 }
