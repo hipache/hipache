@@ -54,7 +54,7 @@ Basic Hipache configuration is described in a json file. For example:
         },
         "https": {
             "port": 443,
-            "bind": ["127.0.0.1", "::1"]
+            "bind": ["127.0.0.1", "::1"],
             "key": "/etc/ssl/ssl.key",
             "cert": "/etc/ssl/ssl.crt"
         },
