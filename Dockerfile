@@ -7,30 +7,31 @@
 # See the documentation for more details about how to operate Hipache.
 
 # Latest Ubuntu LTS
-from    ubuntu:14.04
+FROM    ubuntu:14.04
 
 # Update
-run apt-get -y update
+RUN apt-get -y update
 
 # Install supervisor, node, npm and redis
-run apt-get -y install supervisor nodejs npm redis-server
+RUN apt-get -y install supervisor nodejs npm redis-server python-pip
+RUN pip install supervisor-stdout
 
 # Manually add hipache folder
-run mkdir ./hipache
-add . ./hipache
+RUN mkdir ./hipache
+ADD . ./hipache
 
-# Then install it
-run npm install -g ./hipache --production
+# Install npm modules
+WORKDIR /hipache
+RUN npm install --production
 
 # This is provisional, as we don't honor it yet in hipache
-env NODE_ENV production
+ENV NODE_ENV production
 
 # Add supervisor conf
-add ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+ADD ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # Expose hipache and redis
-expose  80
-expose  6379
+EXPOSE  80
 
 # Start supervisor
-cmd ["supervisord", "-n"]
+CMD ["supervisord", "-n"]

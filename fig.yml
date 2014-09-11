@@ -1,0 +1,15 @@
+web:
+  build: .
+  command: supervisord -n
+  ports:
+    - 8080:80
+  volumes:
+    - .:/app
+    - log:/var/log/supervisor
+  links:
+    - etcd
+etcd:
+  image: coreos/etcd
+  ports:
+    - 4001:4001
+
