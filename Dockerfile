@@ -20,6 +20,10 @@ RUN pip install supervisor-stdout
 RUN mkdir ./hipache
 ADD . ./hipache
 
+# Install npm modules
+WORKDIR /hipache
+RUN npm install --production
+
 # This is provisional, as we don't honor it yet in hipache
 ENV NODE_ENV production
 
