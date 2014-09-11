@@ -1,21 +1,25 @@
 {
     "server": {
         "accessLog": "/var/log/nginx/access.log",
-        "port": 80,
         "workers": 10,
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "tcpTimeout": 30,
         "retryOnError": 3,
         "deadBackendOn500": true,
-        "httpKeepAlive": false,
-        "https": {
-            "port": 443,
-            "key": "/etc/ssl/ssl.key",
-            "cert": "/etc/ssl/ssl.crt"
-        }
+        "httpKeepAlive": false
     },
-    "driver": ["redis://127.0.0.1:6379"]
+    "https": {
+        "port": 443,
+        "bind": "127.0.0.1",
+        "key": "/etc/ssl/ssl.key",
+        "cert": "/etc/ssl/ssl.crt"
+    },
+    "http": {
+        "port": 80,
+        "bind": "127.0.0.1"
+    },
+    "driver": ["redis://127.0.0.1:6379"],
     "etcdHost": "172.17.42.1",
     "etcdPort": 4001,
     "etcdPath": "/lb"
