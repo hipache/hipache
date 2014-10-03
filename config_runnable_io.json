@@ -1,0 +1,14 @@
+{
+    "server": {
+        "accessLog": "/host/access.log",
+        "port": 80,
+        "workers": 10,
+        "maxSockets": 10000,
+        "deadBackendTTL": 30,
+        "tcpTimeout": 30,
+        "retryOnError": 3,
+        "deadBackendOn500": false,
+        "httpKeepAlive": false
+    },
+    "driver": ["redis://10.0.1.79:6379"]
+}
