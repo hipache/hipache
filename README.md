@@ -267,17 +267,17 @@ A web interface to manage vhosts:
 [npm-url]: https://npmjs.org/package/hipache
 [npm-image]: https://badge.fury.io/js/hipache.png
 
-[travis-url]: http://travis-ci.org/dotcloud/hipache
-[travis-image]: https://secure.travis-ci.org/dotcloud/hipache.png?branch=master
+[travis-url]: http://travis-ci.org/hipache/hipache
+[travis-image]: https://secure.travis-ci.org/hipache/hipache.png?branch=master
 
 [coveralls-url]: https://coveralls.io/r/dotcloud/hipache
 [coveralls-image]: https://coveralls.io/repos/dotcloud/hipache/badge.png?branch=master
 
-[depstat-url]: https://david-dm.org/dotcloud/hipache
-[depstat-image]: https://david-dm.org/dotcloud/hipache.png
+[depstat-url]: https://david-dm.org/hipache/hipache
+[depstat-image]: https://david-dm.org/hipache/hipache.png
 
 [codeclimate-url]: https://codeclimate.com/github/dotcloud/hipache
 [codeclimate-image]: https://codeclimate.com/github/dotcloud/hipache.png
 
-[waffle-url]: https://waffle.io/dotcloud/hipache
-[waffle-image]: https://badge.waffle.io/dotcloud/hipache.png?label=in%20progress&title=Ready
+[waffle-url]: https://waffle.io/hipache/hipache
+[waffle-image]: https://badge.waffle.io/hipache/hipache.png?label=in%20progress&title=Ready
