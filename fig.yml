@@ -1,13 +1,17 @@
 web:
   build: .
-  command: supervisord -n
+  command: /app/bin/hipache -c /app/config/config_dev.json
   ports:
     - 8080:80
   volumes:
     - .:/app
-    - log:/var/log/supervisor
   links:
     - etcd
+    - redis:redis
+redis:
+  image: dockerfile/redis
+  ports:
+    - 6379
 etcd:
   image: coreos/etcd
   ports:
