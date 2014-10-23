@@ -5,7 +5,7 @@
         "workers": 2,
         "maxSockets": 100,
         "deadBackendTTL": 10,
-        "tcpTimeout": 10,
+        "tcpTimeout": 3600,
         "retryOnError": 3,
         "deadBackendOn500": true,
         "httpKeepAlive": false,
@@ -13,5 +13,10 @@
             "size": 5,
             "ttl": 5
         }
+    },
+    "etcd": {
+        "host": "172.17.42.1",
+        "port": 4001,
+        "path": "/lb"
     }
 }

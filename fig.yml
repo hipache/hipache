@@ -1,0 +1,19 @@
+web:
+  build: .
+  command: /app/bin/hipache -c /app/config/config_dev.json
+  ports:
+    - 8080:80
+  volumes:
+    - .:/app
+  links:
+    - etcd
+    - redis:redis
+redis:
+  image: dockerfile/redis
+  ports:
+    - 6379
+etcd:
+  image: coreos/etcd
+  ports:
+    - 4001:4001
+
