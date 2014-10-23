@@ -14,7 +14,9 @@
             "ttl": 5
         }
     },
-    "etcdHost": "172.17.42.1",
-    "etcdPort": 4001,
-    "etcdPath": "/lb"
+    "etcd": {
+        "host": "172.17.42.1",
+        "port": 4001,
+        "path": "/lb"
+    }
 }

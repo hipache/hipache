@@ -43,6 +43,37 @@ fs.readFile(configFile, function (err, data) {
         throw new Error('Couldn\'t locate requested config file at: ' + configFile);
     }
 
+    // If we were passed a string, try to parse JSON
+    if (data instanceof Buffer) {
+        data = data.toString();
+    }
+    if (!(data instanceof Object)) {
+        try {
+            data = JSON.parse(data || '{}');
+        } catch (e) {
+            var ConfigError = require('./error');
+            return this.emit('error', new ConfigError(
+                ConfigError.INVALID_JSON,
+                'Something wrong in your config! ' + e)
+            );
+        }
+    }
+
+    // accept etcd config via commandline arguments
+    data.etcd = data.etcd || {}
+    data.etcd.host = argv.etcdhost || data.etcd.host;
+    data.etcd.port = argv.etcdport || data.etcd.port;
+
+    // check if redis is linked
+    if (process.env.REDIS_PORT_6379_TCP_ADDR) {
+        data.driver = ["redis://" +
+          process.env.REDIS_PORT_6379_TCP_ADDR + ":" +
+          process.env.REDIS_PORT_6379_TCP_PORT];
+        data.redis = data.redis || {}
+        data.redis.port = process.env.REDIS_PORT_6379_TCP_PORT;
+        data.redis.host = process.env.REDIS_PORT_6379_TCP_ADDR;
+    }
+
     var config;
     try {
         config = new Config(data);
