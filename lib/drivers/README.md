@@ -64,7 +64,7 @@ You can also specify prefixes that will be prepended to keys using hashes:
 
 No, you can't mix different drivers.
 
-No, we are not adding optionnal drivers dependencies as Hipache dependencies - you *have* to `npm install (-g)` the driver dep manually.
+No, we are not adding optional drivers dependencies as Hipache dependencies - you *have* to `npm install (-g)` the driver dep manually.
 
 Rolling your own
 ----------------
@@ -114,7 +114,7 @@ You SHOULD catch all your exceptions/errors and instead send an `IDriver.ERROR` 
 
 You SHOULD implement the `create` and `add` methods to ease testing.
 
-You MAY additionnally implement the `destructor()` method if you want to do some cleanup/closing when we shutdown workers.
+You MAY additionally implement the `destructor()` method if you want to do some cleanup/closing when we shutdown workers.
 
 Obviously, you might require additional dependencies - don't add them here, but instead try / catch your require and log some information about what the user need to install to have your thing run.
 

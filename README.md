@@ -61,10 +61,10 @@ Basic Hipache configuration is described in a json file. For example:
         "driver": "redis://:password@127.0.0.1:6379/0"
     }
 
- * __server__: generic server settings, like acceslog location, or number of workers
+ * __server__: generic server settings, like accesslog location, or number of workers
     * __server.accessLog__: location of the Access logs, the format is the same as
 nginx. Defaults to `/var/log/hipache/access.log` if not specified.
-    * __server.workers__: Number of workers to be spawned. You need to request to have at least 1 woker, as the
+    * __server.workers__: Number of workers to be spawned. You need to request to have at least 1 worker, as the
 master process does not serve any request. Defaults to `10` if not specified.
     * __server.maxSockets__: The maximum number of sockets which can be opened on each backend (per worker). Defaults to `100` if not specified.
     * __server.deadBackendTTL__: The number of seconds a backend is flagged as
@@ -117,7 +117,7 @@ configuration file in order to run the tests.
 
 All vhost configuration is managed through Redis. This makes it possible to
 update the configuration dynamically and gracefully while the server is
-running, and have that state shared accross workers and even accross Hipache instances.
+running, and have that state shared across workers and even across Hipache instances.
 
 It also makes it simple to write configuration adapters. It would be trivial
 to load a plain text configuration file into Redis (and update it at runtime).
