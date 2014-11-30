@@ -74,6 +74,7 @@ master process does not serve any request. Defaults to `10` if not specified.
     * __server.deadBackendTTL__: The number of seconds a backend is flagged as
 'dead' before retrying to proxy another request to it (doesn't apply if you are using a third-party health checker). Defaults to `30`.
     * __server.staticDir__: The absolute path of the directory containing your custom static error pages. Default value `null` means it uses Hipache's pages.
+    * __server.forceHttps__: Redirect HTTP request to HTTPS. Not enabled (`false`) by default.
  * __http__: specifies on which ips/ports hipache will listen for http traffic. By default, hipache listens only on 127.0.0.1:80
     * __http.port__: port to listen to for http. Defaults to `80`.
     * __http.bind__: IPv4 (or IPv6) address, or addresses to listen to. You can specify a single ip, an array of ips, or an array of objects `{address: IP, port: PORT}` if you want to use a specific port on a specific ip. Defaults to `127.0.0.1`.

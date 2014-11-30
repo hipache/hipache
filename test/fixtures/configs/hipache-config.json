@@ -8,7 +8,8 @@
         "tcpTimeout": 5,
         "retryOnError": 0,
         "deadBackendOn500": true,
-        "httpKeepAlive": false
+        "httpKeepAlive": false,
+        "forceHttps": false
     },
     "user": "dmp",
     "group": "staff",
