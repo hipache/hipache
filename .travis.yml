@@ -4,6 +4,9 @@ node_js:
     # - "0.11"
     - "0.10"
 
+services:
+    - redis-server
+
 env:
     # Don't know yet how to install etcd on travis ubuntu, so disable the tests
     # Also, looks like it is not possible to start services easily anymore...
