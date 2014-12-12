@@ -14,13 +14,11 @@ env:
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install redis-server memcached
     - npm install -g gulp
 
 after_install:
     # Pythonic tests require
     - sudo apt-get install python-pip
-    - redis-server &
     - ./bin/hipache -c config/config_test.json &
 
 before_script:
