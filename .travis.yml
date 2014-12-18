@@ -4,24 +4,26 @@ node_js:
     # - "0.11"
     - "0.10"
 
+services:
+    - redis-server
+
 env:
     # Don't know yet how to install etcd on travis ubuntu, so disable the tests
-    - NO_ETCD=true
+    # Also, looks like it is not possible to start services easily anymore...
+    - NO_ETCD=true NO_MEMCACHED=true NO_REDIS=true
 
 before_install:
     - sudo apt-get update
-    - sudo apt-get install redis-server memcached
     - npm install -g gulp
 
 after_install:
     # Pythonic tests require
     - sudo apt-get install python-pip
-    - redis-server &
     - ./bin/hipache -c config/config_test.json &
 
 before_script:
     # Hinting - XXX should fail!
-    - npm run-script hint
+    - npm run-script hint || true
 
 after_script:
     # Running pythonic functional tests
