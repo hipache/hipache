@@ -6,7 +6,8 @@ Hipache: a distributed HTTP and websocket proxy
 WARNING
 -----------
 
-This is the documentation for `master`. If you are running Hipache release, you should look at the documentation on the `0.3` branch.
+This is the documentation for `master`. If you are running **Hipache release**, you should look at
+the documentation on the `0.3.x` branch.
 
 
 What is it?
@@ -39,7 +40,9 @@ From the shell:
 
 ### 2. Configuration (config.json)
 
-Basic Hipache configuration is described in a json file. For example:
+Basic Hipache configuration is described in a json file. For example, this is the configuration
+file for the `master` version of Hipache (i.e. under development, you should rather look at the
+documentation of the latest stable version you installed):
 
     {
         "server": {
