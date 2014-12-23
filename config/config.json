@@ -7,7 +7,8 @@
         "tcpTimeout": 30,
         "retryOnError": 3,
         "deadBackendOn500": true,
-        "httpKeepAlive": false
+        "httpKeepAlive": false,
+        "staticDir": null
     },
     "https": {
         "port": 443,
