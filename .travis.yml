@@ -1,7 +1,6 @@
 language: node_js
 node_js:
-    # XXX right now, segfaulting on the 500MB upload
-    # - "0.11"
+    - "0.11"
     - "0.10"
 
 services:
