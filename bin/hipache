@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 ':' //; exec "$(command -v nodejs || command -v node)" --expose-gc --always-compact -- "$0" "$@"
 
 'use strict';
