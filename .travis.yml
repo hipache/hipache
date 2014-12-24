@@ -10,7 +10,7 @@ services:
 env:
     # Don't know yet how to install etcd on travis ubuntu, so disable the tests
     # Also, looks like it is not possible to start services easily anymore...
-    - NO_ETCD=true NO_MEMCACHED=true NO_REDIS=true
+    - NO_ETCD=true NO_MEMCACHED=true
 
 before_install:
     - sudo apt-get update
