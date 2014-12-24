@@ -21,8 +21,15 @@ install:
     # Pythonic tests require
     - sudo apt-get install python-pip
     - (cd test/functional && sudo pip install -r requirements.txt)
+    # Zookeeper install
+    - pushd $HOME
+    - curl -C - http://apache.websitebeheerjd.nl/zookeeper/stable/zookeeper-3.4.6.tar.gz | tar -zx
+    - mv $HOME/zookeeper-3.4.6 $HOME/zookeeper
+    - chmod a+x $HOME/zookeeper/bin/zkServer.sh
+    - popd
 
 before_script:
+    - export PATH=$HOME/zookeeper/bin:$PATH
     # Hinting - XXX should fail!
     - npm run-script hint
 
