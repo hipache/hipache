@@ -24,7 +24,7 @@ install:
 
 before_script:
     # Hinting - XXX should fail!
-    - npm run-script hint || true
+    - npm run-script hint
 
 script:
     - npm test
