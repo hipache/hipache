@@ -14,18 +14,28 @@ env:
 
 before_install:
     - sudo apt-get update
+
+install:
     - npm install -g gulp
+    - npm install
     # Pythonic tests require
     - sudo apt-get install python-pip
+    - (cd test/functional && sudo pip install -r requirements.txt)
 
 before_script:
     # Hinting - XXX should fail!
     - npm run-script hint || true
 
-after_script:
-    - ./bin/hipache -c config/config_test.json &
+script:
+    - npm test
     # Running pythonic functional tests
-    - (cd test/functional && sudo pip install -r requirements.txt)
+    - ./bin/hipache -c config/config_test.json &
+    # Wait for Hipache...
+    - sleep 5
     - (cd test/functional && python -m unittest discover)
+    # A bit "brutal" but still, useful...
+    - killall node
+
+after_script:
     # Coveralls report
     - npm run coveralls
