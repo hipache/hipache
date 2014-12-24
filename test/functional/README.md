@@ -30,7 +30,17 @@ Install the required Python dependencies:
 Running the tests
 -----------------
 
-Start Hipache:
+A `redis` server must run. For instance, you can run a Docker container:
+
+    docker run -p 6379:6379 redis
+
+**Note:** if you want to use a different port, you can set the `REDIS_PORT`
+environment variable before running the test suite. In a similar manner, the
+`REDIS_ADDRESS` environment variable allows you to configure the Redis host.
+You will also have to configure the `redis` url in the `config/config_test.json`
+file.
+
+Now, start Hipache:
 
     # at the root of the repository
     bin/hipache -c config/config_test.json
@@ -42,4 +52,4 @@ Run the tests themselves:
     # go to the test directory and invoke the tests
     cd test/functional && python -m unittest discover
 
-Remember to stop Hipache once you're done.
+Remember to stop Redis and Hipache once you're done.
