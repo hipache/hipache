@@ -8,9 +8,7 @@ services:
     - redis-server
 
 env:
-    # Don't know yet how to install etcd on travis ubuntu, so disable the tests
-    # Also, looks like it is not possible to start services easily anymore...
-    - NO_ETCD=true NO_MEMCACHED=true
+    - NO_MEMCACHED=true
 
 before_install:
     - sudo apt-get update
@@ -26,10 +24,14 @@ install:
     - curl -C - http://apache.websitebeheerjd.nl/zookeeper/stable/zookeeper-3.4.6.tar.gz | tar -zx
     - mv $HOME/zookeeper-3.4.6 $HOME/zookeeper
     - chmod a+x $HOME/zookeeper/bin/zkServer.sh
+    # etcd install
+    - curl -L -C - https://github.com/coreos/etcd/releases/download/v0.4.6/etcd-v0.4.6-linux-amd64.tar.gz | tar -zx
+    - mv $HOME/etcd-v0.4.6-linux-amd64 $HOME/etcd
+    - chmod a+x $HOME/etcd/{etcd,etcdctl}
     - popd
 
 before_script:
-    - export PATH=$HOME/zookeeper/bin:$PATH
+    - export PATH="$HOME/zookeeper/bin:$HOME/etcd:$PATH"
     # Hinting - XXX should fail!
     - npm run-script hint
 
