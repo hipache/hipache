@@ -41,7 +41,7 @@ class TestCase(unittest.TestCase):
 
     def __init__(self, *args, **kwargs):
         unittest.TestCase.__init__(self, *args, **kwargs)
-        self.redis = redis.StrictRedis()
+        self.redis = redis.StrictRedis(os.getenv('REDIS_ADDRESS', 'localhost'), os.getenv('REDIS_PORT', 6379))
         self.check_ready()
         self._httpd_pids = []
         self._frontends = []
