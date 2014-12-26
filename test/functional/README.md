@@ -9,14 +9,17 @@ The tests use the Python `unittest` framework. Why the ... use Python test insid
 Setting up the test environment
 -------------------------------
 
-To run the tests, you need to be able to run Hipache on your machine. You also need Python 2.7 and a couple of Python dependencies.
+To run the tests, you need to be able to run Hipache on your machine. You also
+need Python 2.7 and a couple of Python dependencies.
+
+**Important:** all commands below must be run at the root of the project.
 
 First, install Hipache:
 
-    # at the root of the repository
     npm install
 
-Then, create a Python workspace to run the tests (we *highly* recommend you to install `virtualenv` and `virtualenvwrapper` for that purpose):
+Then, create a Python workspace to run the tests (we *highly* recommend you to
+install `virtualenv` and `virtualenvwrapper` for that purpose):
 
     # Note: you need at least Python 2.7
     # (Python 2.6 doesn't have tests discovery)
@@ -24,7 +27,7 @@ Then, create a Python workspace to run the tests (we *highly* recommend you to i
 
 Install the required Python dependencies:
 
-    pip install -r test/requirements.txt
+    pip install -r test/functional/requirements.txt
 
 
 Running the tests
