@@ -365,6 +365,10 @@ A web interface to manage VHOSTs:
 
  * [airfield](https://github.com/emblica/airfield)
 
+PaaS
+
+  * [tsuru (golang)](http://tsuru.io)
+
 [npm-url]: https://npmjs.org/package/hipache
 [npm-image]: https://badge.fury.io/js/hipache.png
 
