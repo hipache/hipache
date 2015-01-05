@@ -11,7 +11,7 @@
     describe('Driver factory', function () {
         describe('#existing-drivers', function () {
             [
-                ['redis:'], ['memcached://'], ['etcd:'], ['etcds://'], ['redis:///ß∞'],
+                ['redis:'], ['memcached://'], ['etcd:'], ['etcds://'],
                 ['redis://', 'redis://']
             ].forEach(function (urls) {
 
