@@ -7,7 +7,7 @@ All tests are written using `mocha` and `chai`.
 
 That's quite simple:
 
-```
+```javascript
 var expect = require('chai').expect;
 
 describe('My Module', function () {
