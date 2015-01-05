@@ -335,8 +335,8 @@ well-configured SSL/TLS layer.
 
 When something wrong happens (e.g., a backend times out), or when a request for
 an undefined virtual host comes in, Hipache will display an error page. Those
-error pages can be customized, and a configuration parameter is available to
-specify where these custom pages are located.
+error pages can be customized, and a configuration parameter (`server.staticDir`)
+is available to specify where these custom pages are located.
 
 ### Wildcard Domains Support
 
