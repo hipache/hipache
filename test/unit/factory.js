@@ -28,7 +28,11 @@
 
                     var driverInstance = factory.getDriver(urls);
                     // Don't leak the drivers - so, destroy whenever they reach error or ready
-                    driverInstance.once('error', driverInstance.destructor);
+                    if (u === 'redis:///ß∞') {
+                        driverInstance.on('error', driverInstance.destructor);
+                    } else {
+                        driverInstance.once('error', driverInstance.destructor);
+                    }
                     driverInstance.once('ready', driverInstance.destructor);
 
                     expect(driverInstance).to.be.an.instanceof(driverClass);
