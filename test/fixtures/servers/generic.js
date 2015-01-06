@@ -43,6 +43,14 @@
                 npmlog.error('Server#' + command, '', data);
             });
 
+            child.on('error', function(err) {
+              var msg = 'Failed to spawn ' +
+                        '"' + command + ' ' + args.concat(moreArgs) + '" ' +
+                        '(' + err + ')';
+              npmlog.error(msg);
+              this.emit('error', new Error(msg));
+            }.bind(this));
+
             child.on('close', function (code) {
                 npmlog.silly('Server#' + command, '', 'Done with exit code ' + code);
                 this.emit('stopped');
