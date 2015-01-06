@@ -12,8 +12,6 @@
     // Useful if you want to see servers talk to you
     // require('npmlog').level = 'silly';
 
-    // var expect = require('chai').expect;
-
     var Driver = require('../../lib/drivers/memcached');
     var Server = require('../fixtures/servers/memcached');
     var testReading = require('./driver-test-reading');
@@ -23,21 +21,19 @@
 
     // Start all servers beforehand
     before(function (done) {
-        // XXX memcache doesn't output anything on stdout
-        s1.start(['9001']);//, '-vv']);
-        s2.start(['9002']);//, '-vv']);
-        setTimeout(done, 1000);
+        s1.start(['9001', '-vv']).once('started', function() {
+            s2.start(['9002', '-vv']).once('started', done);
+        });
     });
 
     // Shutdown pips!
     after(function (done) {
-        s1.stop();
-        s2.stop();
-        setTimeout(done, 1000);
+        s1.stop().once('stopped', function() {
+            s2.stop().once('stopped', done);
+        });
     });
 
     describe('Memcached', function () {
-
         [
         // Simple
             ['memcached://:9001'],

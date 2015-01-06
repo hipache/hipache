@@ -28,8 +28,13 @@
 
                     var driverInstance = factory.getDriver(urls);
                     // Don't leak the drivers - so, destroy whenever they reach error or ready
-                    driverInstance.once('error', driverInstance.destructor);
+                    driverInstance.once('error', function() {
+                        driverInstance.destructor();
+                    });
                     driverInstance.once('ready', driverInstance.destructor);
+                    // Ignore any possible subsequent error - fix #198
+                    // as redis emits two errors if an explicit db is provided
+                    driverInstance.on('error', function() {});
 
                     expect(driverInstance).to.be.an.instanceof(driverClass);
                     expect(driverInstance).to.be.an.instanceof(idriver);
