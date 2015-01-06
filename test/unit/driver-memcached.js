@@ -41,6 +41,7 @@
         [
         // Simple
             ['memcached://:9001'],
+            ['memcached://:9002'],
         // Use prefixes
             ['memcached://:9001/#someprefix'],
         // Cluster
