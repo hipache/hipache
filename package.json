@@ -43,6 +43,7 @@
     "node-etcd": "^2.0.10",
     "node-zookeeper-client": "^0.2.1",
     "ws": "^0.4.31",
+    "rimraf": "^2.2.8",
     "coveralls": "^2.10.0",
     "connect": "^2.14.3"
   },
