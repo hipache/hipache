@@ -21,6 +21,7 @@
             if (!((moreArgs = moreArgs || []) instanceof Array)) {
                 moreArgs = [moreArgs];
             }
+            npmlog.silly('Spawning: "' + command + ' ' + args.concat(moreArgs) + '"');
             child = spawn(command, args.concat(moreArgs), {cwd: process.cwd()});
             var stdout = '',
                 stderr = '';
