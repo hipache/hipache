@@ -13,6 +13,7 @@
 
     var driverstests = ['./test/unit/driver-*'];
     var unittests = ['./test/unit/*.js', '!./test/unit/driver-*'];
+    var unittestsFactory = ['./test/unit/factory.js'];
     var functests = ['./test/functional/*.js'];
     var alltests = ['./test/**/*.js'];
     var scripts = ['*.js', './bin/*', './lib/**/*.js', './test/**/*.js'];
@@ -28,6 +29,11 @@
 
     gulp.task('test:unit', function () {
         return gulp.src(unittests)
+            .pipe(mocha({ reporter: 'spec' }));
+    });
+
+    gulp.task('test:unit:factory', function () {
+        return gulp.src(unittestsFactory)
             .pipe(mocha({ reporter: 'spec' }));
     });
 
