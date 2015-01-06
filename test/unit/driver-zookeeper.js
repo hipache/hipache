@@ -23,6 +23,7 @@
     var s1 = new Server();
 
     before(function (done) {
+        this.timeout(8000);
         fs.writeFile(process.env.HOME + '/zookeeper/zoo.cfg', ['tickTime=2000',
             'dataDir=' + process.env.HOME + '/zookeeper/data/', 'clientPort=2182'].join('\n'), function(err) {
             if(err) {
@@ -33,13 +34,13 @@
 
         // Zookeeper needs time to take-off the ground :(
         s1.start(['start-foreground', process.env.HOME + '/zookeeper/zoo.cfg']).once('started', done);
+        setTimeout(done, 1000);
     });
 
     after(function (done) {
-        s1.stop().once('stopped', function(){
-          spawn('/bin/rm', ['-rf', process.env.HOME + '/zookeeper/data/']);
-          done();
-        });
+        this.timeout(8000);
+        s1.stop();
+        setTimeout(done, 1000);
     });
 
     describe('Zookeeper', function () {
