@@ -7,8 +7,15 @@
     var http = require('http');
     var Readable = require('stream').Readable;
     var fs = require('fs');
-    // var npmlog = require('npmlog');
+    var npmlog = require('npmlog');
+
+    // Useful if you want to see servers talk to you
     // npmlog.level = 'silly';
+
+    if (process.env.NO_REDIS) {
+        npmlog.error('Test', 'No redis server on this machine! No tests, then.');
+        return;
+    }
 
 
 
