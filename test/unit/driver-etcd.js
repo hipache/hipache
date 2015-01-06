@@ -4,6 +4,7 @@
 
     var npmlog = require('npmlog');
     var rimraf = require('rimraf');
+    var os = require('os');
 
     if (process.env.NO_ETCD) {
         npmlog.error('Test', 'No etcd server on this machine! No tests, then.');
@@ -21,7 +22,7 @@
 
 
     var s1 = new Server();
-    var serverTemp = './tmp/etcd-test';
+    var serverTemp = os.tmpdir() + '/hipache-etcd-test';
 
     // Start all servers beforehand
     before(function (done) {

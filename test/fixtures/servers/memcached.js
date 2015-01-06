@@ -10,6 +10,7 @@
 
     var Memcached = function () {
         Generic.apply(this, ['memcached', ['-p']]);
+        this.mute = true;
     };
 
     util.inherits(Memcached, Generic);
