@@ -18,13 +18,17 @@
         var child;
         var started = false;
 
+        this.setCommand = function (c) {
+            command = c;
+        };
+
         this.mute = false;
 
         this.start = function (moreArgs, stdin) {
             if (!((moreArgs = moreArgs || []) instanceof Array)) {
                 moreArgs = [moreArgs];
             }
-            child = spawn(command, args.concat(moreArgs), {cwd: process.cwd()});
+            child = spawn(command, args.concat(moreArgs));
             var stdout = '',
                 stderr = '';
 
