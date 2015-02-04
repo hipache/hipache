@@ -10,8 +10,8 @@ Ready][waffle-image]][waffle-url]
 WARNING
 -------
 
-This is the documentation for `master`. If you are running **Hipache release**,
-you should look at the documentation on the `0.3.x` branch.
+This is the documentation for `master`. If you are installing Hipache from **NPM**,
+you should look at the documentation on the [`0.3.x` branch](https://github.com/hipache/hipache/tree/0.3.1).
 
 
 What Is It?
