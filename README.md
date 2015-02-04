@@ -81,7 +81,7 @@ version you installed):
             "ciphers": "DH+ECDSA+AESGCM EECDH+aRSA+AESGCM EECDH+ECDSA+SHA384 EECDH+ECDSA+SHA256 EECDH+a RSA+SHA384 EECDH+aRSA+SHA256 EECDH+aRSA+RC4 EECDH EDH+aRSA RC4 !aNULL !eNULL !LOW !3DES !MD5 !EXP !PSK !SRP !DSS !RC4",
             "honorCipherOrder": true
         },
-        "driver": "redis:"
+        "driver": "redis:",
         "user": "www-data",
         "group": "www-data"
     }
