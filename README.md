@@ -353,6 +353,12 @@ active health checks. This mechanism requires to run an external program (see
 third-party softwares below).
 
 
+Contributing
+------------
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+
 Third-Party Softwares of Interest
 ---------------------------------
 
