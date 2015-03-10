@@ -1,6 +1,7 @@
 {
     "server": {
         "accessLog": "/var/log/hipache/hipache.log",
+        "errorLog": "/var/log/hipache/hipache.err",
         "workers": 10,
         "maxSockets": 100,
         "deadBackendTTL": 30,
