@@ -9,6 +9,7 @@ import BaseHTTPServer
 
 import redis
 import requests
+import json
 
 
 logger = logging.getLogger(__name__)
@@ -92,8 +93,15 @@ class TestCase(unittest.TestCase):
         if pid in self._httpd_pids:
             self._httpd_pids.remove(pid)
 
-    def register_frontend(self, frontend, backends_url):
-        self.redis.rpush('frontend:{0}'.format(frontend), frontend, *backends_url)
+    def register_frontend(self, match_type, frontend, backends_url):
+        print frontend
+        self.redis.rpush('frontend:{0}'.format(frontend), frontend,
+                         json.dumps({
+                            "type": match_type,
+                            "rule": None,
+                            "url": backends_url
+                         })
+                        )
         self._frontends.append(frontend)
 
     def unregister_frontend(self, frontend):

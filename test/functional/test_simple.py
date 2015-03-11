@@ -8,7 +8,7 @@ class SimpleTestCase(base.TestCase):
         """ Simple test: valid backend """
         port = 2080
         self.spawn_httpd(port)
-        self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
+        self.register_frontend("req.headers.host", 'foobar', ['http://localhost:{0}'.format(port)])
         self.assertEqual(self.http_request('foobar'), 200)
 
     def test_multiple_backends(self):
@@ -17,7 +17,7 @@ class SimpleTestCase(base.TestCase):
         self.spawn_httpd(port)
         self.spawn_httpd(port + 1)
         self.spawn_httpd(port + 2)
-        self.register_frontend('foobar', [
+        self.register_frontend("req.headers.host", 'foobar', [
             'http://localhost:{0}'.format(port),
             'http://localhost:{0}'.format(port + 1),
             'http://localhost:{0}'.format(port + 2)
@@ -36,7 +36,7 @@ class SimpleTestCase(base.TestCase):
         self.spawn_httpd(port, code=502)
         self.spawn_httpd(port + 1, code=200)
         # Duplicating the backend in the conf
-        self.register_frontend('foobar', [
+        self.register_frontend("req.headers.host", 'foobar', [
             'http://localhost:{0}'.format(port),
             'http://localhost:{0}'.format(port + 1)
             ])
@@ -45,6 +45,7 @@ class SimpleTestCase(base.TestCase):
         for i in xrange(10):
             codes.append(self.http_request('foobar'))
         self.assertIn(502, codes)
+        print "=========================================="
         # Then all request should reach the healthy one
         for i in xrange(10):
             self.assertEqual(self.http_request('foobar'), 200)
