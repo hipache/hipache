@@ -93,12 +93,12 @@ class TestCase(unittest.TestCase):
         if pid in self._httpd_pids:
             self._httpd_pids.remove(pid)
 
-    def register_frontend(self, match_type, frontend, backends_url):
+    def register_frontend(self, match_type, frontend, backends_url, pattern=None):
         print frontend
         self.redis.rpush('frontend:{0}'.format(frontend), frontend,
                          json.dumps({
                             "type": match_type,
-                            "rule": None,
+                            "pattern": pattern,
                             "url": backends_url
                          })
                         )
@@ -115,10 +115,10 @@ class TestCase(unittest.TestCase):
         for frontend in list(self._frontends):
             self.unregister_frontend(frontend)
 
-    def http_request(self, host, port=1080):
+    def http_request(self, host, referer="", port=1080):
         try:
             headers = {'Host': host, 'X-Debug': 'true'}
-            r = requests.get('http://localhost:{0}/'.format(port),
+            r = requests.get('http://localhost:{0}/?referer={1}'.format(port, referer),
                     headers=headers,
                     timeout=1.0)
             logger.debug('Frontend: {0}; Headers: {1}; Payload: "{2}"'.format(
