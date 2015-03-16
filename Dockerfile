@@ -18,7 +18,7 @@ from    ubuntu:14.04
 run apt-get -y update
 
 # Install node and npm
-run apt-get -y install nodejs npm
+run apt-get -y install nodejs npm redis-server
 
 # Manually add Hipache folder
 run mkdir ./hipache
