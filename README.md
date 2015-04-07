@@ -63,7 +63,8 @@ version you installed):
             "accessLog": "/var/log/hipache/access.log",
             "httpKeepAlive": false,
             "deadBackendOn500": true,
-            "staticDir": null
+            "staticDir": null,
+            "uniqueIdHeader": null
         },
         "http": {
             "port": 80,
@@ -110,6 +111,9 @@ version you installed):
     * __server.staticDir__: the absolute path of the directory containing your
       custom static error pages. Default value `null` means it uses Hipache's
       pages. Defaults to Hipache's `static/` directory.
+    * __server.uniqueIdHeader__: The name of an HTTP header that, if set,
+      contains a UUID v4 string to be passed to the backend. Defaults to `null`,
+      meaning no UUID will be generated
  * __http__: specifies on which ips/ports Hipache will listen for http traffic.
    By default, Hipache listens only on 127.0.0.1:80
     * __http.port__: port to listen to for http. Defaults to `80`.

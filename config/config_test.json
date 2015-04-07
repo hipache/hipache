@@ -8,7 +8,8 @@
         "tcpTimeout": 5,
         "retryOnError": 0,
         "deadBackendOn500": true,
-        "httpKeepAlive": false
+        "httpKeepAlive": false,
+        "uniqueIdHeader": "X-Unique-Id"
     },
     "http": {
         "port": 1080
