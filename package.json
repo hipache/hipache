@@ -22,30 +22,33 @@
     "lib": "./lib"
   },
   "dependencies": {
+    "body-parser": "^1.12.2",
+    "connect": "^3.3.5",
     "http-proxy": "1.10.1",
-    "redis": "0.12.x",
     "lru-cache": "2.5.x",
-    "minimist": "1.1.1"
+    "minimist": "1.1.1",
+    "redis": "0.12.x"
   },
   "devDependencies": {
-    "mocha": "2.x",
-    "jshint": "2.x",
+    "chai": "^2.2.0",
+    "connect": "^3.3.5",
+    "coveralls": "^2.11.2",
     "gulp": "^3.8.11",
-    "gulp-mocha": "^2.0.1",
     "gulp-eslint": "^0.8.0",
     "gulp-jshint": "^1.10.0",
-    "jshint-stylish": "^1.0.1",
+    "gulp-mocha": "^2.0.1",
     "gulp-util": "^3.0.4",
-    "chai": "^2.2.0",
     "istanbul": "^0.3.13",
-    "npmlog": "^1.2.0",
+    "jshint": "2.x",
+    "jshint-stylish": "^1.0.1",
     "memcached": "^2.1.0",
+    "mocha": "2.x",
     "node-etcd": "^4.0.1",
     "node-zookeeper-client": "^0.2.2",
-    "ws": "^0.7.1",
+    "npm-check-updates": "^1.5.1",
+    "npmlog": "^1.2.0",
     "rimraf": "^2.3.2",
-    "coveralls": "^2.11.2",
-    "connect": "^3.3.5"
+    "ws": "^0.7.1"
   },
   "scripts": {
     "start": "./bin/hipache",
