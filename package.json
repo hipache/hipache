@@ -31,7 +31,6 @@
   },
   "devDependencies": {
     "chai": "^2.2.0",
-    "connect": "^3.3.5",
     "coveralls": "^2.11.2",
     "gulp": "^3.8.11",
     "gulp-eslint": "^0.8.0",
