@@ -36,13 +36,7 @@ if (!configFile) {
     }
 }
 
-util.log('Loading config from ' + configFile);
-
-fs.readFile(configFile, function (err, data) {
-    if (err) {
-        throw new Error('Couldn\'t locate requested config file at: ' + configFile);
-    }
-
+var loadConfig = function(data) {
     var config;
     try {
         config = new Config(data);
@@ -71,4 +65,21 @@ fs.readFile(configFile, function (err, data) {
             w.run();
         }
     });
-});
+}
+
+
+if (typeof process.env.HIPACHE_CONFIG === 'string' && process.env.HIPACHE_CONFIG.trim().length > 2) {
+    util.log('Loading config from ENVIRONMENT');
+
+    loadConfig(process.env.HIPACHE_CONFIG);
+} else {
+    util.log('Loading config from ' + configFile);
+
+    fs.readFile(configFile, function (err, data) {
+        if (err) {
+            throw new Error('Couldn\'t locate requested config file at: ' + configFile);
+        }
+
+        loadConfig(data);
+    });
+}
