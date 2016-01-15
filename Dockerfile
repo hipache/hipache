@@ -34,7 +34,7 @@ env NODE_ENV production
 RUN mkdir -p /var/log/hipache
 
 # Expose Hipache
-expose  80
+expose  80 443
 
 # Start supervisor
 cmd [ "/usr/local/bin/hipache", "-c", "/usr/local/lib/node_modules/hipache/config/config.json" ]
