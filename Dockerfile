@@ -12,7 +12,7 @@
 # See the documentation for more details about how to operate Hipache.
 
 # Latest Ubuntu LTS
-from    ubuntu:14.04
+from    node:0-wheezy
 
 # Update
 run apt-get -y update
