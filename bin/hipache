@@ -40,6 +40,8 @@ var loadConfig = function(data) {
     data = data.replace(/\{\{(HIPACHE_.+?)\}\}/gm, function(match, variable) {
         return process.env[variable];
     });
+    console.log('CONFIG:');
+    console.log(data);
 
     var config;
     try {
