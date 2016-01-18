@@ -37,6 +37,10 @@ if (!configFile) {
 }
 
 var loadConfig = function(data) {
+    data = data.replace(/\{\{(HIPACHE_.+?)\}\}/gm, function(match, variable) {
+        return process.env[variable];
+    });
+
     var config;
     try {
         config = new Config(data);
