@@ -37,12 +37,14 @@ if (!configFile) {
 }
 
 var loadConfig = function(data) {
-    data = data.replace(/\{\{(HIPACHE_.+?)\}\}/gm, function(match, variable) {
-        if (typeof process.env[variable] === 'string') {
-            return process.env[variable].replace(/\n/gm, '\\n');
-        }
-        return process.env[variable];
-    });
+    if (typeof data === 'string') {
+        data = data.replace(/\{\{(HIPACHE_.+?)\}\}/gm, function(match, variable) {
+            if (typeof process.env[variable] === 'string') {
+                return process.env[variable].replace(/\n/gm, '\\n');
+            }
+            return process.env[variable];
+        });
+    }
     console.log('CONFIG:');
     console.log(data);
 
