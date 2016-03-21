@@ -376,19 +376,19 @@ PaaS
   * [tsuru (golang)](http://tsuru.io)
 
 [npm-url]: https://npmjs.org/package/hipache
-[npm-image]: https://badge.fury.io/js/hipache.png
+[npm-image]: https://badge.fury.io/js/hipache.svg
 
 [travis-url]: http://travis-ci.org/hipache/hipache
-[travis-image]: https://secure.travis-ci.org/hipache/hipache.png?branch=master
+[travis-image]: https://secure.travis-ci.org/hipache/hipache.svg?branch=master
 
 [coveralls-url]: https://coveralls.io/r/dotcloud/hipache
-[coveralls-image]: https://coveralls.io/repos/dotcloud/hipache/badge.png?branch=master
+[coveralls-image]: https://coveralls.io/repos/dotcloud/hipache/badge.svg?branch=master
 
 [depstat-url]: https://david-dm.org/hipache/hipache
-[depstat-image]: https://david-dm.org/hipache/hipache.png
+[depstat-image]: https://david-dm.org/hipache/hipache.svg
 
 [codeclimate-url]: https://codeclimate.com/github/dotcloud/hipache
-[codeclimate-image]: https://codeclimate.com/github/dotcloud/hipache.png
+[codeclimate-image]: https://codeclimate.com/github/dotcloud/hipache.svg
 
 [waffle-url]: https://waffle.io/hipache/hipache
-[waffle-image]: https://badge.waffle.io/hipache/hipache.png?label=in%20progress&title=Ready
+[waffle-image]: https://badge.waffle.io/hipache/hipache.svg?label=in%20progress&title=Ready
