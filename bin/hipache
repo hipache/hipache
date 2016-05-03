@@ -19,7 +19,7 @@ var help = [
     '',
     'options:',
     '   -c, --config CONFIGFILE     Location of the configuration file',
-    '   -d, --dry                   Test configuration and exit (doesn\'t actually start hipache)',
+    "   -d, --dry                   Test configuration and exit (doesn't actually start hipache)",
     '   -h, --help                  Display help'
 ].join('\n');
 
