@@ -12,7 +12,7 @@
 # See the documentation for more details about how to operate Hipache.
 
 # Latest node 0.12
-FROM node:0-wheezy
+FROM node:6.1
 
 # Manually add Hipache folder
 RUN mkdir ./hipache
