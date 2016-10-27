@@ -33,8 +33,12 @@ env NODE_ENV production
 # Create Hipache log directory
 RUN mkdir -p /var/log/hipache
 
+# Add run.sh start script
+copy run.sh /run.sh
+run chmod u+x /run.sh
+
 # Expose Hipache
 expose  80
 
 # Start supervisor
-cmd [ "/usr/local/bin/hipache", "-c", "/usr/local/lib/node_modules/hipache/config/config.json" ]
+cmd [ "/run.sh" ]
