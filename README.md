@@ -7,6 +7,20 @@ Status][coveralls-image]][coveralls-url] [![Code
 Climate][codeclimate-image]][codeclimate-url] [![Stories in
 Ready][waffle-image]][waffle-url]
 
+DEPRECATED
+----------
+
+This project is officially deprecated due to upstream inactivity (last updated Feb 2015, 2d36766; last release Apr 2014, 0.3.1).
+
+The following is a list of other HTTP proxies which might be suitable replacements depending on your needs:
+
+[traefik](https://github.com/containous/traefik)
+[vulcand](https://github.com/vulcand/vulcand)
+nginx
+haproxy
+httpd
+
+
 WARNING
 -------
 
