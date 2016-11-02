@@ -11,21 +11,15 @@
 #
 # See the documentation for more details about how to operate Hipache.
 
-# Latest Ubuntu LTS
-from    ubuntu:14.04
-
-# Update
-run apt-get -y update
-
-# Install node and npm
-run apt-get -y install nodejs npm
+# Latest node 0.12
+FROM node:6.1
 
 # Manually add Hipache folder
-run mkdir ./hipache
-add . ./hipache
+RUN mkdir ./hipache
+ADD . ./hipache
 
 # Then install it
-run npm install -g ./hipache --production
+RUN npm install -g ./hipache --production
 
 # This is provisional, as we don't honor it yet in Hipache
 env NODE_ENV production
@@ -34,7 +28,7 @@ env NODE_ENV production
 RUN mkdir -p /var/log/hipache
 
 # Expose Hipache
-expose  80
+EXPOSE  80 443
 
 # Start supervisor
-cmd [ "/usr/local/bin/hipache", "-c", "/usr/local/lib/node_modules/hipache/config/config.json" ]
+CMD [ "/usr/local/bin/hipache", "-c", "/usr/local/lib/node_modules/hipache/config/config.json" ]

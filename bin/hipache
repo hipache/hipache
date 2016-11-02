@@ -19,7 +19,7 @@ var help = [
     '',
     'options:',
     '   -c, --config CONFIGFILE     Location of the configuration file',
-    '   -d, --dry                   Test configuration and exit (doesn\'t actually start hipache)',
+    "   -d, --dry                   Test configuration and exit (doesn't actually start hipache)",
     '   -h, --help                  Display help'
 ].join('\n');
 
@@ -36,12 +36,17 @@ if (!configFile) {
     }
 }
 
-util.log('Loading config from ' + configFile);
-
-fs.readFile(configFile, function (err, data) {
-    if (err) {
-        throw new Error('Couldn\'t locate requested config file at: ' + configFile);
+var loadConfig = function(data) {
+    if (typeof data === 'string') {
+        data = data.replace(/\{\{(HIPACHE_.+?)\}\}/gm, function(match, variable) {
+            if (typeof process.env[variable] === 'string') {
+                return process.env[variable].replace(/\n/gm, '\\n');
+            }
+            return process.env[variable];
+        });
     }
+    console.log('CONFIG:');
+    console.log(data);
 
     var config;
     try {
@@ -71,4 +76,21 @@ fs.readFile(configFile, function (err, data) {
             w.run();
         }
     });
-});
+}
+
+
+if (typeof process.env.HIPACHE_CONFIG === 'string' && process.env.HIPACHE_CONFIG.trim().length > 2) {
+    util.log('Loading config from ENVIRONMENT');
+
+    loadConfig(process.env.HIPACHE_CONFIG);
+} else {
+    util.log('Loading config from ' + configFile);
+
+    fs.readFile(configFile, function (err, data) {
+        if (err) {
+            throw new Error('Couldn\'t locate requested config file at: ' + configFile);
+        }
+
+        loadConfig(data);
+    });
+}
