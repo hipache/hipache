@@ -1,0 +1,28 @@
+{
+  "name": "hipache",
+  "version": "0.4.0",
+  "dependencies": {
+    "http-proxy": {
+      "version": "1.0.2",
+      "from": "http-proxy@1.0.2",
+      "dependencies": {
+        "eventemitter3": {
+          "version": "0.1.6",
+          "from": "eventemitter3@*"
+        }
+      }
+    },
+    "redis": {
+      "version": "0.10.3",
+      "from": "redis@0.10.x"
+    },
+    "lru-cache": {
+      "version": "2.5.2",
+      "from": "lru-cache@2.5.x"
+    },
+    "minimist": {
+      "version": "0.0.8",
+      "from": "minimist@0.0.8"
+    }
+  }
+}
