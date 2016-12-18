@@ -2,13 +2,15 @@
     "server": {
         "debug": true,
         "accessLog": "/tmp/proxy2_test_access.log",
+        "errorLog": "/tmp/proxy2_test_error.log",
         "workers": 2,
         "maxSockets": 100,
         "deadBackendTTL": 30,
         "tcpTimeout": 5,
         "retryOnError": 0,
         "deadBackendOn500": true,
-        "httpKeepAlive": false
+        "httpKeepAlive": false,
+        "lruCache": false
     },
     "http": {
         "port": 1080

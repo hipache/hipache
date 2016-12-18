@@ -78,7 +78,7 @@ class ParseError(base.TestCase):
         """ Invalid backend: len(payload) > Content-Length """
         port = 2080
         self._spawn_server(port, TCPHandlerBodyTooLong)
-        self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
+        self.register_frontend("req.headers.host", 'foobar', ['http://localhost:{0}'.format(port)])
         # The request will throw a TCP timeout (since all bytes announced in
         # the Content-Length cannot be read)
         self.assertEqual(self.http_request('foobar'), 200)
@@ -87,7 +87,7 @@ class ParseError(base.TestCase):
         """ Invalid backend: len(payload) < Content-Length """
         port = 2080
         self._spawn_server(port, TCPHandlerBodyTooShort)
-        self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
+        self.register_frontend("req.headers.host", 'foobar', ['http://localhost:{0}'.format(port)])
         # The request will throw a TCP timeout (since all bytes announced in
         # the Content-Length cannot be read)
         self.assertEqual(self.http_request('foobar'), -1)
@@ -96,7 +96,7 @@ class ParseError(base.TestCase):
         """ Invalid request made on a valid backend. """
         port = 2080
         self.spawn_httpd(port)
-        self.register_frontend('foobar', ['http://localhost:{0}'.format(port)])
+        self.register_frontend("req.headers.host", 'foobar', ['http://localhost:{0}'.format(port)])
         self.assertEqual(self.http_request('foobar'), 200)
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         # Connect on Hipache

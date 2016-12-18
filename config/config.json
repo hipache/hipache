@@ -1,6 +1,8 @@
 {
     "server": {
+        "debug": true,
         "accessLog": "/var/log/hipache/hipache.log",
+        "errorLog": "/var/log/hipache/hipache.err",
         "workers": 10,
         "maxSockets": 100,
         "deadBackendTTL": 30,
@@ -8,11 +10,13 @@
         "retryOnError": 3,
         "deadBackendOn500": true,
         "httpKeepAlive": false,
-        "staticDir": null
+        "staticDir": null,
+        "lruCache": false
+
     },
     "http": {
         "port": 80,
         "bind": [ "0.0.0.0" ]
     },
-    "driver": "redis://redis"
+    "driver": "redis://192.168.59.103"
 }
