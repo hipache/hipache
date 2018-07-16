@@ -12,7 +12,7 @@
 # See the documentation for more details about how to operate Hipache.
 
 # Latest Ubuntu LTS
-from    ubuntu:14.04
+from    ubuntu:xenial
 
 # Update
 run apt-get -y update
