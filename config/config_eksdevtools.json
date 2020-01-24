@@ -1,0 +1,18 @@
+{
+    "server": {
+        "accessLog": "/var/log/hipache_access.log",
+        "workers": 10,
+        "maxSockets": 100,
+        "deadBackendTTL": 60,
+        "tcpTimeout": 1800,
+        "retryOnError": 3,
+        "deadBackendOn500": true,
+        "httpKeepAlive": false,
+        "uniqueIdHeader": "x-unique-id"
+    },
+    "http": {
+        "port": 80,
+        "bind": ["0.0.0.0"]
+    },
+    "driver": "redis://devtools-redis-master:6379"
+}
