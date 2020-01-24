@@ -8,7 +8,8 @@
         "retryOnError": 3,
         "deadBackendOn500": true,
         "httpKeepAlive": false,
-        "staticDir": null
+        "staticDir": null,
+        "uniqueIdHeader": null
     },
     "http": {
         "port": 80,

@@ -25,7 +25,8 @@ run mkdir ./hipache
 add . ./hipache
 
 # Then install it
-run npm install -g ./hipache --production
+run npm config set strict-ssl false && \
+    npm install -g ./hipache --production
 
 # This is provisional, as we don't honor it yet in Hipache
 env NODE_ENV production
@@ -33,8 +34,11 @@ env NODE_ENV production
 # Create Hipache log directory
 RUN mkdir -p /var/log/hipache
 
+ADD config/* /usr/local/lib/node_modules/hipache/config/
+ENV SETTINGS_FLAVOR=eksdevtools
+
 # Expose Hipache
 expose  80
 
 # Start supervisor
-cmd [ "/usr/local/bin/hipache", "-c", "/usr/local/lib/node_modules/hipache/config/config.json" ]
+cmd [ "/usr/local/bin/hipache" ]
